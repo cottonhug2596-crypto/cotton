@@ -816,6 +816,12 @@ header.top h1,.sostop h1,.hero2 h1{font-size:28px!important;line-height:1.15!imp
 .art .trainp{animation:trainp 12s linear infinite}
 @keyframes landp{0%{transform:translate(-80px,-30px) rotate(10deg);opacity:1}30%{transform:translate(50px,97px) rotate(0)}33%{transform:translate(64px,100px) rotate(-2deg)}36%{transform:translate(80px,99px) rotate(0)}44%{transform:translate(150px,99px);opacity:1}48%{transform:translate(170px,99px);opacity:0}100%{transform:translate(170px,99px);opacity:0}}
 @keyframes trainp{0%,46%{transform:translateX(-200px)}100%{transform:translateX(480px)}}
+
+/* D1：飛機前後輕搖、地鐵慢慢開過、櫛田神社 */
+.art .rock{animation:rock 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
+.art .metro{animation:metro 16s linear infinite}
+@keyframes rock{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-3px) rotate(3deg)}}
+@keyframes metro{from{transform:translateX(-140px)}to{transform:translateX(380px)}}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -1640,6 +1646,18 @@ const A_={
  sea:(y,h=150)=>{let d=`M-4 ${y}`;for(let x=-4;x<364;x+=24)d+=` q6 -6 12 0 t12 0`;return`<path d="${d} L364 ${h+4} L-4 ${h+4}Z" fill="${PAL.mi}" ${SK}/>`},
  waves:(x,y)=>G(x,y,`<path d="M0 0q5-5 10 0t10 0" fill="none" ${SK}/>`,"bob"),
  field:(y,c=PAL.wa)=>`<path d="M-4 ${y}q90-8 184 0t184 0V154H-4Z" fill="${c}" ${SK}/>`,
+ shrine:(x,y)=>{const L=`<g><rect x="-6" y="-26" width="12" height="26" fill="#D9D3CA" ${SK}/><path d="M-11 -26h22l-4 -8h-14z" fill="#D9D3CA" ${SK}/><rect x="-5" y="-22" width="10" height="7" fill="${PAL.ya}" ${SK}/></g>`;
+   return G(x,y,`<rect x="-66" y="-10" width="132" height="10" fill="#E8DFD0" ${SK}/>`
+   +`<rect x="-50" y="-44" width="100" height="34" fill="${PAL.w}" ${SK}/>`
+   +[-46,-22,15,39].map(a=>`<rect x="${a}" y="-44" width="7" height="34" fill="${PAL.co}" ${SK}/>`).join("")
+   +`<rect x="-12" y="-38" width="24" height="28" fill="${PAL.k}" opacity=".85"/><path d="M0 -38v28" stroke="${PAL.w}" stroke-width="1.5"/>`
+   +`<path d="M-48 -40q48 10 96 0" fill="none" stroke="#E2C77E" stroke-width="5" stroke-linecap="round"/><path d="M-48 -40q48 10 96 0" fill="none" ${SK} opacity=".35"/>`
+   +[-30,-10,10,30].map(a=>`<path d="M${a} -36l3 4-3 4 3 4" fill="none" stroke="${PAL.w}" stroke-width="2.5"/><path d="M${a} -36l3 4-3 4 3 4" fill="none" stroke="${PAL.k}" stroke-width="1" opacity=".5"/>`).join("")
+   +`<path d="M-74 -42q22-2 36-20L-28 -72H28L38 -62q14 18 36 20Z" fill="${PAL.wa}" ${SK}/><path d="M-60 -48h120" ${SK} opacity=".4"/>`
+   +`<path d="M-36 -70q12-2 18-14H18q6 12 18 14Z" fill="${PAL.wa}" ${SK}/><path d="M-22 -84h44" stroke="${PAL.k}" stroke-width="5" stroke-linecap="round"/><circle cx="-22" cy="-84" r="3.5" fill="${PAL.ya}" ${SK}/><circle cx="22" cy="-84" r="3.5" fill="${PAL.ya}" ${SK}/>`
+   +`<rect x="-14" y="-66" width="28" height="12" rx="2" fill="${PAL.w}" ${SK}/><path d="M-8 -60h16" ${SK}/>`
+   +G(-84,0,L)+G(84,0,L))},
+ metroB:()=>`<path d="M0 0h92q14 0 26 12l6 8v4H0z" fill="${PAL.co}" ${SK}/><path d="M0 16h124" stroke="${PAL.w}" stroke-width="3"/>`+[8,30,52,74].map(a=>`<rect x="${a}" y="4" width="16" height="8" rx="2" fill="${PAL.mi}" ${SK}/>`).join("")+`<path d="M98 4h10l8 9h-18z" fill="${PAL.mi}" ${SK}/><circle cx="20" cy="25" r="3.5" fill="${PAL.k}"/><circle cx="40" cy="25" r="3.5" fill="${PAL.k}"/><circle cx="86" cy="25" r="3.5" fill="${PAL.k}"/><circle cx="106" cy="25" r="3.5" fill="${PAL.k}"/>`,
  rail:(y)=>`<path d="M-4 ${y}H364" ${SK}/><path d="M-4 ${y+8}H364" ${SK}/>`+Array.from({length:19},(_,i)=>`<path d="M${i*20} ${y}v8" ${SK} opacity=".5"/>`).join(""),
  shinB:()=>`<path d="M0 0h96q20 0 34 18H0z" fill="${PAL.w}" ${SK}/><path d="M0 12h124" stroke="${PAL.mi}" stroke-width="5"/><path d="M0 12h124" ${SK} opacity="0"/>`+[10,30,50,70].map(a=>`<rect x="${a}" y="3" width="12" height="6" rx="2" fill="${PAL.mi}" ${SK}/>`).join("")+`<path d="M98 3q10 0 16 7h-16z" fill="${PAL.k}"/><circle cx="20" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="50" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="90" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="114" cy="20" r="3.5" fill="${PAL.k}"/>`,
  shinkansen:(x,y,s=1)=>VH(x,y,A_.shinB(),"bob",s,8),
@@ -1675,7 +1693,10 @@ const A_={
 };
 const SCENES={
  kyushu:()=>A_.sun(318,30)+A_.cloud(190,8,.9)+A_.cloud(250,52,.6,"d1")+A_.plane(112,26,.75)+A_.volcano(8,58)+A_.hill("M200 124q40-40 90-30t80 10V150H200Z")+A_.castle(176,74,.66)+A_.tub(306,110)+A_.field(126)+A_.road(132)+A_.car(116,124,.75),
- hakata:()=>A_.sun(36,30,13)+A_.cloud(250,14,.8)+A_.buildings(170,120)+A_.tree(60,118,PAL.wa)+A_.tree(90,118,PAL.ya,.8)+A_.field(120,"#E8DFD0")+A_.rail(136)+`<g transform="scale(.95)"><g class="landp">${A_.planeB()}</g></g><g transform="translate(0 116) scale(.85)"><g class="trainp">${A_.shinB()}</g></g>`,
+ hakata:()=>A_.sun(36,30,13)+A_.cloud(26,30,.95)+A_.cloud(250,50,.7,"d1")
+   +`<path d="M-4 122L60 70L110 104L160 64L230 112L290 66L364 118V130H-4Z" fill="${PAL.wa}" ${SK}/><path d="M152 70l8-6 8 6M282 72l8-6 8 6" fill="${PAL.w}" ${SK}/>`
+   +A_.shrine(180,122)+`<path d="M-4 120H364V156H-4Z" fill="#F7E9C4" ${SK}/>`+A_.rail(138)
+   +`<g transform="translate(56 -24) scale(.85)"><g class="rock">${A_.planeB()}</g></g><g transform="translate(0 117)"><g class="metro">${A_.metroB()}</g></g>`,
  dazaifu:()=>A_.cloud(250,10,.8)+A_.torii(26,52,.9)+A_.plum(120,100)+A_.hill("M150 104q60-34 120-14t100 4V150H150Z")+A_.field(108)+A_.canal(130)+A_.boat(196,124,.8),
  kumamoto:()=>A_.sun(310,30,13)+A_.cloud(30,18,.8)+A_.castle(120,58,1)+A_.tree(60,128,PAL.ya)+A_.tree(290,128,PAL.ya,.9)+A_.hill("M-4 128q90-14 184 0t184 0V150H-4Z"),
  aso:()=>A_.cloud(240,8,.7)+A_.volcano(10,56,.95)+A_.hill("M-4 126q80-30 170-10t200 0V150H-4Z")+A_.cow(130,100,.8)+A_.gorge(250,70)+A_.boat(270,124,.5,false),
@@ -1686,7 +1707,7 @@ const SCENES={
  home:()=>A_.cloud(30,40,.9)+A_.cloud(150,70,1,"d1")+A_.plane(120,16,1)+A_.house(260,70)+A_.hill("M180 132q60-10 180 0V150H180Z")
 };
 const DAY_ART={"2026-11-30":"hakata","2026-12-01":"dazaifu","2026-12-02":"kumamoto","2026-12-03":"aso","2026-12-04":"yufuin","2026-12-05":"beppu","2026-12-06":"mojiko","2026-12-07":"fukuoka","2026-12-08":"home"};
-const ART_LABEL={kyushu:"九州插圖：阿蘇火山冒煙、熊本城、溫泉、飛機和小車",hakata:"博多插圖：飛機飛過海邊的城市",dazaifu:"太宰府與柳川插圖：紅色鳥居、梅花和遊船",kumamoto:"熊本插圖：熊本城和銀杏樹",aso:"阿蘇與高千穗插圖：冒煙的火山、赤牛和峽谷瀑布",yufuin:"由布院插圖：由布岳、起霧的湖和長頸鹿",beppu:"別府插圖：冒著熱氣的溫泉和空中纜車",mojiko:"門司港插圖：復古車站、藍翼橋和船",fukuoka:"福岡插圖：福岡塔、海和屋台",home:"回家插圖：飛機和溫暖的家"};
+const ART_LABEL={kyushu:"九州插圖：阿蘇火山冒煙、熊本城、溫泉、飛機和小車",hakata:"博多插圖：櫛田神社、飛機和地鐵",dazaifu:"太宰府與柳川插圖：紅色鳥居、梅花和遊船",kumamoto:"熊本插圖：熊本城和銀杏樹",aso:"阿蘇與高千穗插圖：冒煙的火山、赤牛和峽谷瀑布",yufuin:"由布院插圖：由布岳、起霧的湖和長頸鹿",beppu:"別府插圖：冒著熱氣的溫泉和空中纜車",mojiko:"門司港插圖：復古車站、藍翼橋和船",fukuoka:"福岡插圖：福岡塔、海和屋台",home:"回家插圖：飛機和溫暖的家"};
 
 /* ---------- 首頁大插圖：每天的地點動畫＋當天天氣 ---------- */
 const SKY={sun:"#DCEEF6",psun:"#E2EEF3",cloud:"#E5E8EA",fog:"#ECECE9",rain:"#D5DDE4",snow:"#EDF2F6",storm:"#CDD5DC"};
@@ -1711,7 +1732,7 @@ const tram=()=>`<rect x="0" y="0" width="64" height="24" rx="6" fill="${PAL.co}"
 const petals=(c,n=7)=>Array.from({length:n},(_,i)=>`<g transform="translate(${30+i*46} ${-30+(i%3)*10})"><g class="petal" style="animation-delay:${-i*1.1}s"><path d="M0 0q5-6 10 0q-5 6-10 0z" fill="${c}" ${SK}/></g></g>`).join("");
 const SIGN={
  kyushu:()=>bird(60,-14,.9,"")+bird(84,-6,.7,"d1"),
- hakata:()=>bird(40,-14,1,"")+bird(66,-4,.8,"d1")+bird(90,-18,.7,"d2"),
+ hakata:()=>"",
  dazaifu:()=>petals(PAL.co,8),
  kumamoto:()=>petals(PAL.ya,7)+VH(120,112,tram(),"",1,12),
  aso:()=>A_.car(60,114,.7)+bird(250,-12,.9,"")+bird(276,-4,.7,"d2"),
