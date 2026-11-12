@@ -771,7 +771,7 @@ header.top h1,.sostop h1,.hero2 h1{font-size:28px!important;line-height:1.15!imp
 .art.big .nod{animation-name:nod2;animation-duration:3s}
 .art.big .glide{animation-duration:6s}
 .art.big .spin{animation-duration:16s}
-.art.big .scene .spin{display:none}
+.art.big .scene .spin,.art.big .scene .drift{display:none}
 .art .halo{animation:pulse 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
 .art .cross{animation:cross 14s linear infinite}
 .art .cross.slow{animation-duration:26s}
@@ -1718,10 +1718,10 @@ const cloudF=(x,y,s,c,cls)=>G(x,y,`<path d="M8 22q-9 0-9-7q0-7 9-7q1-9 11-9q5-7 
 const bird=(x,y,s,d)=>G(x,y,`<g class="flap ${d}"><path d="M-8 0q4-6 8 0q4-6 8 0" fill="none" ${SK}/></g>`,"",s);
 function wxBack(w){const big=w==="rain"||w==="storm"?"#F1EEEA":PAL.w;
   const sun=(x,y,r)=>G(x,y,`<circle class="halo" r="${r+9}" fill="${PAL.ya}" opacity=".35"/>`+`<g class="spin"><circle r="${r}" fill="${PAL.ya}" ${SK}/><g ${SK}><path d="M0 -${r+6}v-6M0 ${r+6}v6M-${r+6} 0h-6M${r+6} 0h6M-${r+4} -${r+4}l-5 -5M${r+4} ${r+4}l5 5M${r+4} -${r+4}l5 -5M-${r+4} ${r+4}l-5 5"/></g></g>`);
-  if(w==="sun")return sun(318,2,17);
-  if(w==="psun")return sun(300,0,15)+cloudF(270,-10,1,PAL.w,"drift")+cloudF(120,-28,.8,PAL.w,"drift d2");
+  if(w==="sun")return sun(318,2,17)+cloudF(226,22,.85,PAL.w,"drift")+cloudF(16,30,.75,PAL.w,"drift d2");
+  if(w==="psun")return sun(310,2,15)+cloudF(272,8,.95,PAL.w,"drift")+cloudF(16,30,.75,PAL.w,"drift d2");
   const c=w==="storm"?"#D9D4CE":w==="rain"?"#E9E5E0":PAL.w;
-  return cloudF(-6,-30,1.15,c,"drift")+cloudF(110,-34,1.35,c,"drift d1")+cloudF(236,-28,1.2,c,"drift d2")+(w==="cloud"?`<g class="cross slow">${cloudF(0,-4,.8,big,"")}</g>`:"")}
+  return cloudF(226,0,1.15,c,"drift")+cloudF(14,14,1,c,"drift d2")}
 function wxFront(w){
   if(w==="rain"||w==="storm"){let d="";for(let x=-10;x<380;x+=20)for(let y=-110;y<160;y+=36){const o=(x/20%2)*18;d+=`M${x} ${y+o}v10`}
     return`<g class="rainfx" opacity=".9"><path d="${d}" stroke="${PAL.mi}" stroke-width="3" stroke-linecap="round" fill="none"/><path d="${d}" stroke="${PAL.k}" stroke-width="1" stroke-linecap="round" fill="none" opacity=".25"/></g>`
