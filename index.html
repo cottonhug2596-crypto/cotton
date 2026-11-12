@@ -572,6 +572,22 @@ body.gp-on .gpoff{display:none}
 .trl li span{font-size:13px;color:var(--muted)}.trl li b{font-size:16px}
 .trout{font-size:20px;line-height:1.5;background:var(--waka);border:2.5px solid var(--sumi);border-radius:14px;padding:12px}
 nav.tabs a span,nav.tabs a{font-size:11px}
+.wxd{padding:0}.wxd:not([open]){display:block}
+.wxd summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 16px}
+.wxd summary::-webkit-details-marker{display:none}
+.wxd .wxsum{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.wxd .wxcs{display:flex;flex-wrap:wrap;gap:6px 14px}
+.wxd .wxc{display:flex;align-items:center;gap:6px}
+.wxd .wxc svg{width:26px;height:26px;flex:0 0 auto}
+.wxd .wxc>span{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.wxd .wxc small{font-size:12px;color:var(--muted)}
+.wxd .wxc b{font-size:17px;font-variant-numeric:tabular-nums}
+.wxd .wxc .pp{font-size:13px;font-weight:700;color:var(--ink)}
+.wxd .wxw{font-size:11px;font-weight:700;background:var(--coral);border-radius:999px;padding:0 7px;margin-left:4px}
+.wxd .chev{flex:0 0 auto;width:9px;height:9px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
+.wxd[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.wxd>:not(summary){margin-left:16px;margin-right:16px}.wxd>:last-child{margin-bottom:14px}
+.wxd[open]{display:flex;flex-direction:column;gap:10px}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -1774,12 +1790,15 @@ function weatherHTML(day){const ks=DAY_CL[day.d]||[];if(!ks.length)return"";
   const lo=live?Math.min(...fx.map(f=>f.lo)):Math.min(...ks.map(k=>CL[k][2]));
   const extra=live?[fx.some(f=>(f.code>=71&&f.code<=77)||f.code===85||f.code===86)?"可能下雪，山路要準備雪鏈":"",Math.max(...fx.map(f=>f.pp||0))>=50?"降雨機率高，記得帶傘、推車雨罩":""].filter(Boolean):[];
   const upd=WXT?new Date(WXT+9*3600e3).toISOString().slice(11,16):"";
-  return`<div class="card wx"><div class="wxh"><span class="label">${live?"天氣預報":"12 月平均天氣"}・${md(day.d)}（${day.w}）</span></div>
+  const sum=ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<span class="wxc">${wxIcon(w[1])}<span><small>${c[0]}</small><b>${Math.round(f.hi)}°/${Math.round(f.lo)}°</b><span class="pp">☂ ${f.pp==null?"—":f.pp+"%"}</span></span></span>`}
+    return`<span class="wxc"><span><small>${c[0]}</small><b>${c[1].toFixed(0)}°/${c[2].toFixed(0)}°</b><span class="pp">平均</span></span></span>`}).join("");
+  return`<details class="card wx wxd" data-wx="${day.d}"${wxOpen.has(day.d)?" open":""}><summary><span class="wxsum"><span class="label">${live?"天氣":"12 月平均天氣"}・${md(day.d)}（${day.w}）${extra.length?' <span class="wxw">注意</span>':""}</span><span class="wxcs">${sum}</span></span><span class="chev" aria-hidden="true"></span></summary>
    <div class="wxs">${ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<div class="wxi"><span class="wxp">${c[0]}</span><div class="wxrow">${wxIcon(w[1])}<span class="wxt"><b>${Math.round(f.hi)}°</b> / ${Math.round(f.lo)}°</span></div><span class="sub">${w[0]}・降雨機率 ${f.pp==null?"—":f.pp+"%"}</span></div>`}
      return`<div class="wxi"><span class="wxp">${c[0]}</span><span class="wxt"><b>${c[1].toFixed(0)}°</b> / ${c[2].toFixed(0)}°</span><span class="sub">月雨量 ${c[3].toFixed(0)} mm</span></div>`}).join("")}</div>
    <p class="wxa">${clAdvice(lo)}${extra.length?"。"+extra.join("；"):""}</p>
    <div class="row">${ks.map(k=>`<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(CL[k][4])}" target="_blank" rel="noopener">${ic("sun")}${CL[k][0]}詳細預報</a>`).join("")}</div>
-   <span class="src">${live?`預報來源 Open-Meteo（日本時間 ${upd} 更新），出發前每次打開都會更新`:`最高／最低氣溫為氣象廳 1991–2020 年 12 月平年值。出發前約 16 天內，這裡會自動換成當天當地的預報`}</span></div>`}
+   <span class="src">${live?`預報來源 Open-Meteo（日本時間 ${upd} 更新），出發前每次打開都會更新`:`最高／最低氣溫為氣象廳 1991–2020 年 12 月平年值。出發前約 16 天內，這裡會自動換成當天當地的預報`}</span></details>`}
+const wxOpen=new Set();document.addEventListener("toggle",e=>{const d=e.target.dataset&&e.target.dataset.wx;if(d)e.target.open?wxOpen.add(d):wxOpen.delete(d)},true);
 function flightHTML(day){const F=FLIGHTS[day.d];if(!F)return"";
   return`<div class="card fl"><span class="label">${F.label}・${md(day.d)}（${day.w}）</span>
    <div class="flr"><div><b class="flt">${F.dep}</b><span class="flc">${F.dc} ${F.dn}</span><span class="sub">${F.da}</span></div>
