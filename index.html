@@ -588,6 +588,12 @@ nav.tabs a span,nav.tabs a{font-size:11px}
 .wxd[open] .chev{transform:rotate(-135deg);margin-top:4px}
 .wxd>:not(summary){margin-left:16px;margin-right:16px}.wxd>:last-child{margin-bottom:14px}
 .wxd[open]{display:flex;flex-direction:column;gap:10px}
+.wxd .wxcs{display:flex;flex-direction:column;gap:6px}
+.wxd .wxc{display:flex;align-items:center;gap:10px;border:2px solid var(--sumi);border-radius:16px;padding:6px 12px;background:var(--washi)}
+.wxd .wxc svg.wxcute{width:44px;height:44px;flex:0 0 auto}
+.wxd .wxct{display:flex;flex-direction:column;gap:1px;min-width:0}
+.wxd .wxct b{font-size:16px;display:flex;gap:12px;align-items:baseline}.wxd .wxct b span{font-size:17px;font-variant-numeric:tabular-nums}
+.wxd .wxct small{font-size:12px;color:var(--muted)}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -1784,14 +1790,23 @@ function wxIcon(k){const S=`stroke="${PAL.k}" stroke-width="2.5" stroke-linejoin
   const sun=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${PAL.ya}" ${S}/>`,cl=(x,y)=>`<path d="M${x} ${y+12}q-8 0-8-7t8-7q2-7 10-7t10 7q7 0 7 7t-7 7z" fill="${PAL.w}" ${S}/>`;
   const body={sun:sun(20,20,9),psun:sun(15,14,7)+cl(14,16),cloud:cl(10,12),fog:cl(10,8)+`<path d="M8 32h24M12 37h18" ${S}/>`,rain:cl(10,8)+`<path d="M14 31l-2 5M21 31l-2 5M28 31l-2 5" stroke="${PAL.mi}" stroke-width="3" stroke-linecap="round"/>`,snow:cl(10,8)+`<g fill="${PAL.mi}" ${S}><circle cx="14" cy="34" r="2.5"/><circle cx="22" cy="36" r="2.5"/><circle cx="30" cy="34" r="2.5"/></g>`,storm:cl(10,8)+`<path d="M22 28l-5 7h5l-3 6" fill="none" stroke="${PAL.co}" stroke-width="3" stroke-linejoin="round"/>`}[k];
   return`<svg class="wxic" viewBox="0 0 40 40" aria-hidden="true">${body}</svg>`}
+function wxCute(k){const K=PAL.k,S=`stroke="${K}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
+  const face=(x,y)=>`<circle cx="${x-5}" cy="${y}" r="1.8" fill="${K}"/><circle cx="${x+5}" cy="${y}" r="1.8" fill="${K}"/><path d="M${x-2.5} ${y+3.2}q2.5 2.4 5 0" fill="none" stroke="${K}" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="${x-8.5}" cy="${y+3}" rx="2.2" ry="1.4" fill="${PAL.co}" opacity=".8"/><ellipse cx="${x+8.5}" cy="${y+3}" rx="2.2" ry="1.4" fill="${PAL.co}" opacity=".8"/>`;
+  const cloud=(dy)=>`<path d="M12 ${30+dy}q-8 0-8-8t9-8q2-9 12-9t12 9q9 0 9 8.5t-9 7.5z" fill="${PAL.w}" ${S}/>`+face(25,21+dy);
+  const sunB=(x,y,r)=>`<g ${S}>${[0,45,90,135,180,225,270,315].map(a=>{const t=a*Math.PI/180;return`<path d="M${(x+Math.cos(t)*(r+3)).toFixed(1)} ${(y+Math.sin(t)*(r+3)).toFixed(1)}L${(x+Math.cos(t)*(r+7)).toFixed(1)} ${(y+Math.sin(t)*(r+7)).toFixed(1)}"/>`}).join("")}</g><circle cx="${x}" cy="${y}" r="${r}" fill="${PAL.ya}" ${S}/>`;
+  const drop=(x,y)=>`<path d="M${x} ${y}q-3 4-3 6a3 3 0 0 0 6 0q0-2-3-6z" fill="${PAL.mi}" stroke="${K}" stroke-width="1.6" stroke-linejoin="round"/>`;
+  const body={sun:sunB(24,24,11)+face(24,24),psun:sunB(15,14,7)+cloud(6),cloud:cloud(4),fog:cloud(0)+`<path d="M9 39h30M14 44h20" ${S} fill="none"/>`,
+    rain:cloud(0)+drop(16,35)+drop(25,37)+drop(34,35),snow:cloud(0)+`<g fill="${PAL.w}" ${S}><circle cx="16" cy="38" r="2.6"/><circle cx="25" cy="41" r="2.6"/><circle cx="34" cy="38" r="2.6"/></g>`,
+    storm:cloud(0)+`<path d="M26 32l-5 7h5l-3 7" fill="none" stroke="${PAL.co}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`}[k]||cloud(4);
+  return`<svg class="wxcute" viewBox="0 0 48 48" aria-hidden="true">${body}</svg>`}
 function clAdvice(lo){return lo<=0?"清晨會到零度以下，路面可能結冰；羽絨外套、手套、毛帽必帶，寶寶要包好":lo<=4?"早晚很冷，白天十度出頭；發熱衣＋羽絨外套，洋蔥式穿法":"白天十幾度，早晚涼；發熱衣＋外套就夠"}
 function weatherHTML(day){const ks=DAY_CL[day.d]||[];if(!ks.length)return"";
   const fx=ks.map(k=>WXF&&WXF[k]&&WXF[k][day.d]).filter(Boolean),live=fx.length===ks.length;
   const lo=live?Math.min(...fx.map(f=>f.lo)):Math.min(...ks.map(k=>CL[k][2]));
   const extra=live?[fx.some(f=>(f.code>=71&&f.code<=77)||f.code===85||f.code===86)?"可能下雪，山路要準備雪鏈":"",Math.max(...fx.map(f=>f.pp||0))>=50?"降雨機率高，記得帶傘、推車雨罩":""].filter(Boolean):[];
   const upd=WXT?new Date(WXT+9*3600e3).toISOString().slice(11,16):"";
-  const sum=ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<span class="wxc">${wxIcon(w[1])}<span><small>${c[0]}</small><b>${Math.round(f.hi)}°/${Math.round(f.lo)}°</b><span class="pp">☂ ${f.pp==null?"—":f.pp+"%"}</span></span></span>`}
-    return`<span class="wxc"><span><small>${c[0]}</small><b>${c[1].toFixed(0)}°/${c[2].toFixed(0)}°</b><span class="pp">平均</span></span></span>`}).join("");
+  const sum=ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<span class="wxc">${wxCute(w[1])}<span class="wxct"><b>${w[0]}<span>${Math.round(f.lo)}° / ${Math.round(f.hi)}°</span></b><small>降雨機率 ${f.pp==null?"—":f.pp+"%"}・${c[0]}</small></span></span>`}
+    return`<span class="wxc">${wxCute(c[3]>=80?"cloud":"psun")}<span class="wxct"><b>平均<span>${c[2].toFixed(0)}° / ${c[1].toFixed(0)}°</span></b><small>月雨量約 ${c[3].toFixed(0)} mm・${c[0]}</small></span></span>`}).join("");
   return`<details class="card wx wxd" data-wx="${day.d}"${wxOpen.has(day.d)?" open":""}><summary><span class="wxsum"><span class="label">${live?"天氣":"12 月平均天氣"}・${md(day.d)}（${day.w}）${extra.length?' <span class="wxw">注意</span>':""}</span><span class="wxcs">${sum}</span></span><span class="chev" aria-hidden="true"></span></summary>
    <div class="wxs">${ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<div class="wxi"><span class="wxp">${c[0]}</span><div class="wxrow">${wxIcon(w[1])}<span class="wxt"><b>${Math.round(f.hi)}°</b> / ${Math.round(f.lo)}°</span></div><span class="sub">${w[0]}・降雨機率 ${f.pp==null?"—":f.pp+"%"}</span></div>`}
      return`<div class="wxi"><span class="wxp">${c[0]}</span><span class="wxt"><b>${c[1].toFixed(0)}°</b> / ${c[2].toFixed(0)}°</span><span class="sub">月雨量 ${c[3].toFixed(0)} mm</span></div>`}).join("")}</div>
