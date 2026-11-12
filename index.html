@@ -594,6 +594,19 @@ nav.tabs a span,nav.tabs a{font-size:11px}
 .wxd .wxct{display:flex;flex-direction:column;gap:1px;min-width:0}
 .wxd .wxct b{font-size:16px;display:flex;gap:12px;align-items:baseline}.wxd .wxct b span{font-size:17px;font-variant-numeric:tabular-nums}
 .wxd .wxct small{font-size:12px;color:var(--muted)}
+/* ===== 頁首插圖、航班卡 ===== */
+.tophd{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.tophd>div{flex:1;min-width:0}
+svg.mas{width:86px;height:66px;flex:0 0 auto;margin-bottom:-2px}
+.flpair{display:flex;flex-direction:column;gap:12px}
+.flhd{display:flex;align-items:center;gap:8px}
+.fltag{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:15px;border:2.5px solid var(--sumi);border-radius:999px;padding:3px 12px}
+.fltag svg{width:16px;height:16px}
+.flgo .fltag{background:var(--coral)}
+.flback .fltag{background:var(--mizu)}.flback .fltag svg{transform:scaleX(-1)}
+.fl.flback{background:#EAF4F9}
+.flback .flm svg{transform:scaleX(-1)}
+svg.fldoodle{width:60px;height:30px;margin-left:auto}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -1533,7 +1546,7 @@ food(){
   const favCount=a=>a.spots.filter(p=>favs.has(p.id)).length;
   const tot=L=>L.reduce((n,a)=>n+a.spots.length,0);const favTot=L=>L.reduce((n,a)=>n+favCount(a),0);
   const isS=exKind==="spot";
-  return`<header class="top"><h1>景點美食</h1><div class="sub">收錄近幾年網路推薦。按 ♡ 收藏，排行程時就能直接選</div></header>
+  return`<header class="top tophd"><div><h1>景點美食</h1><div class="sub">收錄近幾年網路推薦。按 ♡ 收藏，排行程時就能直接選</div></div>${mascot("food")}</header>
   <div class="seg two" role="group" aria-label="景點或美食"><button data-exk="spot" aria-pressed="${isS}"><b>景點</b><small>${tot(SIGHTS)} 個${favTot(SIGHTS)?"・♥"+favTot(SIGHTS):""}</small></button><button data-exk="food" aria-pressed="${!isS}"><b>美食</b><small>${tot(FOOD)} 家${favTot(FOOD)?"・♥"+favTot(FOOD):""}</small></button></div>
   <div class="search"><label for="fq" class="vh">搜尋${X.noun}</label>${ic("search")}<input id="fq" type="search" placeholder="${isS?"搜尋全部地區：神社、親子、夜景……":"搜尋全部地區：拉麵、鰻魚、布丁……"}" value="${esc(foodQuery)}" autocomplete="off"></div>
   <div class="chips" role="group" aria-label="地區">${X.areas.map(a=>`<button data-farea="${a.k}" class="${a.off?"off":""}" aria-pressed="${a.k===A.k&&!foodQuery}">${esc(a.name)}<small>${a.days}${favCount(a)?" ・♥"+favCount(a):""}</small></button>`).join("")}</div>
@@ -1561,7 +1574,7 @@ list(){
     const lab=`<label for="${it.id}"><input type="checkbox" id="${it.id}" data-ck="${it.id}" ${checks.has(it.id)?"checked":""}><span class="ckt"><span>${esc(x)}${mine?'<span class="mine">自己加的</span>':""}</span>${n?`<small>${esc(n)}</small>`:""}${un&&!E?`<small class="unote">備註：${esc(un)}</small>`:""}</span></label>`;
     return E?`<div class="ckrow ed"><div class="ckm">${lab}<label class="vh" for="nt-${it.id}">${esc(x)}的備註</label><input class="ni" id="nt-${it.id}" data-inote="${it.id}" value="${esc(un)}" placeholder="備註，例如：放在藍色行李箱、還差一件"></div>${delBtn(mine?"data-delitem":"data-hideitem",it.id,x)}</div>`:lab};
   const hidN=ITEMS.filter(i=>i.sec===S.k&&isHidden(i.id)).length+[...S.groups.map(g=>g[0])].filter(k=>gHidden(S.k,k)).length;
-  return`<header class="top"><div class="row" style="justify-content:space-between;align-items:flex-end"><div><h1>清單</h1><div class="sub">勾選會記在這支手機上</div></div>
+  return`<header class="top"><div class="row" style="justify-content:space-between;align-items:flex-end;flex-wrap:nowrap"><div style="flex:1;min-width:0"><h1>清單</h1><div class="sub">勾選會記在這支手機上</div></div>${mascot("list")}
    <button type="button" class="btn ${E?"p":""}" data-ledit aria-pressed="${E}">${E?"完成":"編輯"}</button></div></header>
   <div class="seg" role="group" aria-label="清單分類">${SECS.map(s=>{const it=secItems(s.k);return`<button data-sec="${s.k}" aria-pressed="${s.k===S.k}"><b>${s.name}</b><small data-cnt="${s.k}">${doneIn(it)} / ${it.length}</small></button>`}).join("")}</div>
   ${E?`<div class="offnote"><b>編輯中</b>可以改分類名稱、幫每個項目寫備註、刪除分類或項目、新增項目和分類。改好按右上角「完成」。</div>`:""}
@@ -1575,10 +1588,8 @@ list(){
   ${E?`<form data-form="gadd" data-isec="${S.k}" class="card addi" style="margin:0"><label class="vh" for="gadd">新增分類</label><input id="gadd" name="name" placeholder="＋ 新增分類，例如：寶寶的副食品" required><button class="btn p" type="submit">新增分類</button></form>`:""}
   ${E&&hidN?`<button type="button" class="btn" data-restore="${S.k}" style="align-self:flex-start">復原這一頁刪掉的 ${hidN} 個項目或分類</button>`:""}`},
 info(){
-  return`<header class="top"><h1>旅行資訊</h1><div class="sub">5 大人＋1 寶寶・金額皆為日圓</div></header>
-  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>航班</h3>
-   <div style="display:flex;flex-direction:column;gap:2px"><span class="label">去程・11/30（一）</span><b style="font-size:17px">桃園 T1 03:00 → 北九州 06:15</b><span class="sub">星悅航空 7G 800・每人托運 30kg</span></div>
-   <div style="display:flex;flex-direction:column;gap:2px"><span class="label">回程・12/8（二）</span><b style="font-size:17px">福岡 16:10 → 桃園 17:55</b><span class="sub">亞洲航空 AK 1511・手提 7kg，托運共 115kg（25kg×3＋20kg×2），寶寶無額度</span></div></div>
+  return`<header class="top tophd"><div><h1>旅行資訊</h1><div class="sub">5 大人＋1 寶寶・金額皆為日圓</div></div>${mascot("info")}</header>
+  <div class="flpair">${flightHTML(DAYS[0])}${flightHTML(DAYS[DAYS.length-1])}</div>
   <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>住宿（全部已確認・15:00 起入住）</h3>
    ${Object.values(HOTELS).map(h=>`<div style="display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px dashed var(--line)"><b>${esc(h.n)}</b><span class="sub">${h.nights}・${h.rooms}・15:00 入住・${h.out}</span><span class="sub">${h.bk}</span>
     <div class="row">${h.tel?telBtn(h.tel):""}<a class="btn" href="${mapUrl(h.q)}" target="_blank" rel="noopener">${ic("pin")}地圖</a></div></div>`).join("")}
@@ -1627,7 +1638,7 @@ function sosArea(){const t=tokyoNow().date;return SOS_AREAS.filter(a=>a.when.inc
 const sosSec=(t,hint,body,cls,badge)=>`<details class="card sosc sd${cls||""}"><summary><span class="sh"><b>${t}</b>${badge||""}<span class="sub">${hint}</span></span><span class="chev" aria-hidden="true"></span></summary><div class="sbody">${body}</div></details>`;
 V.sos=function(){const now=sosArea();const areas=[...SOS_AREAS].sort((a,b)=>(now.includes(b.k)?1:0)-(now.includes(a.k)?1:0));
  const KI={police:["警察局","m-sub"],hosp:["醫院","m-plane"],kid:["夜間急診・小兒","m-bus"],info:["找醫院","m-walk"]};
- return`<header class="top sostop"><h1>緊急求助</h1></header>
+ return`<header class="top sostop tophd"><div><h1>緊急求助</h1><div class="sub">別慌，一步一步來</div></div>${mascot("sos")}</header>
  <div class="sosbig"><div class="sosb pol"><div class="st1"><b>110</b><span>警察<small>車禍・遺失</small></span></div><a class="btn call big1" href="tel:110">${ic("phone")}撥打 110</a></div><div class="sosb amb"><div class="st1"><b>119</b><span>救護車<small>急病・火災</small></span></div><a class="btn call big1" href="tel:119">${ic("phone")}撥打 119</a></div></div>
  ${sosSec("打 110／119 時這樣說","常用日文句子，念出來或給對方看",`<span class="sub">先說「救急です」（急救）或「火事です」（火災），再說地址。</span><ul class="phr">${PHRASES.map(p=>`<li><b lang="ja">${p[0]}</b><span>${p[1]}</span></li>`).join("")}</ul>`)}
  ${sosSec("台灣人在日本求助","駐福岡分處、外交部急難救助、中文熱線",`
@@ -1709,7 +1720,7 @@ V.tools=function(){const t=tokyoNow().date,dayOpts=DAYS.map((d,i)=>[d.d,`D${i+1}
   <div class="card tcard"><h3>打字翻譯</h3><div class="chips"><button class="chip" data-trdir="ja|zh-TW" aria-pressed="${trDir==="ja|zh-TW"}">日文 → 中文</button><button class="chip" data-trdir="zh-TW|ja" aria-pressed="${trDir==="zh-TW|ja"}">中文 → 日文</button></div>
    <textarea id="trt" rows="3" placeholder="${trDir==="ja|zh-TW"?"貼上或輸入日文":"輸入想說的中文，翻成日文給店員看"}">${esc(trText)}</textarea>
    <button class="btn p" data-trgo>${ic("globe")}翻譯</button>${trOut?`<div class="trout" lang="${trDir==="ja|zh-TW"?"zh-Hant":"ja"}">${esc(trOut)}</div>`:""}</div>`}
- return`<header class="top"><h1>旅行工具</h1></header>${seg}${body}`};
+ return`<header class="top tophd"><div><h1>旅行工具</h1><div class="sub">匯率、記帳、翻譯</div></div>${mascot("tools")}</header>${seg}${body}`};
 function fxCalc(){const i=document.getElementById("fxv"),o=document.getElementById("fxo");if(!i||!o)return;const v=parseFloat(i.value)||0,r=fxRate();o.textContent=fxDir==="j2t"?fmtN(v*r,0):fmtN(v/r,0)}
 document.addEventListener("input",e=>{if(e.target.id==="fxv")fxCalc();if(e.target.id==="trt")trText=e.target.value;if(e.target.id==="exd")expDay=e.target.value});
 document.addEventListener("change",e=>{if(e.target.id==="exd")expDay=e.target.value;const f=e.target.closest&&e.target.closest("[data-trf]");if(f&&f.files&&f.files[0]){trPhoto(f.files[0]);f.value=""}});
@@ -1735,6 +1746,23 @@ document.addEventListener("click",async e=>{if(e.target.closest("[data-gtr]")){o
  if(b.hasAttribute("data-trgo")){const t=(document.getElementById("trt").value||"").trim();if(!t){toast("先輸入要翻譯的字");return}trText=t;trOut="翻譯中…";rerender(true);
    try{trOut=await mmTranslate(t,trDir)}catch(err){trOut=navigator.onLine?"翻譯失敗，請稍後再試":"翻譯需要網路"}rerender(true);return}
 });
+
+/* ---------- 頁首小插圖 ---------- */
+function mascot(k){const K=PAL.k,S=`stroke="${K}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"`;
+  const face=(x,y,s)=>{s=s||1;return`<circle cx="${x-6*s}" cy="${y}" r="${2*s}" fill="${K}"/><circle cx="${x+6*s}" cy="${y}" r="${2*s}" fill="${K}"/><path d="M${x-3*s} ${y+3.5*s}q${3*s} ${3*s} ${6*s} 0" fill="none" stroke="${K}" stroke-width="2" stroke-linecap="round"/><ellipse cx="${x-10*s}" cy="${y+3.5*s}" rx="${2.6*s}" ry="${1.6*s}" fill="${PAL.co}" opacity=".85"/><ellipse cx="${x+10*s}" cy="${y+3.5*s}" rx="${2.6*s}" ry="${1.6*s}" fill="${PAL.co}" opacity=".85"/>`};
+  const body={
+  food:`<g class="steam"><path d="M38 20q-4-6 0-11M50 18q-4-6 0-11M62 20q-4-6 0-11" fill="none" ${S} opacity=".7"/></g>
+    <path d="M72 6L50 34M80 10L56 36" ${S}/>
+    <g class="bob"><path d="M18 34h64q-2 24-32 30q-30-6-32-30z" fill="${PAL.co}" ${S}/><path d="M24 34q8-6 16 0t16 0t16 0" fill="none" stroke="${PAL.ya}" stroke-width="3" stroke-linecap="round"/>${face(50,46)}<path d="M38 66h24" ${S}/></g>`,
+  list:`<g class="bob"><path d="M40 16v-6h20v6" fill="none" ${S}/><rect x="22" y="16" width="56" height="48" rx="10" fill="${PAL.ya}" ${S}/><path d="M22 30h56" ${S}/><circle cx="32" cy="23" r="3" fill="${PAL.co}" ${S}/>${face(50,44)}<circle cx="34" cy="68" r="4" fill="${PAL.w}" ${S}/><circle cx="66" cy="68" r="4" fill="${PAL.w}" ${S}/></g>
+    <g class="swing"><path d="M78 26l10 8-6 8-10-8" fill="${PAL.mi}" ${S}/></g>`,
+  tools:`<g class="bob"><circle cx="40" cy="42" r="24" fill="${PAL.ya}" ${S}/><circle cx="40" cy="42" r="18" fill="none" stroke="${K}" stroke-width="1.8" stroke-dasharray="3 4"/>${face(40,40)}<path d="M36 52l4 4 4-4" fill="none" stroke="${K}" stroke-width="0"/></g>
+    <g class="puff d1"><rect x="64" y="38" width="28" height="22" rx="6" fill="${PAL.mi}" ${S}/><path d="M71 38l3-5h8l3 5" fill="${PAL.mi}" ${S}/><circle cx="78" cy="49" r="6" fill="${PAL.w}" ${S}/><circle cx="78" cy="49" r="2" fill="${K}"/></g>`,
+  info:`<g class="drift"><path d="M8 66q0-8 8-8q2-8 10-8t10 8q7 0 7 8z" fill="${PAL.w}" ${S}/></g>
+    <g class="fly"><path d="M14 34q0-8 12-8h40l14-12h8l-6 18q8 2 8 8t-10 6H26q-12 0-12-12z" fill="${PAL.w}" ${S}/><path d="M44 40l-8 14h10l12-14" fill="${PAL.mi}" ${S}/>${face(32,33,.8)}<circle cx="56" cy="31" r="3" fill="${PAL.mi}" ${S}/><circle cx="66" cy="31" r="3" fill="${PAL.mi}" ${S}/></g>`,
+  sos:`<g class="bob"><path d="M42 18v-6h16v6" fill="none" ${S}/><rect x="20" y="18" width="60" height="46" rx="12" fill="${PAL.w}" ${S}/><path d="M46 26h8v8h8v8h-8v8h-8v-8h-8v-8h8z" fill="${PAL.co}" ${S}/>${face(50,56,.7)}</g>
+    <g class="pulse"><path d="M84 22q-4-6-8-2t0 9l8 7 8-7q4-5 0-9t-8 2z" fill="${PAL.co}" ${S}/></g>`}[k];
+  return body?`<svg class="art mas" viewBox="0 0 100 76" aria-hidden="true">${body}</svg>`:""}
 
 /* ---------- 路由與事件 ---------- */
 const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["tools","工具","wallet"],["info","資訊","info"],["sos","緊急","sos"]];
@@ -1815,7 +1843,8 @@ function weatherHTML(day){const ks=DAY_CL[day.d]||[];if(!ks.length)return"";
    <span class="src">${live?`預報來源 Open-Meteo（日本時間 ${upd} 更新），出發前每次打開都會更新`:`最高／最低氣溫為氣象廳 1991–2020 年 12 月平年值。出發前約 16 天內，這裡會自動換成當天當地的預報`}</span></details>`}
 const wxOpen=new Set();document.addEventListener("toggle",e=>{const d=e.target.dataset&&e.target.dataset.wx;if(d)e.target.open?wxOpen.add(d):wxOpen.delete(d)},true);
 function flightHTML(day){const F=FLIGHTS[day.d];if(!F)return"";
-  return`<div class="card fl"><span class="label">${F.label}・${md(day.d)}（${day.w}）</span>
+  const go=F.label==="去程";
+  return`<div class="card fl ${go?"flgo":"flback"}"><div class="flhd"><span class="fltag">${ic("plane")}${F.label}</span><span class="label">${md(day.d)}（${day.w}）</span><svg class="art fldoodle" viewBox="0 0 60 30" aria-hidden="true"><g class="drift"><path d="M6 24q0-6 6-6q2-6 8-6t8 6q5 0 5 6z" fill="${PAL.w}" stroke="${PAL.k}" stroke-width="2" stroke-linejoin="round"/></g><g class="drift d1"><path d="M36 16q0-4 4-4q1-4 5-4t5 4q4 0 4 4z" fill="${PAL.w}" stroke="${PAL.k}" stroke-width="2" stroke-linejoin="round"/></g></svg></div>
    <div class="flr"><div><b class="flt">${F.dep}</b><span class="flc">${F.dc} ${F.dn}</span><span class="sub">${F.da}</span></div>
     <div class="flm">${ic("plane")}<span class="sub">${F.dur}</span></div>
     <div style="text-align:right"><b class="flt">${F.arr}</b><span class="flc">${F.ac} ${F.an}</span><span class="sub">${F.aa}</span></div></div>
