@@ -714,7 +714,7 @@ button .cemo{vertical-align:-4px}
 .fmft a{color:var(--sumi);font-weight:700;text-decoration:none}
 .fmap .go{margin:0 14px 14px}
 @media (prefers-reduced-motion: reduce){.dl .dveh,.rm,.rs{transition:none}}
-.fsync{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}.fsync .btn{margin:0;white-space:nowrap}.fsync .sub{margin:0;font-size:11px;line-height:1.35}
+.fsync{flex:1;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px;text-align:left}.fsync .btn{margin:0;white-space:nowrap;flex:none;font-size:11px;padding:5px 8px;gap:3px}.fsync .btn svg{width:13px;height:13px}.fsync .sub{margin:0;font-size:10px;line-height:1.4;white-space:nowrap;flex:none}.tophd:has(.fsync){gap:6px;align-items:center}.tophd:has(.fsync)>div:first-child{flex:none}.tophd>.fsync{flex:1 1 auto}@media(max-width:379px){.tophd:has(.fsync) .mas{display:none}}.tophd:has(.fsync) .mas{width:48px!important;height:auto!important;flex:none;margin:0!important}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -1612,7 +1612,7 @@ today(){
 plan(){
   if(dayIdx==null){const t=todayIndex();dayIdx=t>=0?t:0}
   const ti=todayIndex(),day=DAYS[dayIdx];
-  return`<header class="top"><div class="row tophd" style="flex-wrap:nowrap"><div><h1>行程</h1></div><div class="fsync"><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a><div class="sub">行程同步自 Funliday<br>（11/12 16:45 最後確認）</div></div>${mascot("plan")}</div></header>
+  return`<header class="top"><div class="row tophd" style="flex-wrap:nowrap"><div><h1>行程</h1></div><div class="fsync"><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a><div class="sub">行程同步自 Funliday<br>11/12 16:45 最後確認</div></div>${mascot("plan")}</div></header>
   <div class="days dl" role="group" aria-label="選擇日期" style="--n:${DAYS.length}"><span class="dveh" style="left:${(dayPrev+.5)/DAYS.length*100}%" data-to="${(dayIdx+.5)/DAYS.length*100}">${ic(dayVeh(dayIdx),1.6)}</span>${DAYS.map((d,i)=>`<button class="dp ${i===ti?"today":""}" data-day="${i}" aria-pressed="${i===dayIdx}" aria-label="D${i+1} ${md(d.d)}（${d.w}）">${(WARN[d.d]||[]).some(x=>x[0]==="err")?'<i class="wd" aria-label="有時間衝突"></i>':""}<span class="dd"></span><span class="dw">週${d.w}</span><span class="dn">${+d.d.slice(8)}</span></button>`).join("")}</div>
   <div class="dayview" style="display:flex;flex-direction:column;gap:14px">
   <div class="artcard">${art(DAY_ART[day.d])}</div>
