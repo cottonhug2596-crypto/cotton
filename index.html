@@ -269,7 +269,7 @@ button.bk.ok{cursor:pointer}
 /* 底部分頁列 */
 nav.tabs{position:fixed;left:0;right:0;top:0;z-index:20;background:var(--surface);border-bottom:3px solid var(--sumi);
   padding:calc(6px + env(safe-area-inset-top,0px)) max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px))}
-nav.tabs .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
+nav.tabs .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(7,1fr)}
 nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:11.5px;color:var(--muted);text-decoration:none;border-radius:10px;min-height:48px}
 nav.tabs a svg{width:22px;height:22px}
 nav.tabs a[aria-current="page"]{color:var(--brick);font-weight:700}
@@ -536,6 +536,42 @@ nav.tabs a[href="#sos"][aria-current="page"]{background:var(--coral);color:var(-
 .gph img{display:block;width:100%;height:100%;object-fit:cover}
 .gph .cr{position:absolute;right:6px;bottom:6px;font-size:10px;background:rgba(255,252,246,.85);border-radius:6px;padding:0 5px;color:var(--ink)}
 body.gp-on .gpoff{display:none}
+/* ===== 工具 ===== */
+.tseg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tseg button{display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;font-size:15px;border:3px solid var(--sumi);border-radius:16px;background:var(--washi);padding:10px 4px;cursor:pointer;color:var(--ink)}
+.tseg button svg{width:18px;height:18px}
+.tseg button[aria-selected="true"]{background:var(--yama)}
+.tcard{display:flex;flex-direction:column;gap:10px}
+.fxr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.fxr>span:first-child{font-size:15px}.fxr .sub{flex:1}
+.fxin{display:flex;align-items:center;gap:10px;border:3px solid var(--sumi);border-radius:16px;padding:6px 14px;background:var(--washi)}
+.fxin span{font-weight:700;white-space:nowrap}
+.fxin input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:28px;font-weight:700;padding:6px 0;color:var(--ink);outline:none;font-variant-numeric:tabular-nums}
+.fxsw{align-self:center}
+.fxo{display:flex;align-items:baseline;gap:8px;justify-content:center;background:var(--waka);border:3px solid var(--sumi);border-radius:16px;padding:10px}
+.fxo b{font-size:34px;font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:14px;border:2.5px solid var(--sumi);border-radius:999px;background:var(--washi);padding:5px 12px;cursor:pointer;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--cc,var(--yama));font-weight:700;box-shadow:0 0 0 2px var(--sumi) inset}
+.exrow{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.exrow select,.exrow input,.tcard textarea{font:inherit;border:2.5px solid var(--sumi);border-radius:12px;padding:8px 10px;background:var(--washi);color:var(--ink);min-width:0}
+.tcard textarea{resize:vertical;font-size:16px}
+.extot{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.extot b{font-size:28px;font-variant-numeric:tabular-nums}
+.exbar{display:flex;height:14px;border-radius:8px;overflow:hidden;border:2px solid var(--sumi)}
+.excats{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px}.excats i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;border:1.5px solid var(--sumi)}
+.exdh{display:flex;justify-content:space-between;align-items:baseline}.exdh span{font-size:13px;color:var(--muted)}
+.exi{display:flex;align-items:center;gap:8px;border-top:1.5px dashed var(--line);padding-top:8px}
+.exc{font-size:12px;font-weight:700;border-radius:999px;padding:1px 8px;border:2px solid var(--sumi);white-space:nowrap}
+.exn{flex:1;min-width:0;display:flex;flex-direction:column;font-size:14px}.exn small{color:var(--muted);font-size:11px}
+.exi b{font-variant-numeric:tabular-nums}
+.xdel{font:inherit;font-size:13px;border:2px solid var(--sumi);border-radius:999px;background:var(--washi);min-width:30px;height:30px;padding:0 8px;cursor:pointer;color:var(--ink)}
+.trbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}.trbtns label{justify-content:center;cursor:pointer}
+.trimg{width:100%;max-height:260px;object-fit:contain;border-radius:14px;border:2.5px solid var(--sumi);background:var(--sunk)}
+.trst{font-size:14px;font-weight:700;background:var(--yama);border-radius:12px;padding:8px 12px}
+.trl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.trl li{display:flex;flex-direction:column;gap:2px;background:var(--sunk);border-radius:12px;padding:8px 12px}
+.trl li span{font-size:13px;color:var(--muted)}.trl li b{font-size:16px}
+.trout{font-size:20px;line-height:1.5;background:var(--waka);border:2.5px solid var(--sumi);border-radius:14px;padding:12px}
+nav.tabs a span,nav.tabs a{font-size:11px}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -575,6 +611,13 @@ body.gp-on .gpoff{display:none}
 <script>
 /* ---------- 圖示 ---------- */
 const I={
+ refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
+ plus:'<path d="M12 5v14"/><path d="M5 12h14"/>',
+ yen:'<path d="M6 4l6 8 6-8"/><path d="M12 12v8"/><path d="M7 13h10"/><path d="M7 17h10"/>',
+ wallet:'<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18"/><path d="M16 15h2"/><path d="M6 6l9-3 1 3"/>',
+ camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+ swap:'<path d="M7 4L3 8l4 4"/><path d="M3 8h14"/><path d="M17 20l4-4-4-4"/><path d="M21 16H7"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18c-3-3-3-15 0-18z"/>',
  phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
  sos:'<path d="M12 3l9 16H3z"/><path d="M12 10v4"/><path d="M12 17h.01"/>',
  sun:'<path d="M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M5.6 18.4l-1.4 1.4M19.8 4.2l-1.4 1.4"/><circle cx="12" cy="12" r="4"/>',
@@ -1582,8 +1625,94 @@ V.sos=function(){const now=sosArea();const areas=[...SOS_AREAS].sort((a,b)=>(now
   <div class="sr"><div><b>3．聯絡租車公司</b><span class="sub">電話在租車合約上</span></div></div>
   <div class="sr"><div><b>道路救援 JAF</b><span class="sub">爆胎、沒電、拋錨</span></div>${callBtn("0570-00-8139")}</div>`)}`};
 
+/* ---------- 工具：匯率、記帳、翻譯 ---------- */
+let toolTab=LS.get("tool","fx");
+let fx=LS.get("fx",null),fxDir="j2t",fxBusy=false;
+const FX_DEF=0.21;
+const fxRate=()=>fx&&fx.r?fx.r:FX_DEF;
+const fmtN=(n,d)=>Number(n).toLocaleString("zh-TW",{maximumFractionDigits:d==null?0:d});
+async function fxLoad(force){if(fxBusy||(!force&&fx&&Date.now()-fx.t<6*36e5))return;fxBusy=true;
+  try{const r=await (await fetch("https://open.er-api.com/v6/latest/JPY")).json();if(r.result==="success"&&r.rates.TWD){fx={r:r.rates.TWD,t:Date.now()};LS.set("fx",fx);if(location.hash==="#tools"&&toolTab==="fx")rerender(true);else if(force)toast("匯率已更新")}}
+  catch(e){if(force)toast("沒有網路，先用上次的匯率")}fxBusy=false}
+let exps=LS.get("exp",[]),expCat="餐飲",expPay="現金",expDay=null,expDel=null;
+const ECATS=[["餐飲","var(--coral)"],["交通","var(--waka)"],["住宿","var(--mizu)"],["購物","var(--yama)"],["門票","var(--apricot-soft)"],["其他","var(--sunk)"]];
+const EPAYS=["現金","信用卡","IC 卡"];
+let trWorker=null,trBusy=false,trLines=[],trImg="",trStatus="",trText="",trDir="ja|zh-TW",trOut="";
+const cleanJa=t=>t.replace(/([^\x00-\x7F])\s+(?=[^\x00-\x7F])/g,"$1").replace(/[ \t]+/g," ").split("\n").map(x=>x.trim()).filter(x=>x.length>0);
+async function mmTranslate(text,pair){const r=await (await fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(text)+"&langpair="+pair)).json();
+  if(r.responseStatus!==200)throw new Error(r.responseDetails||"翻譯失敗");return r.responseData.translatedText}
+async function trPhoto(file){if(trBusy)return;trBusy=true;trLines=[];trStatus="準備圖片…";
+  const url=URL.createObjectURL(file);trImg=url;rerender(true);
+  try{const img=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=url});
+    const k=Math.min(1,1800/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+    const x=c.getContext("2d");x.drawImage(img,0,0,c.width,c.height);
+    trSet("辨識文字中…（第一次要下載約 5MB，請稍等）");
+    if(!window.Tesseract)await new Promise((ok,no)=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+    if(!trWorker)trWorker=await Tesseract.createWorker("jpn");
+    const {data}=await trWorker.recognize(c);const lines=cleanJa(data.text||"").filter(l=>/[぀-ヿ一-鿿]/.test(l));
+    if(!lines.length){trSet("沒有認出日文字。靠近一點、光線亮一點再拍一次");trBusy=false;return}
+    trLines=lines.map(l=>[l,"…"]);trSet("翻譯中…");
+    const chunks=[];let cur=[];lines.forEach(l=>{if((cur.join("\n")+l).length>400){chunks.push(cur);cur=[]}cur.push(l)});if(cur.length)chunks.push(cur);
+    let i=0;for(const ch of chunks){const t=await mmTranslate(ch.join("\n"),"ja|zh-TW");const out=t.split(/\n/);ch.forEach((l,j)=>{trLines[i+j][1]=(out[j]||"").trim()||"（無法翻譯）"});i+=ch.length;rerender(true)}
+    trSet("")}catch(e){trSet(navigator.onLine?"出了點問題："+(e.message||e)+"，可以改用下面的 Google 翻譯":"翻譯需要網路，連上網路後再試一次")}
+  trBusy=false}
+function trSet(t){trStatus=t;if(location.hash==="#tools")rerender(true)}
+V.tools=function(){const t=tokyoNow().date,dayOpts=DAYS.map((d,i)=>[d.d,`D${i+1} ${md(d.d)}（${d.w}）`]);if(!expDay)expDay=DAYS.some(d=>d.d===t)?t:DAYS[0].d;
+ const seg=`<div class="tseg" role="tablist">${[["fx","匯率","yen"],["exp","記帳","wallet"],["tr","翻譯","camera"]].map(([k,n,i])=>`<button role="tab" data-tool="${k}" aria-selected="${toolTab===k}">${ic(i)}${n}</button>`).join("")}</div>`;
+ let body="";
+ if(toolTab==="fx"){fxLoad(false);const r=fxRate();
+  body=`<div class="card tcard"><div class="fxr"><span>1 日圓 ≈ <b>${r.toFixed(4)}</b> 台幣</span><span class="sub">${fx?`${new Date(fx.t).toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})} 更新`:"預設值・連上網路會自動更新"}</span><button class="btn" data-fxr>${ic("refresh")}更新</button></div>
+   <label class="fxin"><span>${fxDir==="j2t"?"日圓 ¥":"台幣 NT$"}</span><input id="fxv" type="number" inputmode="decimal" placeholder="輸入金額" autocomplete="off"></label>
+   <button class="btn fxsw" data-fxsw>${ic("swap")}${fxDir==="j2t"?"日圓 → 台幣":"台幣 → 日圓"}</button>
+   <div class="fxo"><span>${fxDir==="j2t"?"約 NT$":"約 ¥"}</span><b id="fxo">0</b></div>
+   <div class="chips">${(fxDir==="j2t"?[100,500,1000,3000,5000,10000]:[100,500,1000,2000,5000]).map(v=>`<button class="chip" data-fxq="${v}">${fxDir==="j2t"?"¥":"NT$"}${fmtN(v)}</button>`).join("")}</div>
+   <p class="sub">刷卡還要加上銀行的海外手續費（通常約 1.5%）。</p></div>`}
+ if(toolTab==="exp"){const r=fxRate(),tot=exps.reduce((a,e)=>a+e.a,0),byC={};exps.forEach(e=>byC[e.c]=(byC[e.c]||0)+e.a);
+  const days=[...new Set(exps.map(e=>e.d))].sort();
+  body=`<div class="card tcard"><label class="fxin"><span>日圓 ¥</span><input id="exa" type="number" inputmode="numeric" placeholder="花了多少" autocomplete="off"></label>
+   <div class="chips">${ECATS.map(([c,col])=>`<button class="chip" data-ecat="${c}" aria-pressed="${expCat===c}" style="--cc:${col}">${c}</button>`).join("")}</div>
+   <div class="chips">${EPAYS.map(p=>`<button class="chip" data-epay="${p}" aria-pressed="${expPay===p}">${p}</button>`).join("")}</div>
+   <div class="exrow"><select id="exd" aria-label="日期">${dayOpts.map(([v,n])=>`<option value="${v}"${v===expDay?" selected":""}>${n}</option>`).join("")}</select><input id="exn" type="text" placeholder="備註（例如：一蘭拉麵）" autocomplete="off"></div>
+   <button class="btn p big" data-eadd>${ic("plus")}記一筆</button></div>
+  <div class="card tcard"><div class="extot"><span>總共</span><b>¥${fmtN(tot)}</b><span class="sub">約 NT$${fmtN(tot*r)}</span></div>
+   ${tot?`<div class="exbar">${ECATS.filter(([c])=>byC[c]).map(([c,col])=>`<i style="flex:${byC[c]};background:${col}" title="${c}"></i>`).join("")}</div>
+   <div class="excats">${ECATS.filter(([c])=>byC[c]).map(([c,col])=>`<span><i style="background:${col}"></i>${c} ¥${fmtN(byC[c])}</span>`).join("")}</div>`:'<p class="sub">還沒有記帳。上面輸入金額，選類別後按「記一筆」。</p>'}</div>
+  ${days.slice().reverse().map(d=>{const L=exps.filter(e=>e.d===d),s=L.reduce((a,e)=>a+e.a,0),i=DAYS.findIndex(x=>x.d===d);
+   return`<div class="card tcard exday"><div class="exdh"><b>${i>=0?`D${i+1} `:""}${md(d)}</b><span>¥${fmtN(s)}・約 NT$${fmtN(s*r)}</span></div>
+    ${L.slice().reverse().map(e=>`<div class="exi"><span class="exc" style="background:${(ECATS.find(x=>x[0]===e.c)||ECATS[5])[1]}">${e.c}</span><span class="exn">${esc(e.n||"")}<small>${e.p}</small></span><b>¥${fmtN(e.a)}</b><button class="xdel" data-edel="${e.id}" aria-label="刪除這筆">${expDel===e.id?"確定刪除？":"×"}</button></div>`).join("")}</div>`}).join("")}
+  ${exps.length?`<div class="row" style="justify-content:center;gap:8px"><button class="btn" data-ecopy>${ic("copy")}複製全部明細</button></div>`:""}
+  <p class="sub" style="text-align:center">記帳只存在這支手機，換手機或清除瀏覽資料會不見，回國前可以先「複製全部明細」存起來。</p>`}
+ if(toolTab==="tr"){body=`<div class="card tcard"><div class="trbtns"><label class="btn p big trcam">${ic("camera")}拍照翻譯<input type="file" accept="image/*" capture="environment" data-trf hidden></label><label class="btn big">${ic("photo")}從相簿選<input type="file" accept="image/*" data-trf hidden></label></div>
+   <p class="sub">對準菜單、告示或包裝拍清楚，會認出日文再翻成中文。直書的字請把手機橫過來拍。需要網路。</p>
+   ${trImg?`<img class="trimg" src="${trImg}" alt="剛拍的照片">`:""}${trStatus?`<div class="trst">${esc(trStatus)}</div>`:""}
+   ${trLines.length?`<ul class="trl">${trLines.map(([a,b])=>`<li><span lang="ja">${esc(a)}</span><b>${esc(b)}</b></li>`).join("")}</ul>`:""}
+   <a class="btn" href="https://translate.google.com/?sl=ja&tl=zh-TW&op=images" target="_blank" rel="noopener">${ic("globe")}效果不好？用 Google 翻譯的相片翻譯</a></div>
+  <div class="card tcard"><h3>打字翻譯</h3><div class="chips"><button class="chip" data-trdir="ja|zh-TW" aria-pressed="${trDir==="ja|zh-TW"}">日文 → 中文</button><button class="chip" data-trdir="zh-TW|ja" aria-pressed="${trDir==="zh-TW|ja"}">中文 → 日文</button></div>
+   <textarea id="trt" rows="3" placeholder="${trDir==="ja|zh-TW"?"貼上或輸入日文":"輸入想說的中文，翻成日文給店員看"}">${esc(trText)}</textarea>
+   <button class="btn p" data-trgo>${ic("globe")}翻譯</button>${trOut?`<div class="trout" lang="${trDir==="ja|zh-TW"?"zh-Hant":"ja"}">${esc(trOut)}</div>`:""}</div>`}
+ return`<header class="top"><h1>旅行工具</h1></header>${seg}${body}`};
+function fxCalc(){const i=document.getElementById("fxv"),o=document.getElementById("fxo");if(!i||!o)return;const v=parseFloat(i.value)||0,r=fxRate();o.textContent=fxDir==="j2t"?fmtN(v*r,0):fmtN(v/r,0)}
+document.addEventListener("input",e=>{if(e.target.id==="fxv")fxCalc();if(e.target.id==="trt")trText=e.target.value;if(e.target.id==="exd")expDay=e.target.value});
+document.addEventListener("change",e=>{if(e.target.id==="exd")expDay=e.target.value;const f=e.target.closest&&e.target.closest("[data-trf]");if(f&&f.files&&f.files[0]){trPhoto(f.files[0]);f.value=""}});
+document.addEventListener("click",async e=>{const b=e.target.closest("[data-tool],[data-fxr],[data-fxsw],[data-fxq],[data-ecat],[data-epay],[data-eadd],[data-edel],[data-ecopy],[data-trdir],[data-trgo]");if(!b)return;
+ if(b.dataset.tool){toolTab=b.dataset.tool;LS.set("tool",toolTab);rerender(true);return}
+ if(b.hasAttribute("data-fxr")){fxLoad(true);return}
+ if(b.hasAttribute("data-fxsw")){fxDir=fxDir==="j2t"?"t2j":"j2t";rerender(true);return}
+ if(b.dataset.fxq){const i=document.getElementById("fxv");i.value=b.dataset.fxq;fxCalc();return}
+ if(b.dataset.ecat){expCat=b.dataset.ecat;document.querySelectorAll("[data-ecat]").forEach(x=>x.setAttribute("aria-pressed",x===b));return}
+ if(b.dataset.epay){expPay=b.dataset.epay;document.querySelectorAll("[data-epay]").forEach(x=>x.setAttribute("aria-pressed",x===b));return}
+ if(b.hasAttribute("data-eadd")){const a=Math.round(parseFloat(document.getElementById("exa").value)||0);if(a<=0){toast("請先輸入金額");return}
+   exps.push({id:Date.now().toString(36),d:document.getElementById("exd").value,a,c:expCat,p:expPay,n:document.getElementById("exn").value.trim()});LS.set("exp",exps);toast(`記好了：¥${fmtN(a)} ${expCat}`);rerender(true);return}
+ if(b.dataset.edel){if(expDel!==b.dataset.edel){expDel=b.dataset.edel;rerender(true);return}exps=exps.filter(x=>x.id!==expDel);expDel=null;LS.set("exp",exps);rerender(true);return}
+ if(b.hasAttribute("data-ecopy")){const r=fxRate();const txt=["日期,類別,付款,備註,日圓,約台幣",...exps.map(x=>[x.d,x.c,x.p,(x.n||"").replace(/,/g," "),x.a,Math.round(x.a*r)].join(","))].join("\n");
+   try{await navigator.clipboard.writeText(txt);toast("已複製，可以貼到記事本或 Excel")}catch(err){toast("這支手機不能自動複製")}return}
+ if(b.dataset.trdir){trDir=b.dataset.trdir;trOut="";rerender(true);return}
+ if(b.hasAttribute("data-trgo")){const t=(document.getElementById("trt").value||"").trim();if(!t){toast("先輸入要翻譯的字");return}trText=t;trOut="翻譯中…";rerender(true);
+   try{trOut=await mmTranslate(t,trDir)}catch(err){trOut=navigator.onLine?"翻譯失敗，請稍後再試":"翻譯需要網路"}rerender(true);return}
+});
+
 /* ---------- 路由與事件 ---------- */
-const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["info","資訊","info"],["sos","緊急","sos"]];
+const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["tools","工具","wallet"],["info","資訊","info"],["sos","緊急","sos"]];
 const app=document.getElementById("app");
 function route(){let r=(location.hash||"#today").slice(1);if(!V[r])r="today";
   app.innerHTML=V[r]();
