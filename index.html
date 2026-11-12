@@ -1665,6 +1665,13 @@ const A_={
  road:(y)=>`<path d="M-4 ${y}H364V${y+14}H-4Z" fill="#E8DFD0" ${SK}/><path d="M6 ${y+7}H364" stroke="${PAL.w}" stroke-width="3" stroke-dasharray="12 10"/>`,
  canal:(y)=>`<path d="M-4 ${y}H364V154H-4Z" fill="${PAL.mi}" ${SK}/><path d="M20 ${y+10}h14M120 ${y+14}h18M250 ${y+9}h14" ${SK} opacity=".45"/>`,
  lake:(x,y,rx,ry)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${PAL.mi}" ${SK}/><path d="M${x-rx/2} ${y}h16M${x+rx/5} ${y+4}h12" ${SK} opacity=".45"/>`,
+ romon:(x,y)=>{const R="#6B6461";return G(x,y,`<rect x="-62" y="-22" width="124" height="22" fill="${PAL.w}" ${SK}/><path d="M-66 -20h132" stroke="${R}" stroke-width="5"/>`
+   +`<rect x="-40" y="-40" width="80" height="40" fill="${PAL.co}" ${SK}/><rect x="-13" y="-32" width="26" height="32" fill="${PAL.k}" opacity=".85"/><path d="M-28 -40v40M28 -40v40" ${SK} opacity=".5"/>`
+   +`<path d="M-60 -38q26-2 36-18H24q10 16 36 18Z" fill="${R}" ${SK}/>`
+   +`<rect x="-28" y="-72" width="56" height="18" fill="${PAL.co}" ${SK}/><path d="M-24 -62h48" stroke="${PAL.w}" stroke-width="2.5"/><path d="M-16 -66v8M-6 -66v8M4 -66v8M14 -66v8" stroke="${PAL.w}" stroke-width="2"/>`
+   +`<path d="M-48 -70q22-2 30-18H18q8 16 30 18Z" fill="${R}" ${SK}/><path d="M-18 -88h36" stroke="${PAL.k}" stroke-width="5" stroke-linecap="round"/><circle cx="-18" cy="-88" r="3.5" fill="${PAL.ya}" ${SK}/><circle cx="18" cy="-88" r="3.5" fill="${PAL.ya}" ${SK}/>`)},
+ archbridge:(x,y)=>G(x,y,`<path d="M-76 0Q0 -58 76 0H58Q0 -40 -58 0Z" fill="#E8DFD0" ${SK}/><path d="M-70 -6Q0 -60 70 -6" fill="none" stroke="${PAL.co}" stroke-width="4" stroke-linecap="round"/>`
+   +[-52,-30,-10,10,30,52].map(a=>`<path d="M${a} ${-(29-a*a/190)}v-9" ${SK}/>`).join("")+`<path d="M-58 0h-18M58 0h18" ${SK}/>`),
  hill:(d,c=PAL.wa)=>`<path d="${d}" fill="${c}" ${SK}/>`,
  planeB:(flip=false)=>`<g transform="${flip?"scale(-1 1) translate(-70 0)":""}"><path d="M4 6l-8-12h9l9 11z" fill="${PAL.co}" ${SK}/><path d="M0 12q0-9 11-9h42q11 0 15 9q-4 9-15 9h-42q-11 0-11-9z" fill="${PAL.w}" ${SK}/><path d="M26 13l-9 17h11l15-17z" fill="${PAL.co}" ${SK}/><g fill="${PAL.k}"><circle cx="38" cy="10" r="2"/><circle cx="46" cy="10" r="2"/><circle cx="54" cy="10" r="2"/></g></g>`,
  plane:(x,y,s=1,flip=false)=>VH(x,y,A_.planeB(flip),"fly",s,13),
@@ -1699,7 +1706,9 @@ const SCENES={
    +`<g transform="translate(180 122)"><path d="M-24 0L-7 -118H7L24 0Z" fill="${PAL.mi}" ${SK}/>${[-20,-40,-60,-80,-100].map(y=>`<path d="M${-24+(-y)*17/118} ${y}H${24-(-y)*17/118}" ${SK} opacity=".35"/>`).join("")}<path d="M0 -118V-4" ${SK} opacity=".35"/><rect x="-16" y="-98" width="32" height="14" rx="3" fill="${PAL.w}" ${SK}/><path d="M-10 -91h20" ${SK}/><path d="M0 -118V-140" ${SK}/><circle cx="0" cy="-142" r="3" fill="${PAL.co}" ${SK}/><rect x="-46" y="-14" width="92" height="14" fill="${PAL.w}" ${SK}/><path d="M-36 -7h72" ${SK} opacity=".4"/></g>`
    +A_.tree(150,120,PAL.wa,.6)+A_.tree(212,120,PAL.wa,.6)+`<path d="M-4 120H364V156H-4Z" fill="#F7E9C4" ${SK}/>`+A_.rail(138)
    +`<g transform="translate(56 -24) scale(.85)"><g class="rock">${A_.planeB()}</g></g><g transform="translate(0 117)"><g class="metro">${A_.metroB()}</g></g>`,
- dazaifu:()=>A_.cloud(250,10,.8)+A_.torii(26,52,.9)+A_.plum(120,100)+A_.hill("M150 104q60-34 120-14t100 4V150H150Z")+A_.field(108)+A_.canal(130)+A_.boat(196,124,.8),
+ dazaifu:()=>A_.cloud(250,10,.8)+A_.hill("M150 108q60-30 120-12t100 4V150H150Z")+A_.field(112)
+   +A_.romon(96,114)+A_.plum(24,112)+A_.plum(176,110)
+   +A_.canal(118)+A_.boat(120,126,.95)+A_.archbridge(268,132),
  kumamoto:()=>A_.sun(310,30,13)+A_.cloud(30,18,.8)+A_.castle(120,58,1)+A_.tree(60,128,PAL.ya)+A_.tree(290,128,PAL.ya,.9)+A_.hill("M-4 128q90-14 184 0t184 0V150H-4Z"),
  aso:()=>A_.cloud(240,8,.7)+A_.volcano(10,56,.95)+A_.hill("M-4 126q80-30 170-10t200 0V150H-4Z")+A_.cow(130,100,.8)+A_.gorge(250,70)+A_.boat(270,124,.5,false),
  yufuin:()=>A_.hill("M140 120L210 40L235 62L260 34L340 120Z")+A_.cloud(20,10,.8)+A_.field(114)+A_.lake(250,134,70,11)+A_.cloud(200,96,.9,"d2")+A_.giraffe(56,92,.95)+A_.tree(120,118,PAL.wa,.7),
@@ -1709,7 +1718,7 @@ const SCENES={
  home:()=>A_.cloud(30,40,.9)+A_.cloud(150,70,1,"d1")+A_.plane(120,16,1)+A_.house(260,70)+A_.hill("M180 132q60-10 180 0V150H180Z")
 };
 const DAY_ART={"2026-11-30":"hakata","2026-12-01":"dazaifu","2026-12-02":"kumamoto","2026-12-03":"aso","2026-12-04":"yufuin","2026-12-05":"beppu","2026-12-06":"mojiko","2026-12-07":"fukuoka","2026-12-08":"home"};
-const ART_LABEL={kyushu:"九州插圖：阿蘇火山冒煙、熊本城、溫泉、飛機和小車",hakata:"福岡插圖：福岡塔和城市大樓、飛機和地鐵",dazaifu:"太宰府與柳川插圖：紅色鳥居、梅花和遊船",kumamoto:"熊本插圖：熊本城和銀杏樹",aso:"阿蘇與高千穗插圖：冒煙的火山、赤牛和峽谷瀑布",yufuin:"由布院插圖：由布岳、起霧的湖和長頸鹿",beppu:"別府插圖：冒著熱氣的溫泉和空中纜車",mojiko:"門司港插圖：復古車站、藍翼橋和船",fukuoka:"福岡插圖：福岡塔、海和屋台",home:"回家插圖：飛機和溫暖的家"};
+const ART_LABEL={kyushu:"九州插圖：阿蘇火山冒煙、熊本城、溫泉、飛機和小車",hakata:"福岡插圖：福岡塔和城市大樓、飛機和地鐵",dazaifu:"太宰府與柳川插圖：太宰府天滿宮紅色樓門、梅花，柳川遊船穿過石橋",kumamoto:"熊本插圖：熊本城和銀杏樹",aso:"阿蘇與高千穗插圖：冒煙的火山、赤牛和峽谷瀑布",yufuin:"由布院插圖：由布岳、起霧的湖和長頸鹿",beppu:"別府插圖：冒著熱氣的溫泉和空中纜車",mojiko:"門司港插圖：復古車站、藍翼橋和船",fukuoka:"福岡插圖：福岡塔、海和屋台",home:"回家插圖：飛機和溫暖的家"};
 
 /* ---------- 首頁大插圖：每天的地點動畫＋當天天氣 ---------- */
 const SKY={sun:"#DCEEF6",psun:"#E2EEF3",cloud:"#E5E8EA",fog:"#ECECE9",rain:"#D5DDE4",snow:"#EDF2F6",storm:"#CDD5DC"};
