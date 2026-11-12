@@ -607,6 +607,26 @@ svg.mas{width:86px;height:66px;flex:0 0 auto;margin-bottom:-2px}
 .fl.flback{background:#EAF4F9}
 .flback .flm svg{transform:scaleX(-1)}
 svg.fldoodle{width:60px;height:30px;margin-left:auto}
+/* ===== 航班資訊一行、QR ===== */
+.fli{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;gap:5px!important}.fli::-webkit-scrollbar{display:none}
+.fli span{white-space:nowrap;font-size:12px;padding:1px 8px!important;flex:0 0 auto}
+.qrbox{border-top:1.5px dashed var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px}
+.qrhd{display:flex;align-items:center;justify-content:space-between}.qrhd b{display:flex;align-items:center;gap:6px;font-size:15px}.qrhd b svg{width:18px;height:18px}
+.btn.sm{min-height:34px;padding:4px 12px;font-size:13px}
+.qre{margin:0}
+.qrgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.qrth{display:flex;flex-direction:column;gap:3px;border:2.5px solid var(--sumi);border-radius:14px;background:var(--washi);padding:5px;cursor:pointer;font:inherit;color:var(--ink)}
+.qrth img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:9px;background:#fff}
+.qrth span{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qradd{display:flex;flex-direction:column;gap:8px;background:var(--washi);border:2px solid var(--sumi);border-radius:16px;padding:10px}
+.qradd input{font:inherit;border:2px solid var(--sumi);border-radius:12px;padding:8px 10px;background:#fff;color:var(--ink)}
+.trbtns2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.trbtns2 label{justify-content:center;cursor:pointer}
+.qrv{position:fixed;inset:0;z-index:100;background:#fff;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px calc(env(safe-area-inset-bottom,0px) + 14px);gap:10px}
+.qrvt{display:flex;align-items:center;gap:10px}.qrvt b{flex:1;font-size:18px}.qrvt span{color:var(--muted);font-size:14px}
+.qrx{font:inherit;font-size:28px;line-height:1;width:44px;height:44px;border-radius:50%;border:2.5px solid var(--sumi);background:var(--washi);cursor:pointer;color:var(--ink)}
+.qrvi{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}.qrvi img{max-width:100%;max-height:100%;object-fit:contain}
+.qrvh{margin:0;text-align:center;font-size:13px;color:var(--muted)}
+.qrvb{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}.qrvb .btn{justify-content:center}.qrvb .btn[disabled]{opacity:.35}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -646,6 +666,7 @@ svg.fldoodle{width:60px;height:30px;margin-left:auto}
 <script>
 /* ---------- 圖示 ---------- */
 const I={
+ qr:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2v2M20 14v6h-6v-2"/>',
  refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
  plus:'<path d="M12 5v14"/><path d="M5 12h14"/>',
  yen:'<path d="M6 4l6 8 6-8"/><path d="M12 12v8"/><path d="M7 13h10"/><path d="M7 17h10"/>',
@@ -1764,6 +1785,48 @@ function mascot(k){const K=PAL.k,S=`stroke="${K}" stroke-width="2.5" stroke-line
     <g class="pulse"><path d="M84 22q-4-6-8-2t0 9l8 7 8-7q4-5 0-9t-8 2z" fill="${PAL.co}" ${S}/></g>`}[k];
   return body?`<svg class="art mas" viewBox="0 0 100 76" aria-hidden="true">${body}</svg>`:""}
 
+/* ---------- 登機證・入境 QR Code（存在這支手機的 IndexedDB） ---------- */
+const QDB={p:null,open(){if(!this.p)this.p=new Promise((ok,no)=>{const r=indexedDB.open("ky9",1);r.onupgradeneeded=()=>r.result.createObjectStore("qr",{keyPath:"id"});r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});return this.p},
+  async tx(mode,fn){const db=await this.open();return new Promise((ok,no)=>{const t=db.transaction("qr",mode),st=t.objectStore("qr"),r=fn(st);t.oncomplete=()=>ok(r&&r.result);t.onerror=()=>no(t.error)})},
+  all(){return this.tx("readonly",s=>s.getAll())},put(v){return this.tx("readwrite",s=>s.put(v))},del(id){return this.tx("readwrite",s=>s.delete(id))}};
+const QTYPES=["登機證","入境審查","海關申報","入境＋海關","其他"];
+let qrList=null,qrUrls={},qrAdd=null,qrType="登機證",qrWho="",qrView=null;
+async function qrLoad(){try{qrList=(await QDB.all()).sort((a,b)=>a.ts-b.ts);qrList.forEach(q=>{if(!qrUrls[q.id])qrUrls[q.id]=URL.createObjectURL(q.blob)})}catch(e){qrList=[]}}
+function qrBoxHTML(d){const L=(qrList||[]).filter(q=>q.f===d),open=qrAdd===d;
+  return`<div class="qrhd"><b>${ic("qr")}登機證・QR Code</b><button type="button" class="btn sm" data-qradd="${d}">${open?"取消":`${ic("plus")}新增`}</button></div>
+   ${L.length?`<div class="qrgrid">${L.map(q=>`<button type="button" class="qrth" data-qrv="${q.id}"><img src="${qrUrls[q.id]}" alt="${esc(q.t)}"><span>${esc(q.t)}${q.w?"・"+esc(q.w):""}</span></button>`).join("")}</div>`:(open?"":`<p class="sub qre">${d===DAYS[0].d?"把 Visit Japan Web 的入境、海關 QR Code 截圖，或登機證拍照存在這裡，入境時點開就能出示。":"把回程登機證拍照或截圖存在這裡。"}</p>`)}
+   ${open?`<div class="qradd"><div class="chips">${QTYPES.map(t=>`<button type="button" class="chip" data-qrt="${t}" aria-pressed="${qrType===t}">${t}</button>`).join("")}</div>
+     <input id="qrwho" type="text" placeholder="誰的？（例如：爸爸、寶寶，可不填）" value="${esc(qrWho)}" autocomplete="off">
+     <div class="trbtns2"><label class="btn p">${ic("camera")}拍照<input type="file" accept="image/*" capture="environment" data-qrf="${d}" hidden></label><label class="btn">${ic("photo")}選截圖<input type="file" accept="image/*" data-qrf="${d}" hidden></label></div></div>`:""}`}
+function qrPaint(){const boxes=app.querySelectorAll("[data-qrs]");if(!boxes.length)return;
+  if(qrList===null){qrLoad().then(qrPaint);boxes.forEach(b=>b.innerHTML=qrBoxHTML(b.dataset.qrs));return}
+  boxes.forEach(b=>b.innerHTML=qrBoxHTML(b.dataset.qrs))}
+async function qrSave(file,d){try{const img=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=URL.createObjectURL(file)});
+  const k=Math.min(1,1800/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+  const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);
+  const blob=await new Promise(ok=>c.toBlob(ok,"image/jpeg",.92));const q={id:Date.now().toString(36),f:d,t:qrType,w:(document.getElementById("qrwho")||{}).value?.trim()||"",ts:Date.now(),blob};
+  await QDB.put(q);qrUrls[q.id]=URL.createObjectURL(blob);qrList.push(q);qrAdd=null;qrWho="";
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  toast("已存好："+q.t);qrPaint()}catch(e){toast("存檔失敗，請再試一次")}}
+function qrOpen(id){const L=qrList||[];const i=L.findIndex(q=>q.id===id);if(i<0)return;qrView={i,del:false};qrShow()}
+function qrShow(){let ov=document.getElementById("qrv");const L=qrList||[];if(!qrView||!L.length){if(ov)ov.remove();qrView=null;document.body.style.overflow="";return}
+  const q=L[qrView.i],sameF=L.filter(x=>x.f===q.f),pos=sameF.indexOf(q);
+  if(!ov){ov=document.createElement("div");ov.id="qrv";ov.className="qrv";ov.setAttribute("role","dialog");ov.setAttribute("aria-modal","true");document.body.appendChild(ov);document.body.style.overflow="hidden"}
+  ov.innerHTML=`<div class="qrvt"><b>${esc(q.t)}${q.w?"・"+esc(q.w):""}</b><span>${pos+1} / ${sameF.length}</span><button type="button" class="qrx" data-qrclose aria-label="關閉">×</button></div>
+   <div class="qrvi"><img src="${qrUrls[q.id]}" alt="${esc(q.t)}"></div>
+   <p class="qrvh">把螢幕亮度調到最亮，對準掃描機</p>
+   <div class="qrvb"><button type="button" class="btn" data-qrnav="-1"${pos===0?" disabled":""}>‹ 上一張</button><button type="button" class="btn ${qrView.del?"p":""}" data-qrdel>${qrView.del?"確定刪除？":"刪除"}</button><button type="button" class="btn" data-qrnav="1"${pos===sameF.length-1?" disabled":""}>下一張 ›</button></div>`}
+document.addEventListener("click",async e=>{const t=e.target.closest("[data-qradd],[data-qrt],[data-qrv],[data-qrclose],[data-qrnav],[data-qrdel]");if(!t)return;
+  if(t.dataset.qradd){qrAdd=qrAdd===t.dataset.qradd?null:t.dataset.qradd;qrPaint();return}
+  if(t.dataset.qrt){qrType=t.dataset.qrt;const w=document.getElementById("qrwho");if(w)qrWho=w.value;qrPaint();return}
+  if(t.dataset.qrv){qrOpen(t.dataset.qrv);return}
+  if(t.hasAttribute("data-qrclose")){qrView=null;qrShow();return}
+  if(t.dataset.qrnav){const L=qrList,q=L[qrView.i],same=L.filter(x=>x.f===q.f),pos=same.indexOf(q),n=same[pos+ +t.dataset.qrnav];if(n){qrView={i:L.indexOf(n),del:false};qrShow()}return}
+  if(t.hasAttribute("data-qrdel")){if(!qrView.del){qrView.del=true;qrShow();return}const q=qrList[qrView.i];await QDB.del(q.id);URL.revokeObjectURL(qrUrls[q.id]);delete qrUrls[q.id];qrList.splice(qrView.i,1);qrView=null;qrShow();qrPaint();toast("已刪除")}});
+document.addEventListener("change",e=>{const f=e.target.closest&&e.target.closest("[data-qrf]");if(f&&f.files&&f.files[0]){qrSave(f.files[0],f.dataset.qrf);f.value=""}});
+document.addEventListener("input",e=>{if(e.target.id==="qrwho")qrWho=e.target.value});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&qrView){qrView=null;qrShow()}});
+
 /* ---------- 路由與事件 ---------- */
 const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["tools","工具","wallet"],["info","資訊","info"],["sos","緊急","sos"]];
 const app=document.getElementById("app");
@@ -1773,7 +1836,7 @@ function route(){let r=(location.hash||"#today").slice(1);if(!V[r])r="today";
   if(bounceNext){bounceNext=false;app.querySelectorAll(".dayview,.days~.card").forEach(el=>{el.classList.remove("bounce");void el.offsetWidth;el.classList.add("bounce")})}
   app.querySelectorAll('.days [aria-pressed="true"],[data-farea][aria-pressed="true"]').forEach(c=>{const box=c.parentElement;box.scrollLeft=c.offsetLeft-box.clientWidth/2+c.clientWidth/2});
   const vh=app.querySelector(".dveh");if(vh)requestAnimationFrame(()=>requestAnimationFrame(()=>{vh.style.left=vh.dataset.to+"%";dayPrev=dayIdx}));
-  initTL();gpScan();}
+  initTL();gpScan();qrPaint();}
 function rerender(keepScroll){const y=scrollY;route();if(keepScroll)scrollTo(0,y)}
 if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname)){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
 gpStart();
@@ -1783,7 +1846,7 @@ function toast(t){const el=document.getElementById("toast");el.textContent=t;el.
 
 const DAY_SIGHTS={"2026-11-30":["s-hakata"],"2026-12-01":["s-dazaifu","s-kumamoto"],"2026-12-02":["s-kumamoto"],"2026-12-03":["s-aso","s-takachiho","s-kuju"],"2026-12-04":["s-yufuin","s-beppu","s-usa"],"2026-12-05":["s-beppu","s-kokura","s-usa"],"2026-12-06":["s-mojiko","s-kokura"],"2026-12-07":["s-hakata","s-extra"],"2026-12-08":["s-hakata"]};
 /* ---------- 航班、預訂、天氣 ---------- */
-const FLIGHTS={"2026-11-30":{label:"去程",dep:"03:00",dc:"TPE",dn:"桃園",da:"桃園國際機場 第一航廈 T1",arr:"06:15",ac:"KKJ",an:"北九州",aa:"北九州機場",dur:"2h15m",info:["星悅航空 7G 800","每人托運 30kg","所有時間為當地時間"]},
+const FLIGHTS={"2026-11-30":{label:"去程",dep:"03:00",dc:"TPE",dn:"桃園",da:"桃園國際機場 第一航廈 T1",arr:"06:15",ac:"KKJ",an:"北九州",aa:"北九州機場",dur:"2h15m",info:["星悅航空 7G 800","每人托運 30kg","當地時間"]},
  "2026-12-08":{label:"回程",dep:"16:10",dc:"FUK",dn:"福岡",da:"福岡機場 國際線航廈",arr:"17:55",ac:"TPE",an:"桃園",aa:"桃園國際機場 第一航廈 T1",dur:"2h45m",info:["亞洲航空 AK 1511","手提 7kg・托運共 115kg","寶寶無行李額度"]}};
 const BOOK={"2026-11-30":[["done","機票","去程 7G 800"],["done","住宿","&HOTEL HAKATA"]],
  "2026-12-01":[["done","租車","八人車・訂金已付"],["todo","尾款","¥57,600 取車時付","b2"],["done","住宿","fav KUMAMOTO 2 晚"]],
@@ -1848,7 +1911,7 @@ function flightHTML(day){const F=FLIGHTS[day.d];if(!F)return"";
    <div class="flr"><div><b class="flt">${F.dep}</b><span class="flc">${F.dc} ${F.dn}</span><span class="sub">${F.da}</span></div>
     <div class="flm">${ic("plane")}<span class="sub">${F.dur}</span></div>
     <div style="text-align:right"><b class="flt">${F.arr}</b><span class="flc">${F.ac} ${F.an}</span><span class="sub">${F.aa}</span></div></div>
-   <div class="fli">${F.info.map(x=>`<span>${esc(x)}</span>`).join("")}</div></div>`}
+   <div class="fli">${F.info.map(x=>`<span>${esc(x)}</span>`).join("")}</div><div class="qrbox" data-qrs="${day.d}"></div></div>`}
 
 app.addEventListener("input",e=>{const ni=e.target.closest("[data-inote]");if(ni){GS();const v=ni.value.trim();if(v)itemNotes[ni.dataset.inote]=v;else delete itemNotes[ni.dataset.inote];LS.set("itemNotes",itemNotes);return}});
 app.addEventListener("submit",e=>{const f=e.target.closest("form[data-form]");if(!f)return;e.preventDefault();
