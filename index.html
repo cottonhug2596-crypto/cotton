@@ -715,6 +715,39 @@ button .cemo{vertical-align:-4px}
 .fmap .go{margin:0 14px 14px}
 @media (prefers-reduced-motion: reduce){.dl .dveh,.rm,.rs{transition:none}}
 .fsync{flex:1;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px;text-align:left}.fsync .btn{margin:0;white-space:nowrap;flex:none;font-size:11px;padding:5px 8px;gap:3px}.fsync .btn svg{width:13px;height:13px}.fsync .sub{margin:0;font-size:10px;line-height:1.4;white-space:nowrap;flex:none}.tophd:has(.fsync){gap:6px;align-items:center}.tophd:has(.fsync)>div:first-child{flex:none}.tophd>.fsync{flex:1 1 auto}@media(max-width:379px){.tophd:has(.fsync) .mas{display:none}}.tophd:has(.fsync) .mas{width:48px!important;height:auto!important;flex:none;margin:0!important}
+
+/* ===== 手機版面優化 ===== */
+.wrap{gap:12px;padding-top:10px}
+svg.mas{width:72px;height:55px}
+h1{font-size:28px}
+nav.tabs a span,nav.tabs a{font-size:11.5px;letter-spacing:-.02em}
+.tr .t1{font-size:13.5px}
+.tr .t2{font-size:12px}
+.tlx2 .rn span{font-size:11px}
+.tc .nm{font-size:15.5px;line-height:1.3;overflow-wrap:anywhere}
+.btn.mapb{min-height:34px;padding:3px 10px;font-size:12.5px}
+.fli span{font-size:11.5px;padding:1px 7px!important}
+.flt{font-size:30px}
+.flr>div>span,.flr>div>small{text-wrap:balance}
+.fxr{display:grid;grid-template-columns:1fr auto;row-gap:2px}
+.fxr>span:first-child{font-size:16px}
+.fxr .sub{grid-column:1/-1;order:3;font-size:12px}
+.fxr .btn{grid-row:1;grid-column:2}
+.sub{font-size:12.5px}
+.fsync .sub{font-size:10.5px}
+.ds{font-size:14px;line-height:1.55}
+.card:not(details){padding-left:16px;padding-right:16px}
+.fli{flex-wrap:wrap!important;overflow:visible;row-gap:5px!important}
+.tbl th,.tbl td{padding:6px 5px}
+nav.tabs a{white-space:nowrap}
+details.add.card{padding-top:4px;padding-bottom:4px;border-radius:20px;border-style:dashed}
+details.add.card[open]{padding-bottom:14px;border-style:solid}
+.chips{gap:6px 5px}
+.chips button{font-size:13px;padding:4px 11px;min-height:34px}
+.chips button small{font-size:11px;margin-left:3px}
+.chip{font-size:13.5px;padding:4px 11px}
+.wxd .wxct b,.wxd .wxct b span{white-space:nowrap}
+@media(max-width:379px){nav.tabs a span,nav.tabs a{font-size:10.5px;letter-spacing:-.04em}nav.tabs a{margin:0 1px}.dayhead h2{font-size:21px!important}.wxd .wxct b{gap:6px;font-size:15px}.wxd .wxct b span{font-size:16px}.wxd .wxc>span.wxcity{flex-basis:56px;font-size:15px}.wxd .wxc svg.wxcute{width:34px;height:34px}.tbl table{font-size:12px}h1{font-size:25px}.tc .nm{font-size:15px}.btn.mapb{padding:3px 8px}.tr .t1{font-size:12.5px}}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -2017,8 +2050,8 @@ function toast(t){const el=document.getElementById("toast");el.textContent=t;el.
 
 const DAY_SIGHTS={"2026-11-30":["s-hakata"],"2026-12-01":["s-dazaifu","s-kumamoto"],"2026-12-02":["s-kumamoto"],"2026-12-03":["s-aso","s-takachiho","s-kuju"],"2026-12-04":["s-yufuin","s-beppu","s-usa"],"2026-12-05":["s-beppu","s-kokura","s-usa"],"2026-12-06":["s-mojiko","s-kokura"],"2026-12-07":["s-hakata","s-extra"],"2026-12-08":["s-hakata"]};
 /* ---------- 航班、預訂、天氣 ---------- */
-const FLIGHTS={"2026-11-30":{label:"去程",dep:"03:00",dc:"TPE",dn:"桃園",da:"桃園國際機場 第一航廈 T1",arr:"06:15",ac:"KKJ",an:"北九州",aa:"北九州機場",dur:"2h15m",info:["星悅航空 7G 800","每人托運 30kg","當地時間"]},
- "2026-12-08":{label:"回程",dep:"16:10",dc:"FUK",dn:"福岡",da:"福岡機場 國際線航廈",arr:"17:55",ac:"TPE",an:"桃園",aa:"桃園國際機場 第一航廈 T1",dur:"2h45m",info:["亞洲航空 AK 1511","手提 7kg・托運共 115kg","寶寶無行李額度"]}};
+const FLIGHTS={"2026-11-30":{label:"去程",dep:"03:00",dc:"TPE",dn:"桃園",da:"桃園國際機場 T1",arr:"06:15",ac:"KKJ",an:"北九州",aa:"北九州機場",dur:"2h15m",info:["星悅航空 7G 800","每人托運 30kg","當地時間"]},
+ "2026-12-08":{label:"回程",dep:"16:10",dc:"FUK",dn:"福岡",da:"福岡機場 國際線",arr:"17:55",ac:"TPE",an:"桃園",aa:"桃園國際機場 T1",dur:"2h45m",info:["亞洲航空 AK 1511","托運共 115kg・手提 7kg","寶寶無額度"]}};
 const BOOK={"2026-11-30":[["done","機票","去程 7G 800"],["done","住宿","&HOTEL HAKATA"]],
  "2026-12-01":[["done","租車","八人車・訂金已付"],["todo","尾款","¥57,600 取車時付","b2"],["done","住宿","fav KUMAMOTO 2 晚"]],
  "2026-12-02":[["done","住宿","fav KUMAMOTO"]],
