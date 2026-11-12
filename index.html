@@ -1638,7 +1638,7 @@ let exps=LS.get("exp",[]),expCat="餐飲",expPay="現金",expDay=null,expDel=nul
 const ECATS=[["餐飲","var(--coral)"],["交通","var(--waka)"],["住宿","var(--mizu)"],["購物","var(--yama)"],["門票","var(--apricot-soft)"],["其他","var(--sunk)"]];
 const EPAYS=["現金","信用卡","IC 卡"];
 let trWorker=null,trBusy=false,trLines=[],trImg="",trStatus="",trText="",trDir="ja|zh-TW",trOut="";
-const cleanJa=t=>t.replace(/([^\x00-\x7F])\s+(?=[^\x00-\x7F])/g,"$1").replace(/[ \t]+/g," ").split("\n").map(x=>x.trim()).filter(x=>x.length>0);
+const cleanJa=t=>t.replace(/([^\x00-\x7F])[ \t　]+(?=[^\x00-\x7F])/g,"$1").replace(/[ \t]+/g," ").split("\n").map(x=>x.trim()).filter(x=>x.length>0);
 async function mmTranslate(text,pair){const r=await (await fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(text)+"&langpair="+pair)).json();
   if(r.responseStatus!==200)throw new Error(r.responseDetails||"翻譯失敗");return r.responseData.translatedText}
 async function trPhoto(file){if(trBusy)return;trBusy=true;trLines=[];trStatus="準備圖片…";
