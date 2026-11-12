@@ -643,6 +643,21 @@ svg.fldoodle{width:60px;height:30px;margin-left:auto}
 .hero2 .hnote{font-size:12px;color:var(--muted)}
 .sech{display:flex;align-items:center;gap:8px;font-size:19px;margin:6px 0 -2px}
 .sech svg{width:24px;height:24px;color:var(--brick);stroke-width:2.2}
+/* ===== 海關 ===== */
+.cus{display:flex;flex-direction:column;gap:10px}
+.cusg{display:flex;flex-direction:column;gap:6px}
+.cusg .fltag{align-self:flex-start;margin:4px 0 2px}
+.fltag.cgo{background:var(--coral)}.fltag.cback{background:var(--mizu)}.fltag.cback svg{transform:scaleX(-1)}
+.cusi{border:2px solid var(--sumi);border-radius:14px;background:var(--washi)}
+.cusi summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 12px}
+.cusi summary::-webkit-details-marker{display:none}
+.cusi .cico{font-size:20px;width:26px;text-align:center}
+.cusi b{flex:1;font-size:15px}
+.ctag{font-size:11.5px;font-weight:700;background:var(--waka);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.ctag.no{background:var(--coral)}
+.cusi .chev{width:8px;height:8px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin:-4px 2px 0;transition:transform .2s}
+.cusi[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.cusi ul{margin:0;padding:0 14px 12px 42px;display:flex;flex-direction:column;gap:5px;font-size:14px}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -1629,6 +1644,7 @@ list(){
 info(){
   return`<header class="top tophd"><div><h1>旅行資訊</h1><div class="sub">5 大人＋1 寶寶・金額皆為日圓</div></div>${mascot("info")}</header>
   <div class="flpair">${flightHTML(DAYS[0])}${flightHTML(DAYS[DAYS.length-1])}</div>
+  ${customsHTML()}
   <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>住宿（全部已確認・15:00 起入住）</h3>
    ${Object.values(HOTELS).map(h=>`<div style="display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px dashed var(--line)"><b>${esc(h.n)}</b><span class="sub">${h.nights}・${h.rooms}・15:00 入住・${h.out}</span><span class="sub">${h.bk}</span>
     <div class="row">${h.tel?telBtn(h.tel):""}<a class="btn" href="${mapUrl(h.q)}" target="_blank" rel="noopener">${ic("pin")}地圖</a></div></div>`).join("")}
@@ -1848,6 +1864,31 @@ document.addEventListener("click",async e=>{const t=e.target.closest("[data-qrad
 document.addEventListener("change",e=>{const f=e.target.closest&&e.target.closest("[data-qrf]");if(f&&f.files&&f.files[0]){qrSave(f.files[0],f.dataset.qrf);f.value=""}});
 document.addEventListener("input",e=>{if(e.target.id==="qrwho")qrWho=e.target.value});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&qrView){qrView=null;qrShow()}});
+
+/* ---------- 出入海關注意事項 ---------- */
+const CUSTOMS=[
+ ["去程・入境日本","flgo",[
+  ["meat","肉類・肉製品","一律別帶",["生的、煮熟的肉都不行：肉乾、肉鬆、香腸、火腿、培根、肉包","真空包裝、免稅店買的、少量自用也一樣禁止","含肉的泡麵、調理包也別帶，最保險","違規最重 3 年以下拘禁刑或 300 萬日圓罰金"]],
+  ["egg","蛋・乳製品","蛋別帶",["生蛋、鹹蛋、皮蛋都屬於檢疫對象，不要帶","寶寶奶粉自己喝的量可以帶","寶寶的奶、副食品可以帶上飛機，過安檢時主動拿出來"]],
+  ["fruit","水果・蔬菜・植物","別帶",["台灣的新鮮水果、蔬菜、植物多數不能帶進日本","飛機上發的水果在機上吃完"]],
+  ["med","藥品","自用量",["一般成藥、維他命：2 個月用量內","處方藥：1 個月用量內，帶處方箋或英文診斷書","含「偽麻黃鹼（Pseudoephedrine）」的感冒藥、鼻塞藥不要帶","藥放原包裝，帶上機的放隨身包"]],
+  ["batt","電器・電池","2026 新制",["行動電源、備用鋰電池只能隨身帶，不能托運","每人最多 2 個，每個 160Wh 以下（20,000mAh 約 74Wh）","不能放頭頂置物櫃，要放座位下或隨身包","飛機上不能幫行動電源充電，也不能用它幫手機充電"]],
+  ["cash","現金・免稅額","超過要申報",["現金超過 100 萬日圓要申報","免稅：酒 3 瓶（每瓶 760ml）、菸 200 支、香水 2 盎司（20 歲以上）","其他物品海外市價合計 20 萬日圓內免稅"]],
+  ["form","入境手續","先準備好",["出發前用 Visit Japan Web 填好入境審查和海關申報","QR Code 截圖存在上面的航班卡，入境時點開出示","同住家人的海關申報可以由一個人一起申報"]]]],
+ ["回程・入境台灣","flback",[
+  ["meat","肉類・肉製品","一律禁止",["日本的肉類和含肉食品都不能帶回台灣：肉乾、香腸、火腿、肉包、含肉三明治","看得到肉塊的調理包、湯包也不行","一般泡麵（粉包、塊狀湯底）可以帶","豬肉產品沒申報：初犯 3 萬、第二次 30 萬、第三次起 100 萬；禽肉初犯 3 萬起"]],
+  ["fruit","水果・植物","一律禁止",["新鮮水果一律不能帶，機場賣的水果禮盒也不行","沒申報罰 3,000–15,000 元","果乾、果醬、蜜餞可以帶"]],
+  ["egg","蛋類","要注意",["生鹹蛋、皮蛋要申報","完全煮熟、蛋黃蛋白都凝固的可以"]],
+  ["food","農產品總量","6 公斤",["農畜水產品合計 6 公斤內","茶葉、乾香菇、米、花生、蒜頭、乾金針：各限 1 公斤","不含肉的餅乾、零食、昆布、乾燥海產可以帶"]],
+  ["med","藥品・隱形眼鏡","有限量",["成藥：每種最多 12 盒（瓶），合計 36 盒","處方藥：2 個月用量；帶處方箋可到 6 個月","日拋隱形眼鏡：同一度數最多 60 片，每人 1 個品牌、2 種度數"]],
+  ["batt","電器・電池","跟去程一樣",["行動電源只能隨身帶，每人最多 2 個","不能放頭頂置物櫃，機上不能用"]],
+  ["alc","菸酒","免稅額",["酒 1.5 公升（18 歲以上，不限瓶數）","菸 200 支或雪茄 25 支（20 歲以上）","免稅店買的也要算進去"]],
+  ["cash","購物・現金","超過要申報",["每人行李物品完稅價格 3.5 萬元內免稅，超過要走紅線申報","新台幣超過 10 萬、外幣等值 1 萬美元以上、人民幣超過 2 萬要申報"]]]]];
+const CICON={meat:"🍖",egg:"🥚",fruit:"🍎",med:"💊",batt:"🔋",cash:"💴",form:"📱",food:"🍪",alc:"🍶"};
+function customsHTML(){return`<div class="card cus"><h3>出入海關注意事項</h3><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
+  ${CUSTOMS.map(([t,cls,items])=>`<div class="cusg"><span class="fltag ${cls==="flgo"?"cgo":"cback"}">${ic("plane")}${t}</span>
+   ${items.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${CICON[k]||"•"}</span><b>${n}</b><span class="ctag ${/禁止|別帶/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>`).join("")}
+  <div class="src">資料來源：日本農林水產省動物檢疫所、日本海關、財政部關務署、農業部防檢署；規定可能更新，出發前再確認。</div></div>`}
 
 /* ---------- 路由與事件 ---------- */
 const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["tools","工具","wallet"],["info","資訊","info"],["sos","緊急","sos"]];
