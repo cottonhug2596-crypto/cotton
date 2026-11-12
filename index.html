@@ -756,6 +756,53 @@ header.top:not(.tophd):not(.hometop){flex-direction:column;justify-content:cente
 header.top>.row,header.top .tophd{align-items:center!important;width:100%;margin:0}
 header.top h1,.sostop h1,.hero2 h1{font-size:28px!important;line-height:1.15!important;margin:0!important}
 @media(max-width:379px){header.top h1,.sostop h1{font-size:26px!important}}
+
+/* ===== 首頁大插圖動畫＋天氣 ===== */
+.hart{position:relative;border-bottom:3px solid var(--sumi)}
+.hero2 .hart .art{border-bottom:0;background:none;display:block;width:100%;height:auto;aspect-ratio:348/186;margin:0}
+.wxchip{position:absolute;left:10px;top:10px;display:inline-flex;align-items:center;gap:4px;background:var(--washi);border:2.5px solid var(--sumi);border-radius:999px;padding:1px 10px 1px 4px;font-size:12.5px;font-weight:700;line-height:1.6}
+.wxchip .wxic{width:22px;height:22px}
+.art.big .fly{animation-name:fly2}
+.art.big .drift{animation-name:drift2;animation-duration:7s}
+.art.big .bob{animation-name:bob2;animation-duration:2.6s}
+.art.big .sway{animation-name:sway2;animation-duration:3.6s}
+.art.big .puff{animation-name:puff2}
+.art.big .nod{animation-name:nod2;animation-duration:3s}
+.art.big .glide{animation-duration:6s}
+.art.big .spin{animation-duration:16s}
+.art.big .scene .spin{display:none}
+.art .halo{animation:pulse 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.art .cross{animation:cross 14s linear infinite}
+.art .cross.slow{animation-duration:26s}
+.art .tramgo{animation-duration:11s;animation-direction:reverse}
+.art .carx{animation-duration:12s}
+.art .flap{animation:flap .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.art .petal{animation:petal 7s linear infinite}
+.art .rise{animation:rise 3.2s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.art .lift{animation:lift 9s ease-in-out infinite;transform-box:fill-box;transform-origin:0 100%}
+.art .lift.r{animation-name:liftr;transform-origin:100% 100%}
+.art .rainfx{animation:rainf .55s linear infinite}
+.art .snowfx{animation:snowf 4.5s linear infinite}
+.art .snowsway{animation:drift2 3s ease-in-out infinite alternate}
+.art .fogfx{animation:drift2 6s ease-in-out infinite alternate}
+.art .fogfx.soft{animation-duration:8s}
+.art .bolt{animation:bolt 3.5s steps(1) infinite}
+.art.w-rain .scene,.art.w-storm .scene{filter:saturate(.8)}
+@keyframes fly2{0%,100%{transform:translate(0,0)}50%{transform:translate(26px,-12px)}}
+@keyframes drift2{from{transform:translateX(-16px)}to{transform:translateX(22px)}}
+@keyframes bob2{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-3deg)}}
+@keyframes sway2{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+@keyframes puff2{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-10px) scale(1.28)}}
+@keyframes nod2{0%,100%{transform:rotate(0)}50%{transform:rotate(-12deg)}}
+@keyframes cross{from{transform:translateX(-90px)}to{transform:translateX(450px)}}
+@keyframes flap{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
+@keyframes petal{0%{transform:translate(0,0) rotate(0);opacity:0}8%{opacity:1}100%{transform:translate(-40px,170px) rotate(300deg);opacity:.3}}
+@keyframes rise{0%{transform:translateY(0) scale(.5);opacity:.95}100%{transform:translateY(-52px) scale(1.5);opacity:0}}
+@keyframes lift{0%,20%,90%,100%{transform:rotate(0)}40%,70%{transform:rotate(-40deg)}}
+@keyframes liftr{0%,20%,90%,100%{transform:rotate(0)}40%,70%{transform:rotate(40deg)}}
+@keyframes rainf{from{transform:translateY(0)}to{transform:translateY(36px)}}
+@keyframes snowf{from{transform:translateY(0)}to{transform:translateY(40px)}}
+@keyframes bolt{0%,100%{opacity:0}40%{opacity:1}43%{opacity:0}46%{opacity:1}52%{opacity:0}}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -1598,7 +1645,7 @@ const A_={
  gondola:(x1,y1,x2,y2)=>`<path d="M${x1} ${y1}L${x2} ${y2}" ${SK}/>`+G(x1+20,y1-((y1-y2)*20/(x2-x1)),`<path d="M0 0v8" ${SK}/><rect x="-11" y="8" width="22" height="16" rx="5" fill="${PAL.co}" ${SK}/><rect x="-6" y="12" width="12" height="6" fill="${PAL.w}" ${SK}/>`,"glide"),
  station:(x,y,s=1)=>G(x,y,`<rect x="0" y="20" width="120" height="44" fill="${PAL.ya}" ${SK}/><path d="M-6 22L10 6H110L126 22Z" fill="${PAL.wa}" ${SK}/><rect x="42" y="-6" width="36" height="26" fill="${PAL.ya}" ${SK}/><path d="M36 -4L60 -22L84 -4Z" fill="${PAL.wa}" ${SK}/><circle cx="60" cy="8" r="6" fill="${PAL.w}" ${SK}/><path d="M60 8v-4M60 8h3" ${SK}/>`+[12,30,82,100].map(a=>`<rect x="${a}" y="30" width="10" height="16" fill="${PAL.mi}" ${SK}/>`).join("")+`<rect x="50" y="38" width="20" height="26" fill="${PAL.w}" ${SK}/>`,"",s),
  ship:(x,y,s=1)=>G(x,y,`<path d="M0 0h80l-12 16h-58z" fill="${PAL.co}" ${SK}/><rect x="20" y="-16" width="34" height="16" fill="${PAL.w}" ${SK}/><rect x="30" y="-28" width="10" height="12" fill="${PAL.ya}" ${SK}/>`,"bob",s),
- bridge:(x,y)=>`<path d="M${x} ${y}h40l2 -34z" fill="${PAL.mi}" ${SK}/><path d="M${x+100} ${y}h-40l-2 -34z" fill="${PAL.mi}" ${SK}/>`,
+ bridge:(x,y)=>`<rect x="${x-6}" y="${y-4}" width="10" height="22" fill="${PAL.w}" ${SK}/><rect x="${x+96}" y="${y-4}" width="10" height="22" fill="${PAL.w}" ${SK}/><g class="lift"><rect x="${x}" y="${y-8}" width="50" height="8" rx="3" fill="${PAL.mi}" ${SK}/></g><g class="lift r"><rect x="${x+50}" y="${y-8}" width="50" height="8" rx="3" fill="${PAL.mi}" ${SK}/></g>`,
  tower:(x,y)=>`<path d="M${x} ${y}L${x+12} ${y-96}h8L${x+32} ${y}Z" fill="${PAL.mi}" ${SK}/><path d="M${x+6} ${y-40}h20M${x+9} ${y-64}h14" ${SK}/><rect x="${x+8}" y="${y-86}" width="16" height="10" fill="${PAL.w}" ${SK}/>`,
  yatai:(x,y)=>G(x,y,`<rect x="0" y="10" width="60" height="30" fill="${PAL.ya}" ${SK}/><path d="M-6 12L6 0H54L66 12Z" fill="${PAL.co}" ${SK}/><circle cx="12" cy="44" r="6" fill="${PAL.k}"/><circle cx="48" cy="44" r="6" fill="${PAL.k}"/><path d="M8 10v14h44v-14" fill="${PAL.w}" ${SK}/>`)+G(x+70,y+2,`<path d="M0 0v6" ${SK}/><ellipse cx="0" cy="16" rx="8" ry="10" fill="${PAL.co}" ${SK}/>`,"swing"),
  house:(x,y)=>G(x,y,`<rect x="0" y="20" width="60" height="40" fill="${PAL.ya}" ${SK}/><path d="M-8 22L30 -8L68 22Z" fill="${PAL.co}" ${SK}/><rect x="24" y="36" width="14" height="24" fill="${PAL.w}" ${SK}/><rect x="6" y="30" width="12" height="10" fill="${PAL.mi}" ${SK}/>`)+G(x+30,y-26,`<path d="M0 6q-10-8-10-14a5 5 0 0 1 10-2a5 5 0 0 1 10 2q0 6-10 14z" fill="${PAL.co}" ${SK}/>`,"pulse"),
@@ -1618,6 +1665,46 @@ const SCENES={
 };
 const DAY_ART={"2026-11-30":"hakata","2026-12-01":"dazaifu","2026-12-02":"kumamoto","2026-12-03":"aso","2026-12-04":"yufuin","2026-12-05":"beppu","2026-12-06":"mojiko","2026-12-07":"fukuoka","2026-12-08":"home"};
 const ART_LABEL={kyushu:"九州插圖：阿蘇火山冒煙、熊本城、溫泉、飛機和小車",hakata:"博多插圖：飛機飛過海邊的城市",dazaifu:"太宰府與柳川插圖：紅色鳥居、梅花和遊船",kumamoto:"熊本插圖：熊本城和銀杏樹",aso:"阿蘇與高千穗插圖：冒煙的火山、赤牛和峽谷瀑布",yufuin:"由布院插圖：由布岳、起霧的湖和長頸鹿",beppu:"別府插圖：冒著熱氣的溫泉和空中纜車",mojiko:"門司港插圖：復古車站、藍翼橋和船",fukuoka:"福岡插圖：福岡塔、海和屋台",home:"回家插圖：飛機和溫暖的家"};
+
+/* ---------- 首頁大插圖：每天的地點動畫＋當天天氣 ---------- */
+const SKY={sun:"#DCEEF6",psun:"#E2EEF3",cloud:"#E5E8EA",fog:"#ECECE9",rain:"#D5DDE4",snow:"#EDF2F6",storm:"#CDD5DC"};
+const WXN={sun:"晴天",psun:"晴時多雲",cloud:"陰天",fog:"起霧",rain:"下雨",snow:"下雪",storm:"雷雨"};
+const cloudF=(x,y,s,c,cls)=>G(x,y,`<path d="M0 16q0-12 12-12q5-11 18-7q10-7 19 3q12 0 12 16z" fill="${c}" ${SK}/>`,cls,s);
+const bird=(x,y,s,d)=>G(x,y,`<g class="flap ${d}"><path d="M-8 0q4-6 8 0q4-6 8 0" fill="none" ${SK}/></g>`,"",s);
+function wxBack(w){const big=w==="rain"||w==="storm"?"#F1EEEA":PAL.w;
+  const sun=(x,y,r)=>G(x,y,`<circle class="halo" r="${r+9}" fill="${PAL.ya}" opacity=".35"/>`+`<g class="spin"><circle r="${r}" fill="${PAL.ya}" ${SK}/><g ${SK}><path d="M0 -${r+6}v-6M0 ${r+6}v6M-${r+6} 0h-6M${r+6} 0h6M-${r+4} -${r+4}l-5 -5M${r+4} ${r+4}l5 5M${r+4} -${r+4}l5 -5M-${r+4} ${r+4}l-5 5"/></g></g>`);
+  if(w==="sun")return sun(318,2,17)+cloudF(150,-26,.7,PAL.w,"drift d1");
+  if(w==="psun")return sun(300,0,15)+cloudF(270,-10,1,PAL.w,"drift")+cloudF(120,-28,.8,PAL.w,"drift d2");
+  const c=w==="storm"?"#D9D4CE":w==="rain"?"#E9E5E0":PAL.w;
+  return cloudF(-6,-30,1.15,c,"drift")+cloudF(110,-34,1.35,c,"drift d1")+cloudF(236,-28,1.2,c,"drift d2")+(w==="cloud"?`<g class="cross slow">${cloudF(0,-4,.8,big,"")}</g>`:"")}
+function wxFront(w){
+  if(w==="rain"||w==="storm"){let d="";for(let x=-10;x<380;x+=20)for(let y=-110;y<160;y+=36){const o=(x/20%2)*18;d+=`M${x} ${y+o}v10`}
+    return`<g class="rainfx" opacity=".9"><path d="${d}" stroke="${PAL.mi}" stroke-width="3" stroke-linecap="round" fill="none"/><path d="${d}" stroke="${PAL.k}" stroke-width="1" stroke-linecap="round" fill="none" opacity=".25"/></g>`
+      +(w==="storm"?`<path class="bolt" d="M196 -20l-14 30h12l-10 26 26-36h-13l11-20z" fill="${PAL.ya}" ${SK}/>`:"")}
+  if(w==="snow"){let c="";for(let x=-6;x<380;x+=28)for(let y=-120;y<160;y+=40){const o=(x/28%2)*20;c+=`<circle cx="${x}" cy="${y+o}" r="3.2" fill="${PAL.w}" stroke="${PAL.k}" stroke-width="1.5"/>`}
+    return`<g class="snowsway"><g class="snowfx">${c}</g></g>`}
+  if(w==="fog")return`<g class="fogfx"><rect x="-60" y="62" width="260" height="14" rx="7" fill="${PAL.w}" opacity=".8"/><rect x="150" y="92" width="280" height="14" rx="7" fill="${PAL.w}" opacity=".75"/><rect x="-30" y="118" width="230" height="12" rx="6" fill="${PAL.w}" opacity=".7"/></g>`;
+  return""}
+const tram=()=>`<rect x="0" y="0" width="64" height="24" rx="6" fill="${PAL.co}" ${SK}/><rect x="6" y="5" width="12" height="9" fill="${PAL.w}" ${SK}/><rect x="24" y="5" width="12" height="9" fill="${PAL.w}" ${SK}/><rect x="42" y="5" width="12" height="9" fill="${PAL.w}" ${SK}/><path d="M32 0l-6 -10h12" fill="none" ${SK}/><circle cx="14" cy="26" r="4" fill="${PAL.k}"/><circle cx="50" cy="26" r="4" fill="${PAL.k}"/>`;
+const petals=(c,n=7)=>Array.from({length:n},(_,i)=>`<g transform="translate(${30+i*46} ${-30+(i%3)*10})"><g class="petal" style="animation-delay:${-i*1.1}s"><path d="M0 0q5-6 10 0q-5 6-10 0z" fill="${c}" ${SK}/></g></g>`).join("");
+const SIGN={
+ kyushu:()=>`<g class="cross slow">${A_.plane(0,-24,.6)}</g>`+bird(60,-14,.9,"")+bird(84,-6,.7,"d1"),
+ hakata:()=>bird(40,-14,1,"")+bird(66,-4,.8,"d1")+bird(90,-18,.7,"d2")+`<g class="cross">${A_.plane(0,-26,.55)}</g>`,
+ dazaifu:()=>petals(PAL.co,8),
+ kumamoto:()=>petals(PAL.ya,7)+`<g transform="translate(0 112)"><g class="cross tramgo">${tram()}</g></g>`,
+ aso:()=>`<g transform="translate(0 114)"><g class="cross carx">${A_.car(0,0,.7)}</g></g>`+bird(250,-12,.9,"")+bird(276,-4,.7,"d2"),
+ yufuin:()=>`<g class="fogfx soft"><rect x="-40" y="104" width="220" height="12" rx="6" fill="${PAL.w}" opacity=".85"/><rect x="170" y="112" width="220" height="10" rx="5" fill="${PAL.w}" opacity=".75"/></g>`+bird(250,-10,.9,"d1"),
+ beppu:()=>[[46,104],[70,100],[124,122],[142,118]].map(([x,y],i)=>`<g transform="translate(${x} ${y})"><circle class="rise" r="7" fill="${PAL.w}" ${SK} style="animation-delay:${-i*.9}s"/></g>`).join(""),
+ mojiko:()=>bird(140,-14,.9,"")+bird(166,-6,.7,"d1"),
+ fukuoka:()=>`<g class="cross">${A_.plane(0,-26,.6)}</g>`+bird(240,-10,.8,"d2"),
+ home:()=>`<g class="cross">${A_.plane(0,-22,.8)}</g>`
+};
+function heroArt(k,w){w=SKY[w]?w:"sun";const f=SCENES[k]||SCENES.kyushu;
+  return`<svg class="art big w-${w}" viewBox="6 -36 348 186" role="img" aria-label="${ART_LABEL[k]||""}・${WXN[w]}" preserveAspectRatio="xMidYMid slice"><rect x="-30" y="-80" width="420" height="260" fill="${SKY[w]}"/>${wxBack(w)}<g class="scene">${f()}</g>${(SIGN[k]||(()=>""))()}${wxFront(w)}</svg>`}
+function wxOf(city,date){const f=WXF&&WXF[city]&&WXF[city][date];if(!f)return null;const m=WMO(f.code);return{k:m[1],t:m[0],hi:f.hi,lo:f.lo,pp:f.pp,city}}
+function heroWx(day){const n=tokyoNow();if(day){const c=(DAY_CL[day.d]||["fukuoka"])[0];return wxOf(c,day.d)}
+  return wxOf("fukuoka",DAYS[0].d)||wxOf("fukuoka",n.date)}
+function wxChip(x,isToday){if(!x)return"";return`<span class="wxchip">${wxIcon(x.k)}${esc(CL[x.city]?CL[x.city][0]:"")}${isToday?"今天":""}・${esc(x.t)} ${Math.round(x.lo)}°/${Math.round(x.hi)}°</span>`}
 function art(k){const f=SCENES[k]||SCENES.kyushu;return`<svg class="art" viewBox="0 0 360 150" role="img" aria-label="${ART_LABEL[k]||""}" preserveAspectRatio="xMidYMid meet">${f()}</svg>`}
 
 /* ---------- 交通小標籤、必去 ---------- */
@@ -1637,7 +1724,7 @@ today(){
   const n=tokyoNow(),ti=todayIndex(),first=DAYS[0].d,last=DAYS[DAYS.length-1].d;
   let hero,body="";
   if(n.date<first){const left=dayDiff(n.date,first);const TD=secItems("todo"),done=doneIn(TD),total=TD.length,undone=TD.filter(i=>!checks.has(i.id)).slice(0,3);
-    hero=`<div class="hero hero2">${art("kyushu")}<div class="hbody"><div class="row" style="gap:6px"><span class="rpill">福岡・熊本・大分・宮崎</span><span class="rpill rp2">5 大人＋1 寶寶</span></div>
+    const hw=heroWx(null);hero=`<div class="hero hero2"><div class="hart">${heroArt("kyushu",hw&&hw.k)}${wxChip(hw,!wxOf("fukuoka",DAYS[0].d))}</div><div class="hbody"><div class="row" style="gap:6px"><span class="rpill">福岡・熊本・大分・宮崎</span><span class="rpill rp2">5 大人＋1 寶寶</span></div>
      <h1>九州家庭遊</h1><div class="hdate">2026.11.30（一）－ 12.8（二）・9 天 8 夜</div>
      <div class="cdown" data-cd="${DEPART_UTC}">${cdHTML()}</div>
      <div class="hnote">距離 7G 800 桃園起飛（11/30 03:00）</div></div></div>
@@ -1651,8 +1738,8 @@ today(){
     body=dayBody(DAYS[0],0).replace(flightHTML(DAYS[0]),"");}
   else if(n.date>last){hero=`<div class="hero">${art("home")}<span class="label">旅行結束</span><div class="ttl" style="font-size:22px">歡迎回家！</div><div class="meta">行程、筆記都還留著，到「行程」頁慢慢回味。</div></div>`}
   else{const day=DAYS[ti];const {next}=stopStates(day);const ns=next>=0?day.stops[next]:null;
-    hero=`<div class="hero">${art(DAY_ART[day.d])}<span class="label">${md(day.d)}（${day.w}）・${esc(day.tag)}</span>
-     <div class="big">D${ti+1}<small>／9</small></div><div class="ttl">${esc(day.title)}</div><div class="meta">${esc(day.route)}</div></div>
+    const hw=heroWx(day);hero=`<div class="hero hero2"><div class="hart">${heroArt(DAY_ART[day.d],hw&&hw.k)}${wxChip(hw)}</div><div class="hbody"><span class="label">${md(day.d)}（${day.w}）・${esc(day.tag)}</span>
+     <div class="big">D${ti+1}<small>／9</small></div><div class="ttl">${esc(day.title)}</div><div class="meta">${esc(day.route)}</div></div></div>
      ${ns?`<div class="now"><span class="label">${stopRange(ns.t)&&stopRange(ns.t).s<=n.min?"現在":"下一站"}・${esc(ns.t)}</span><b>${esc(ns.n)}</b>${ns.q?`<div class="row"><a class="btn p" href="${navUrl(ns.q)}" target="_blank" rel="noopener">${ic("nav")}導航過去</a></div>`:""}</div>`:""}`;
     body=dayBody(day,ti);}
   return`<header class="top hometop"><h1>${n.date<first?"首頁":"今天"}</h1><span class="jptime">日本時間 <b>${String(Math.floor(n.min/60)).padStart(2,"0")}:${String(n.min%60).padStart(2,"0")}</b></span></header>${hero}${body}`},
