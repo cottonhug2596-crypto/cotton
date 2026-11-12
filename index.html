@@ -677,6 +677,10 @@ button .cemo{vertical-align:-4px}
 .nb svg.pic{width:26px;height:26px}
 .nb span{white-space:nowrap}
 .tophd .mas{margin-left:auto}
+.wxd .wxc{padding:6px 10px 6px 6px}
+.wxd .wxc>span.wxcity{flex:0 0 64px;align-self:stretch;display:flex;align-items:center!important;justify-content:center;text-align:center;font-size:16px;font-weight:700;line-height:1.2;background:var(--yama);border:2px solid var(--sumi);border-radius:12px;padding:4px 2px}
+.wxd .wxc:nth-child(2) span.wxcity{background:var(--waka)}.wxd .wxc:nth-child(3) span.wxcity{background:var(--coral)}
+.wxd .wxc svg.wxcute{width:40px;height:40px}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -2065,8 +2069,8 @@ function weatherHTML(day){const ks=DAY_CL[day.d]||[];if(!ks.length)return"";
   const lo=live?Math.min(...fx.map(f=>f.lo)):Math.min(...ks.map(k=>CL[k][2]));
   const extra=live?[fx.some(f=>(f.code>=71&&f.code<=77)||f.code===85||f.code===86)?"可能下雪，山路要準備雪鏈":"",Math.max(...fx.map(f=>f.pp||0))>=50?"降雨機率高，記得帶傘、推車雨罩":""].filter(Boolean):[];
   const upd=WXT?new Date(WXT+9*3600e3).toISOString().slice(11,16):"";
-  const sum=ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<span class="wxc">${wxCute(w[1])}<span class="wxct"><b>${w[0]}<span>${Math.round(f.lo)}° / ${Math.round(f.hi)}°</span></b><small>降雨機率 ${f.pp==null?"—":f.pp+"%"}・${c[0]}</small></span></span>`}
-    return`<span class="wxc">${wxCute(c[3]>=80?"cloud":"psun")}<span class="wxct"><b>平均<span>${c[2].toFixed(0)}° / ${c[1].toFixed(0)}°</span></b><small>月雨量約 ${c[3].toFixed(0)} mm・${c[0]}</small></span></span>`}).join("");
+  const sum=ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<span class="wxc"><span class="wxcity">${c[0].replace("・","<br>")}</span>${wxCute(w[1])}<span class="wxct"><b>${w[0]}<span>${Math.round(f.lo)}° / ${Math.round(f.hi)}°</span></b><small>降雨機率 ${f.pp==null?"—":f.pp+"%"}</small></span></span>`}
+    return`<span class="wxc"><span class="wxcity">${c[0].replace("・","<br>")}</span>${wxCute(c[3]>=80?"cloud":"psun")}<span class="wxct"><b>平均<span>${c[2].toFixed(0)}° / ${c[1].toFixed(0)}°</span></b><small>月雨量約 ${c[3].toFixed(0)} mm</small></span></span>`}).join("");
   return`<details class="card wx wxd" data-wx="${day.d}"${wxOpen.has(day.d)?" open":""}><summary><span class="wxsum"><span class="label">${live?"天氣":"12 月平均天氣"}・${md(day.d)}（${day.w}）${extra.length?' <span class="wxw">注意</span>':""}</span><span class="wxcs">${sum}</span></span><span class="chev" aria-hidden="true"></span></summary>
    <div class="wxs">${ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<div class="wxi"><span class="wxp">${c[0]}</span><div class="wxrow">${wxIcon(w[1])}<span class="wxt"><b>${Math.round(f.hi)}°</b> / ${Math.round(f.lo)}°</span></div><span class="sub">${w[0]}・降雨機率 ${f.pp==null?"—":f.pp+"%"}</span></div>`}
      return`<div class="wxi"><span class="wxp">${c[0]}</span><span class="wxt"><b>${c[1].toFixed(0)}°</b> / ${c[2].toFixed(0)}°</span><span class="sub">月雨量 ${c[3].toFixed(0)} mm</span></div>`}).join("")}</div>
