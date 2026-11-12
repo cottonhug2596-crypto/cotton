@@ -564,7 +564,7 @@ body.gp-on .gpoff{display:none}
 .exn{flex:1;min-width:0;display:flex;flex-direction:column;font-size:14px}.exn small{color:var(--muted);font-size:11px}
 .exi b{font-variant-numeric:tabular-nums}
 .xdel{font:inherit;font-size:13px;border:2px solid var(--sumi);border-radius:999px;background:var(--washi);min-width:30px;height:30px;padding:0 8px;cursor:pointer;color:var(--ink)}
-.trbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}.trbtns label{justify-content:center;cursor:pointer}
+.trscan{justify-content:center;font-size:18px;min-height:56px}
 .trimg{width:100%;max-height:260px;object-fit:contain;border-radius:14px;border:2.5px solid var(--sumi);background:var(--sunk)}
 .trst{font-size:14px;font-weight:700;background:var(--yama);border-radius:12px;padding:8px 12px}
 .trl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
@@ -1682,11 +1682,8 @@ V.tools=function(){const t=tokyoNow().date,dayOpts=DAYS.map((d,i)=>[d.d,`D${i+1}
     ${L.slice().reverse().map(e=>`<div class="exi"><span class="exc" style="background:${(ECATS.find(x=>x[0]===e.c)||ECATS[5])[1]}">${e.c}</span><span class="exn">${esc(e.n||"")}<small>${e.p}</small></span><b>¥${fmtN(e.a)}</b><button class="xdel" data-edel="${e.id}" aria-label="刪除這筆">${expDel===e.id?"確定刪除？":"×"}</button></div>`).join("")}</div>`}).join("")}
   ${exps.length?`<div class="row" style="justify-content:center;gap:8px"><button class="btn" data-ecopy>${ic("copy")}複製全部明細</button></div>`:""}
   <p class="sub" style="text-align:center">記帳只存在這支手機，換手機或清除瀏覽資料會不見，回國前可以先「複製全部明細」存起來。</p>`}
- if(toolTab==="tr"){body=`<div class="card tcard"><div class="trbtns"><label class="btn p big trcam">${ic("camera")}拍照翻譯<input type="file" accept="image/*" capture="environment" data-trf hidden></label><label class="btn big">${ic("photo")}從相簿選<input type="file" accept="image/*" data-trf hidden></label></div>
-   <p class="sub">對準菜單、告示或包裝拍清楚，會認出日文再翻成中文。直書的字請把手機橫過來拍。需要網路。</p>
-   ${trImg?`<img class="trimg" src="${trImg}" alt="剛拍的照片">`:""}${trStatus?`<div class="trst">${esc(trStatus)}</div>`:""}
-   ${trLines.length?`<ul class="trl">${trLines.map(([a,b])=>`<li><span lang="ja">${esc(a)}</span><b>${esc(b)}</b></li>`).join("")}</ul>`:""}
-   <a class="btn" href="https://translate.google.com/?sl=ja&tl=zh-TW&op=images" target="_blank" rel="noopener">${ic("globe")}效果不好？用 Google 翻譯的相片翻譯</a></div>
+ if(toolTab==="tr"){body=`<div class="card tcard"><button class="btn p big trscan" data-gtr>${ic("camera")}掃描翻譯</button>
+   <p class="sub">會打開 Google 翻譯 App（日文翻中文），再點 App 裡的「相機」對準菜單或告示，就能看到即時翻譯。沒有安裝 App 的話，會打開 Google 翻譯網頁版，可以拍照或選照片翻譯。</p></div>
   <div class="card tcard"><h3>打字翻譯</h3><div class="chips"><button class="chip" data-trdir="ja|zh-TW" aria-pressed="${trDir==="ja|zh-TW"}">日文 → 中文</button><button class="chip" data-trdir="zh-TW|ja" aria-pressed="${trDir==="zh-TW|ja"}">中文 → 日文</button></div>
    <textarea id="trt" rows="3" placeholder="${trDir==="ja|zh-TW"?"貼上或輸入日文":"輸入想說的中文，翻成日文給店員看"}">${esc(trText)}</textarea>
    <button class="btn p" data-trgo>${ic("globe")}翻譯</button>${trOut?`<div class="trout" lang="${trDir==="ja|zh-TW"?"zh-Hant":"ja"}">${esc(trOut)}</div>`:""}</div>`}
@@ -1694,7 +1691,13 @@ V.tools=function(){const t=tokyoNow().date,dayOpts=DAYS.map((d,i)=>[d.d,`D${i+1}
 function fxCalc(){const i=document.getElementById("fxv"),o=document.getElementById("fxo");if(!i||!o)return;const v=parseFloat(i.value)||0,r=fxRate();o.textContent=fxDir==="j2t"?fmtN(v*r,0):fmtN(v/r,0)}
 document.addEventListener("input",e=>{if(e.target.id==="fxv")fxCalc();if(e.target.id==="trt")trText=e.target.value;if(e.target.id==="exd")expDay=e.target.value});
 document.addEventListener("change",e=>{if(e.target.id==="exd")expDay=e.target.value;const f=e.target.closest&&e.target.closest("[data-trf]");if(f&&f.files&&f.files[0]){trPhoto(f.files[0]);f.value=""}});
-document.addEventListener("click",async e=>{const b=e.target.closest("[data-tool],[data-fxr],[data-fxsw],[data-fxq],[data-ecat],[data-epay],[data-eadd],[data-edel],[data-ecopy],[data-trdir],[data-trgo]");if(!b)return;
+const GTR_WEB="https://translate.google.com/?sl=ja&tl=zh-TW&op=images";
+function openGTranslate(){const ua=navigator.userAgent;
+  if(/Android/i.test(ua)){location.href="intent://translate.google.com/?sl=ja&tl=zh-TW#Intent;scheme=https;package=com.google.android.apps.translate;S.browser_fallback_url="+encodeURIComponent(GTR_WEB)+";end";return}
+  if(/iPhone|iPad|iPod/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)){let left=false;const v=()=>{if(document.hidden)left=true};document.addEventListener("visibilitychange",v);
+    location.href="googletranslate://?sl=ja&tl=zh-TW";setTimeout(()=>{document.removeEventListener("visibilitychange",v);if(!left&&!document.hidden)location.href=GTR_WEB},1600);return}
+  window.open(GTR_WEB,"_blank","noopener")}
+document.addEventListener("click",async e=>{if(e.target.closest("[data-gtr]")){openGTranslate();return}const b=e.target.closest("[data-tool],[data-fxr],[data-fxsw],[data-fxq],[data-ecat],[data-epay],[data-eadd],[data-edel],[data-ecopy],[data-trdir],[data-trgo]");if(!b)return;
  if(b.dataset.tool){toolTab=b.dataset.tool;LS.set("tool",toolTab);rerender(true);return}
  if(b.hasAttribute("data-fxr")){fxLoad(true);return}
  if(b.hasAttribute("data-fxsw")){fxDir=fxDir==="j2t"?"t2j":"j2t";rerender(true);return}
