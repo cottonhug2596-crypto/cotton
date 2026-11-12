@@ -1625,6 +1625,10 @@ const A_={
  sun:(x,y,r=15)=>G(x,y,`<circle r="${r}" fill="${PAL.ya}" ${SK}/><g ${SK}><path d="M0 -${r+6}v-5M0 ${r+6}v5M-${r+6} 0h-5M${r+6} 0h5M-${r+3} -${r+3}l-4 -4M${r+3} ${r+3}l4 4M${r+3} -${r+3}l4 -4M-${r+3} ${r+3}l-4 4"/></g>`,"spin"),
  sea:(y,h=150)=>{let d=`M-4 ${y}`;for(let x=-4;x<364;x+=24)d+=` q6 -6 12 0 t12 0`;return`<path d="${d} L364 ${h+4} L-4 ${h+4}Z" fill="${PAL.mi}" ${SK}/>`},
  waves:(x,y)=>G(x,y,`<path d="M0 0q5-5 10 0t10 0" fill="none" ${SK}/>`,"bob"),
+ field:(y,c=PAL.wa)=>`<path d="M-4 ${y}q90-8 184 0t184 0V154H-4Z" fill="${c}" ${SK}/>`,
+ road:(y)=>`<path d="M-4 ${y}H364V${y+14}H-4Z" fill="#E8DFD0" ${SK}/><path d="M6 ${y+7}H364" stroke="${PAL.w}" stroke-width="3" stroke-dasharray="12 10"/>`,
+ canal:(y)=>`<path d="M-4 ${y}H364V154H-4Z" fill="${PAL.mi}" ${SK}/><path d="M20 ${y+10}h14M120 ${y+14}h18M250 ${y+9}h14" ${SK} opacity=".45"/>`,
+ lake:(x,y,rx,ry)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${PAL.mi}" ${SK}/><path d="M${x-rx/2} ${y}h16M${x+rx/5} ${y+4}h12" ${SK} opacity=".45"/>`,
  hill:(d,c=PAL.wa)=>`<path d="${d}" fill="${c}" ${SK}/>`,
  plane:(x,y,s=1,flip=false)=>G(x,y,`<g transform="${flip?"scale(-1 1) translate(-70 0)":""}"><path d="M4 6l-8-12h9l9 11z" fill="${PAL.co}" ${SK}/><path d="M0 12q0-9 11-9h42q11 0 15 9q-4 9-15 9h-42q-11 0-11-9z" fill="${PAL.w}" ${SK}/><path d="M26 13l-9 17h11l15-17z" fill="${PAL.co}" ${SK}/><g fill="${PAL.k}"><circle cx="38" cy="10" r="2"/><circle cx="46" cy="10" r="2"/><circle cx="54" cy="10" r="2"/></g></g>`,"fly",s),
  car:(x,y,s=1)=>G(x,y,`<path d="M0 18v-8q0-4 4-5l8-1 6-8h20l8 8 6 1q4 1 4 5v8z" fill="${PAL.ya}" ${SK}/><path d="M20 -2h15l5 6h-24z" fill="${PAL.mi}" ${SK}/><circle cx="13" cy="19" r="5" fill="${PAL.k}"/><circle cx="43" cy="19" r="5" fill="${PAL.k}"/>`,"bob",s),
@@ -1652,15 +1656,15 @@ const A_={
  buildings:(x,y)=>[[0,46,22,PAL.mi],[26,64,26,PAL.ya],[56,36,20,PAL.co],[80,54,24,PAL.wa],[108,40,20,PAL.mi]].map(([a,h,w,c])=>`<rect x="${x+a}" y="${y-h}" width="${w}" height="${h}" fill="${c}" ${SK}/><path d="M${x+a+6} ${y-h+10}h${w-12}M${x+a+6} ${y-h+20}h${w-12}" ${SK} opacity=".45"/>`).join("")
 };
 const SCENES={
- kyushu:()=>A_.sun(318,30)+A_.cloud(190,8,.9)+A_.cloud(250,52,.6,"d1")+A_.plane(112,26,.75)+A_.volcano(8,58)+A_.hill("M200 124q40-40 90-30t80 10V150H200Z")+A_.castle(176,74,.66)+A_.tub(306,110)+A_.sea(128)+A_.car(116,108,.75)+A_.waves(40,140),
- hakata:()=>A_.sun(36,30,13)+A_.cloud(250,14,.8)+A_.plane(150,14,.9)+A_.buildings(170,120)+A_.tree(60,118,PAL.wa)+A_.tree(90,118,PAL.ya,.8)+A_.sea(120)+A_.waves(40,138)+A_.waves(300,140),
- dazaifu:()=>A_.cloud(250,10,.8)+A_.torii(26,52,.9)+A_.plum(120,100)+A_.hill("M150 104q60-34 120-14t100 4V150H150Z")+A_.sea(112)+A_.boat(196,104,.9)+A_.waves(70,136),
+ kyushu:()=>A_.sun(318,30)+A_.cloud(190,8,.9)+A_.cloud(250,52,.6,"d1")+A_.plane(112,26,.75)+A_.volcano(8,58)+A_.hill("M200 124q40-40 90-30t80 10V150H200Z")+A_.castle(176,74,.66)+A_.tub(306,110)+A_.field(126)+A_.road(132)+A_.car(116,124,.75),
+ hakata:()=>A_.sun(36,30,13)+A_.cloud(250,14,.8)+A_.plane(150,14,.9)+A_.buildings(170,120)+A_.tree(60,118,PAL.wa)+A_.tree(90,118,PAL.ya,.8)+A_.field(120,"#E8DFD0")+A_.road(130),
+ dazaifu:()=>A_.cloud(250,10,.8)+A_.torii(26,52,.9)+A_.plum(120,100)+A_.hill("M150 104q60-34 120-14t100 4V150H150Z")+A_.field(108)+A_.canal(130)+A_.boat(196,124,.8),
  kumamoto:()=>A_.sun(310,30,13)+A_.cloud(30,18,.8)+A_.castle(120,58,1)+A_.tree(60,128,PAL.ya)+A_.tree(290,128,PAL.ya,.9)+A_.hill("M-4 128q90-14 184 0t184 0V150H-4Z"),
  aso:()=>A_.cloud(240,8,.7)+A_.volcano(10,56,.95)+A_.hill("M-4 126q80-30 170-10t200 0V150H-4Z")+A_.cow(130,100,.8)+A_.gorge(250,70)+A_.boat(270,124,.5),
- yufuin:()=>A_.hill("M140 120L210 40L235 62L260 34L340 120Z")+A_.cloud(20,10,.8)+A_.sea(112)+A_.cloud(200,96,.9,"d2")+A_.hill("M-4 116q70-12 140 0q8 4 0 40H-4Z")+A_.giraffe(56,92,.95)+A_.tree(120,118,PAL.wa,.7),
+ yufuin:()=>A_.hill("M140 120L210 40L235 62L260 34L340 120Z")+A_.cloud(20,10,.8)+A_.field(114)+A_.lake(250,134,70,11)+A_.cloud(200,96,.9,"d2")+A_.giraffe(56,92,.95)+A_.tree(120,118,PAL.wa,.7),
  beppu:()=>A_.cloud(26,10,.7)+A_.hill("M190 128L270 38L364 128Z")+A_.gondola(150,112,266,42)+A_.hill("M-4 122q100-10 200 2t170-2V150H-4Z")+A_.tub(56,118)+A_.tub(132,136)+A_.steam(96,104,"d2"),
  mojiko:()=>A_.cloud(270,8,.8)+A_.station(20,62,.95)+A_.sea(118)+A_.bridge(170,124)+A_.ship(270,112,.7)+A_.waves(150,142),
- fukuoka:()=>A_.sun(320,30,13)+A_.cloud(140,10,.8)+A_.tower(40,124)+A_.sea(124)+A_.yatai(170,70)+A_.waves(110,142),
+ fukuoka:()=>A_.sun(320,30,13)+A_.cloud(140,10,.8)+A_.tower(40,124)+A_.tree(110,122,PAL.wa,.8)+A_.tree(300,122,PAL.ya,.8)+A_.field(120,"#E8DFD0")+A_.yatai(170,78),
  home:()=>A_.cloud(30,40,.9)+A_.cloud(150,70,1,"d1")+A_.plane(120,16,1)+A_.house(260,70)+A_.hill("M180 132q60-10 180 0V150H180Z")
 };
 const DAY_ART={"2026-11-30":"hakata","2026-12-01":"dazaifu","2026-12-02":"kumamoto","2026-12-03":"aso","2026-12-04":"yufuin","2026-12-05":"beppu","2026-12-06":"mojiko","2026-12-07":"fukuoka","2026-12-08":"home"};
@@ -1724,7 +1728,7 @@ today(){
   const n=tokyoNow(),ti=todayIndex(),first=DAYS[0].d,last=DAYS[DAYS.length-1].d;
   let hero,body="";
   if(n.date<first){const left=dayDiff(n.date,first);const TD=secItems("todo"),done=doneIn(TD),total=TD.length,undone=TD.filter(i=>!checks.has(i.id)).slice(0,3);
-    const hw=heroWx(null);hero=`<div class="hero hero2"><div class="hart">${heroArt("kyushu",hw&&hw.k)}${wxChip(hw,!wxOf("fukuoka",DAYS[0].d))}</div><div class="hbody"><div class="row" style="gap:6px"><span class="rpill">福岡・熊本・大分・宮崎</span><span class="rpill rp2">5 大人＋1 寶寶</span></div>
+    const hw=heroWx(null);hero=`<div class="hero hero2"><div class="hart">${heroArt("kyushu",hw&&hw.k)}</div><div class="hbody"><div class="row" style="gap:6px"><span class="rpill">福岡・熊本・大分・宮崎</span><span class="rpill rp2">5 大人＋1 寶寶</span></div>
      <h1>九州家庭遊</h1><div class="hdate">2026.11.30（一）－ 12.8（二）・9 天 8 夜</div>
      <div class="cdown" data-cd="${DEPART_UTC}">${cdHTML()}</div>
      <div class="hnote">距離 7G 800 桃園起飛（11/30 03:00）</div></div></div>
@@ -1738,7 +1742,7 @@ today(){
     body=dayBody(DAYS[0],0).replace(flightHTML(DAYS[0]),"");}
   else if(n.date>last){hero=`<div class="hero">${art("home")}<span class="label">旅行結束</span><div class="ttl" style="font-size:22px">歡迎回家！</div><div class="meta">行程、筆記都還留著，到「行程」頁慢慢回味。</div></div>`}
   else{const day=DAYS[ti];const {next}=stopStates(day);const ns=next>=0?day.stops[next]:null;
-    const hw=heroWx(day);hero=`<div class="hero hero2"><div class="hart">${heroArt(DAY_ART[day.d],hw&&hw.k)}${wxChip(hw)}</div><div class="hbody"><span class="label">${md(day.d)}（${day.w}）・${esc(day.tag)}</span>
+    const hw=heroWx(day);hero=`<div class="hero hero2"><div class="hart">${heroArt(DAY_ART[day.d],hw&&hw.k)}</div><div class="hbody"><span class="label">${md(day.d)}（${day.w}）・${esc(day.tag)}</span>
      <div class="big">D${ti+1}<small>／9</small></div><div class="ttl">${esc(day.title)}</div><div class="meta">${esc(day.route)}</div></div></div>
      ${ns?`<div class="now"><span class="label">${stopRange(ns.t)&&stopRange(ns.t).s<=n.min?"現在":"下一站"}・${esc(ns.t)}</span><b>${esc(ns.n)}</b>${ns.q?`<div class="row"><a class="btn p" href="${navUrl(ns.q)}" target="_blank" rel="noopener">${ic("nav")}導航過去</a></div>`:""}</div>`:""}`;
     body=dayBody(day,ti);}
