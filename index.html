@@ -1,0 +1,1712 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#FFFCF6"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#FFFCF6;color:#3E3A39}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>九州家庭旅行</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&display=swap">
+<style>
+/* 版面：日系繪本風手機 App。頂端固定選單（今天／行程／地圖／景點美食／清單／資訊），和紙白底、墨灰粗框、平塗四色。刻意只做淺色一種外觀。 */
+:root{
+  --washi:#FFFCF6; --sumi:#3E3A39; --coral:#F2A497; --yama:#F6D27A; --mizu:#A8D3E6; --waka:#B9DAA5;
+  --bg:var(--washi); --surface:var(--washi); --sunk:#F5EEE1; --line:#DCD2C3;
+  --ink:var(--sumi); --muted:#6B6461; --teal:var(--sumi); --teal2:var(--sumi); --teal-soft:var(--mizu);
+  --brick:#A3443A; --brick-soft:#FBE3DD; --apricot:var(--yama); --apricot-soft:#FCEFCB;
+  --on-dark:var(--sumi);
+  --display:"Huninn","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --body:"Huninn","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:74px 32px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding-top:16px}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-family:var(--display);font-weight:400;font-size:28px;line-height:1.15;color:var(--teal)}
+h2{font-family:var(--display);font-weight:400;font-size:21px;line-height:1.25;color:var(--teal)}
+h3{font-size:15px;font-weight:700;color:var(--teal)}
+.sub{font-size:13px;color:var(--muted)}
+.label{font-size:12px;letter-spacing:.12em;font-weight:700;color:var(--brick)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 11px;white-space:nowrap}
+.pill.t{background:var(--teal);color:var(--on-dark)}
+.pill.o{border:1.5px solid var(--brick-soft);color:var(--brick);background:var(--surface)}
+.pill.a{background:var(--apricot-soft);color:var(--brick)}
+button,a{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--brick);outline-offset:2px}
+.btn{font:inherit;font-size:13.5px;font-weight:700;display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:7px 12px;min-height:38px;
+  border:1px solid var(--line);background:var(--surface);color:var(--teal);text-decoration:none;cursor:pointer}
+.btn.p{background:var(--teal2);border-color:var(--teal2);color:var(--on-dark)}
+.btn svg{width:16px;height:16px;flex:none}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* 頁首：博多織條紋飾邊 */
+.top{padding-bottom:12px;border-bottom:5px solid transparent;
+  border-image:repeating-linear-gradient(90deg,var(--teal) 0 10px,transparent 10px 14px,var(--teal) 14px 16px,transparent 16px 20px,var(--brick) 20px 24px,transparent 24px 28px) 5}
+
+/* 今天 */
+.hero{background:var(--teal);color:var(--on-dark);border-radius:20px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:6px}
+.hero .big{font-family:var(--display);font-size:46px;line-height:1;font-variant-numeric:tabular-nums}
+.hero .big small{font-size:18px;margin-left:6px}
+.hero .ttl{font-size:18px;font-weight:700}
+.hero .meta{font-size:13px;opacity:.85}
+.now{border:2px solid var(--brick);background:var(--brick-soft);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.now .label{color:var(--brick)}
+.now b{font-size:18px;color:var(--ink)}
+
+/* 日期切換 */
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-inline:-4px;padding-inline:4px}
+.days::-webkit-scrollbar{display:none}
+.days button{font:inherit;flex:0 0 auto;width:58px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:6px 0 7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.2}
+.days button b{font-family:var(--display);font-weight:400;font-size:18px}
+.days button small{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.days button[aria-pressed="true"]{background:var(--brick);border-color:var(--brick);color:#fff}
+.days button[aria-pressed="true"] small{color:#fff;opacity:.85}
+.days button.today::after{content:"今天";font-size:10px;font-weight:700;color:var(--brick);margin-top:1px}
+.days button.today[aria-pressed="true"]::after{color:#fff}
+
+/* 時間軸 */
+.tl{display:flex;flex-direction:column;position:relative}
+.tl::before{content:"";position:absolute;left:15px;top:18px;bottom:18px;border-left:2px dashed var(--line)}
+.st{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;padding:10px 0;position:relative;align-items:start}
+.dot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--teal2);color:var(--on-dark);position:relative;z-index:1;font-weight:700;font-size:14px}
+.dot svg{width:16px;height:16px}
+.st.spot .dot{background:var(--brick);color:#fff}
+.st.done{opacity:.55}
+.st.cur .dot{box-shadow:0 0 0 5px var(--brick-soft)}
+.st .tm{font-size:13px;font-weight:700;color:var(--brick);font-variant-numeric:tabular-nums}
+.st .nm{font-size:16px;font-weight:700;color:var(--ink);line-height:1.35}
+.st.move .nm{font-size:15px;color:var(--teal)}
+.st .ds{font-size:13px;color:var(--muted)}
+.st .row{margin-top:6px}
+.badge{font-size:11px;font-weight:700;color:#fff;background:var(--brick);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+.legs{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:13.5px}
+.legs span:nth-child(2n){font-weight:700;color:var(--brick);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tips{display:flex;flex-direction:column;gap:6px;font-size:14px;margin:0;padding:0;list-style:none}
+.tips li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:6px}
+.tips li::before{content:"✓";color:var(--teal2);font-weight:700}
+.foods{display:flex;gap:6px;flex-wrap:wrap}
+.hotel{background:var(--apricot-soft);border-color:transparent}
+textarea{width:100%;min-height:96px;font:inherit;font-size:14px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:10px 12px;resize:vertical}
+
+/* 美食 */
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chips button{font:inherit;font-size:13.5px;flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 13px;cursor:pointer;min-height:36px}
+.chips button small{color:var(--muted);margin-left:4px;font-size:11.5px}
+.chips button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:var(--on-dark)}
+.chips button[aria-pressed="true"] small{color:var(--on-dark);opacity:.8}
+.fd{display:flex;flex-direction:column;gap:4px}
+.fd .hd{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.fd .nm{font-weight:700;font-size:16px}
+.fd .jp{font-size:12.5px;color:var(--muted)}
+.fd p{margin:2px 0 4px;font-size:14px}
+.tag{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--teal-soft);color:var(--teal);white-space:nowrap}
+.heart{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;min-width:44px;height:36px;cursor:pointer;font-size:16px;flex:none}
+.heart[aria-pressed="true"]{color:var(--brick);border-color:var(--brick);background:var(--brick-soft)}
+.cat{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:1px}
+
+.acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.acts .btn{justify-content:center;padding:7px 4px;font-size:13px}
+.btn.ph{background:var(--apricot-soft);border-color:transparent;color:var(--brick)}
+@media (max-width:420px){.acts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.plan{border:2px solid var(--teal2);background:var(--teal-soft)}
+.src{font-size:11.5px;color:var(--muted);margin-top:-2px}
+.search{position:relative}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted)}
+.search input{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px 10px 38px;min-height:44px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* 清單 */
+.prog{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--teal2);border-radius:99px;transition:width .3s}
+.ck{display:flex;flex-direction:column}
+.ck label{display:flex;gap:12px;align-items:center;min-height:44px;font-size:15px;cursor:pointer;border-bottom:1px dashed var(--line)}
+.ck label:last-child{border-bottom:0}
+.ck input{width:20px;height:20px;accent-color:var(--teal2);flex:none}
+.ck input:checked+span:not(.ckt){color:var(--muted);text-decoration:line-through}
+
+.seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.seg.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.seg button{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;min-height:52px}
+.seg button b{font-size:14px;white-space:nowrap}
+.seg button small{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.seg button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:var(--on-dark)}
+.seg button[aria-pressed="true"] small{color:var(--on-dark);opacity:.85}
+.ckt{display:flex;flex-direction:column;padding-block:8px;min-width:0}
+.ckt small{font-size:12.5px;color:var(--muted);line-height:1.4}
+.ck input:checked+.ckt>span{color:var(--muted);text-decoration:line-through}
+/* 資訊 */
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:500}
+.tbl{overflow-x:auto}
+.tbl table{border-collapse:collapse;font-size:13px;width:100%;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.tbl th{color:var(--muted);font-weight:500}
+.tbl tr.me td{color:var(--brick);font-weight:700}
+.sel{user-select:all}
+
+.where{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--on-dark);background:var(--brick);border-color:var(--brick);padding:16px 18px}
+.where svg{width:34px;height:34px;flex:none}
+.where b{display:block;font-size:19px}
+.where small{font-size:13px;opacity:.9}
+.btn.big{justify-content:flex-start;padding:10px 14px;text-align:left}
+.btn.big span{display:flex;flex-direction:column;min-width:0}
+.btn.big small{font-weight:400;font-size:12.5px;opacity:.9}
+.stops{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;counter-reset:s}
+.stops li{display:grid;grid-template-columns:28px 76px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px;counter-increment:s}
+.stops li::before{content:counter(s);width:24px;height:24px;border-radius:50%;background:var(--brick);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
+.stops li span{font-size:12px;color:var(--brick);font-weight:700;font-variant-numeric:tabular-nums}
+.stops li:last-child,.picks li:last-child{border-bottom:0}
+.nearby{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.nearby .btn{justify-content:center;padding:7px 2px;font-size:13px}
+.picks{list-style:none;margin:0;padding:0}
+.picks li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}
+.pn{display:flex;flex-direction:column;min-width:0}
+.pn small{font-size:12px;color:var(--muted)}
+@media (max-width:420px){.stops li{grid-template-columns:28px minmax(0,1fr) auto}.stops li span{display:none}}
+.chips button.off{border-style:dashed}
+.offnote{font-size:13.5px;background:var(--apricot-soft);border-radius:12px;padding:10px 12px;line-height:1.5}
+.offnote b{display:inline-block;background:var(--brick);color:#fff;font-size:11.5px;border-radius:6px;padding:0 6px;margin-right:6px}
+.btn.offb{border-style:dashed}
+.offc{border-style:dashed;border-width:1.5px}
+.warnc{display:flex;flex-direction:column;gap:8px;border:2px solid var(--brick);background:var(--surface)}
+.wl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.wl li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start;font-size:14px;line-height:1.5}
+.wt{font-size:11.5px;font-weight:700;border-radius:6px;padding:2px 7px;white-space:nowrap;margin-top:1px}
+.wl li.err .wt{background:var(--brick);color:#fff}
+.wl li.warn .wt{background:var(--apricot-soft);color:var(--brick);border:1px solid var(--apricot)}
+.wl li.chk .wt{background:var(--teal-soft);color:var(--teal)}
+.days button{position:relative}
+.wd{position:absolute;top:4px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--brick);border:1.5px solid var(--surface)}
+.st .wl{margin-top:8px;background:var(--brick-soft);border-radius:10px;padding:8px 10px;gap:6px}
+.st .wl li{font-size:13px}
+.wsum{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.wt.e{background:var(--brick);color:#fff}.wt.w{background:var(--apricot-soft);color:var(--brick);border:1px solid var(--apricot)}.wt.c{background:var(--teal-soft);color:var(--teal)}
+.tix{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.tk{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--ink);background:var(--apricot-soft);border:1px dashed var(--apricot);border-radius:10px;padding:8px 10px;min-height:44px}
+.tk svg{width:20px;height:20px;color:var(--brick);flex:none}
+.tk span{display:flex;flex-direction:column;min-width:0}
+.tk b{font-size:14px}
+.tk small{font-size:12px;color:var(--muted)}
+.tk em{font-style:normal;font-weight:700;color:var(--brick);margin-right:6px}
+.add summary{cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:700;color:var(--teal2);min-height:44px;list-style:none}
+.add summary::-webkit-details-marker{display:none}
+.add summary svg{width:18px;height:18px}
+.add[open] summary{margin-bottom:6px}
+.card>.add{border-top:1px dashed var(--line);margin-top:6px;padding-top:4px}
+.fm{display:flex;flex-direction:column;gap:10px}
+.fm label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+.fm input:not([type=checkbox]),.fm select,.addi input{font:inherit;font-size:15px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-height:44px;width:100%}
+.f2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fm label.cb{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-size:15px;padding-top:20px}
+.fm label.cb input{width:20px;height:20px;accent-color:var(--teal2)}
+.addi{display:flex;gap:6px;margin-top:6px}
+.addi input{flex:1;min-width:0}
+.mine{display:inline-block;font-size:11px;font-weight:700;color:var(--teal);background:var(--teal-soft);border-radius:6px;padding:0 6px;margin-left:6px;vertical-align:2px;text-decoration:none}
+.del{font:inherit;font-size:12.5px;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;padding:4px 10px;min-height:32px;cursor:pointer;flex:none}
+.del.sure{border-color:var(--brick);color:#fff;background:var(--brick)}
+.ckrow{display:flex;align-items:center;gap:8px;border-bottom:1px dashed var(--line)}
+.ckrow:last-child{border-bottom:0}
+.ckrow .del{opacity:.75}
+.ckrow label{flex:1;border-bottom:0!important}
+.f3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pv{background:var(--sunk);border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.6}
+.pv .late{color:var(--brick)}
+.leg{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--teal2);margin-bottom:2px}
+.leg svg{width:14px;height:14px}
+.shf{display:inline-block;font-size:11px;font-weight:700;color:var(--brick);background:var(--brick-soft);border-radius:6px;padding:0 6px;margin-left:6px}
+.wl li.route .wt{background:var(--teal2);color:var(--on-dark)}
+.pickbox{display:flex;flex-direction:column;gap:6px;background:var(--apricot-soft);border-radius:12px;padding:10px}
+.pks{display:flex;flex-wrap:wrap;gap:6px}
+.pk{font:inherit;display:flex;align-items:center;gap:6px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:6px 10px;min-height:44px;cursor:pointer;max-width:100%}
+.pk svg{width:16px;height:16px;flex:none;color:var(--brick)}
+.pk.spot svg{color:var(--teal2)}
+.pk span{display:flex;flex-direction:column;min-width:0;font-size:14px;font-weight:700;line-height:1.3}
+.pk small{font-weight:400;font-size:11.5px;color:var(--muted)}
+.pk.on{border-color:var(--teal2);box-shadow:0 0 0 2px var(--teal-soft)}
+.pko summary{cursor:pointer;font-size:13px;color:var(--teal2);font-weight:700;min-height:36px;display:flex;align-items:center}
+.books{display:flex;flex-wrap:wrap;gap:6px}
+.bk{font:inherit;display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;border-radius:999px;padding:6px 14px;min-height:36px;border:1.5px solid;line-height:1.3}
+.bk span{font-weight:400;color:var(--ink)}
+.bk.ok{color:var(--teal2);border-color:var(--teal-soft);background:var(--teal-soft)}
+.bk.todo{color:var(--brick);border-color:var(--apricot);background:var(--apricot-soft);border-style:dashed;cursor:pointer}
+button.bk.ok{cursor:pointer}
+.lodge{font-size:14px;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--line)}
+.lodge b{color:var(--brick)}
+.wx{display:flex;flex-direction:column;gap:8px;background:linear-gradient(var(--teal-soft),var(--surface) 70%)}
+.wxs{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.wxi{display:flex;flex-direction:column}
+.wxp{font-size:13px;font-weight:700;color:var(--teal)}
+.wxt{font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
+.wxt b{font-family:var(--display);font-weight:400;font-size:30px;color:var(--ink)}
+.wxa{margin:0;font-size:14px}
+.fl{display:flex;flex-direction:column;gap:10px;background:linear-gradient(var(--brick-soft),var(--surface) 80%)}
+.flr{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:start}
+.flr>div{display:flex;flex-direction:column;min-width:0}
+.flt{font-family:var(--display);font-weight:400;font-size:32px;line-height:1.1;font-variant-numeric:tabular-nums}
+.flc{font-size:13px;font-weight:700;color:var(--brick);letter-spacing:.06em}
+.flm{align-items:center;padding-top:10px}
+.flm svg{width:22px;height:22px;color:var(--teal2)}
+.fli{display:flex;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.fli span{background:var(--sunk);border-radius:6px;padding:1px 8px}
+.gh{display:flex;gap:6px;align-items:center}
+.gh input{font-weight:700;color:var(--teal)!important}
+.card.editing{border-style:dashed;border-color:var(--teal2)}
+.ckrow.ed{align-items:flex-start;padding-bottom:8px}
+.ckm{flex:1;min-width:0;display:flex;flex-direction:column}
+.ckm>label:first-child{border-bottom:0!important}
+.ck input.ni{flex:none;height:auto;accent-color:auto;font:inherit;font-size:13.5px;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-height:38px;margin-left:32px;width:calc(100% - 32px)}
+.ckrow.ed .del{margin-top:10px}
+.ckt small.unote{color:var(--teal2);font-weight:500}
+.warnline{color:var(--brick);font-size:13.5px}
+.wxrow{display:flex;align-items:center;gap:6px}
+.wxic{width:38px;height:38px;flex:none}
+.st .sx{grid-column:2/4;min-width:0}
+.btn.mapb{min-height:36px;padding:4px 12px;font-size:13px;gap:4px;margin-top:2px}
+.btn.mapb svg{width:14px;height:14px}
+.st .tm{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.st .tm .mode{margin:0}
+/* 底部分頁列 */
+nav.tabs{position:fixed;left:0;right:0;top:0;z-index:20;background:var(--surface);border-bottom:3px solid var(--sumi);
+  padding:calc(6px + env(safe-area-inset-top,0px)) max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px))}
+nav.tabs .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:11.5px;color:var(--muted);text-decoration:none;border-radius:10px;min-height:48px}
+nav.tabs a svg{width:22px;height:22px}
+nav.tabs a[aria-current="page"]{color:var(--brick);font-weight:700}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--yama);color:var(--ink);border:3px solid var(--sumi);font-weight:700;padding:8px 16px;border-radius:999px;font-size:13.5px;z-index:30}
+.note{font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.prog i{transition:none}}
+
+/* ===== 日系繪本風 ===== */
+body{font-family:var(--body);letter-spacing:.02em}
+b,strong,h3,.nm,.btn,.label{font-weight:400}
+h1{font-size:30px;color:var(--ink)}
+h2,h3{color:var(--ink)}
+h3{font-family:var(--display);font-size:17px}
+.label{letter-spacing:.14em;color:var(--brick)}
+.top{border-bottom:0;border-image:none;padding-bottom:4px}
+.card{border:3px solid var(--sumi);border-radius:26px;background:var(--washi);padding:16px 18px}
+.btn{border:2.5px solid var(--sumi);border-radius:999px;background:var(--washi);color:var(--ink);min-height:40px;padding:7px 14px}
+.btn.p{background:var(--coral);color:var(--ink)}
+.btn.ph{background:var(--yama);color:var(--ink);border:2.5px solid var(--sumi)}
+.btn:active{transform:translateY(1px)}
+nav.tabs a{color:var(--ink);border:2.5px solid transparent;border-radius:16px;margin:0 2px}
+nav.tabs a[aria-current="page"]{background:var(--yama);color:var(--ink);border-color:var(--sumi)}
+.hero{background:var(--mizu);color:var(--ink);border:3px solid var(--sumi);border-radius:30px;padding:14px 18px 18px}
+.hero .label{color:var(--ink)!important}
+.hero .meta{opacity:1}
+.hero .art{margin:-2px -6px 4px;width:calc(100% + 12px);height:auto;max-width:none}
+.artcard{background:var(--washi);border:3px solid var(--sumi);border-radius:26px;padding:6px 6px 0;overflow:hidden}
+.art{display:block;width:100%;height:auto}
+.days button{border:2.5px solid var(--sumi);border-radius:18px;background:var(--washi);color:var(--ink)}
+.days button[aria-pressed="true"]{background:var(--yama);border-color:var(--sumi);color:var(--ink)}
+.days button[aria-pressed="true"] small{color:var(--ink);opacity:1}
+.days button.today::after{color:var(--brick)}
+.days button.today[aria-pressed="true"]::after{color:var(--brick)}
+.chips button,.seg button{border:2.5px solid var(--sumi);background:var(--washi);color:var(--ink)}
+.chips button[aria-pressed="true"]{background:var(--mizu);border-color:var(--sumi);color:var(--ink)}
+.chips button[aria-pressed="true"] small{color:var(--ink);opacity:1}
+.seg button[aria-pressed="true"]{background:var(--waka);border-color:var(--sumi);color:var(--ink)}
+.seg button[aria-pressed="true"] small{color:var(--ink);opacity:1}
+.pill.t{background:var(--mizu);color:var(--ink)}
+.pill.o{border:2px solid var(--sumi);color:var(--ink);background:var(--yama)}
+.pill.a{background:var(--apricot-soft);color:var(--ink);border:2px solid var(--sumi)}
+.tl::before{border-left:3px dashed var(--line)}
+.dot{background:var(--waka);color:var(--ink);border:2.5px solid var(--sumi);width:34px;height:34px}
+.st.spot .dot{background:var(--coral);color:var(--ink)}
+.st.cur .dot{box-shadow:0 0 0 5px var(--yama)}
+.st .tm{color:var(--brick)}
+.badge{background:var(--yama);color:var(--ink);border:2px solid var(--sumi)}
+.now{border:3px solid var(--sumi);background:var(--yama);border-radius:22px}
+.where{background:var(--coral);color:var(--ink);border:3px solid var(--sumi)}
+.prog{border:2.5px solid var(--sumi);background:var(--washi);height:14px}
+.prog i{background:var(--waka);border-radius:0}
+.ck input{accent-color:var(--coral)}
+.wl li.err .wt,.wt.e{background:var(--coral);color:var(--ink);border:2px solid var(--sumi)}
+.wl li.route .wt{background:var(--mizu);color:var(--ink);border:2px solid var(--sumi)}
+.wl li.warn .wt,.wt.w{background:var(--yama);color:var(--ink);border:2px solid var(--sumi)}
+.wl li.chk .wt,.wt.c{background:var(--waka);color:var(--ink);border:2px solid var(--sumi)}
+.st .wl{background:var(--brick-soft);border:2px solid var(--sumi);border-radius:16px}
+.warnc{border-color:var(--sumi)}
+.bk{border-width:2.5px}
+.bk.ok{background:var(--waka);color:var(--ink);border-color:var(--sumi)}
+.bk.todo{background:var(--yama);color:var(--ink);border-color:var(--sumi)}
+.lodge{border-bottom:3px dotted var(--line)}
+.lodge b{color:var(--brick)}
+.wx{background:#EAF4F9}
+.fl{background:#FDEDE9}
+.flc{color:var(--brick)}
+.flm svg{color:var(--ink)}
+.fli span{background:var(--washi);border:2px solid var(--sumi);border-radius:999px;padding:1px 10px}
+.tk{background:var(--apricot-soft);border:2.5px dashed var(--sumi);border-radius:16px}
+.tk svg,.tk em{color:var(--brick)}
+.pk{border:2.5px solid var(--sumi);border-radius:16px;background:var(--washi)}
+.pk.on{background:var(--mizu);box-shadow:none}
+.pickbox{background:var(--apricot-soft);border:2.5px dashed var(--sumi);border-radius:18px}
+.del{border:2px solid var(--sumi);color:var(--ink);background:var(--washi)}
+.del.sure{background:var(--coral);color:var(--ink);border-color:var(--sumi)}
+.heart{border:2.5px solid var(--sumi);color:var(--ink);background:var(--washi)}
+.heart[aria-pressed="true"]{background:var(--coral);color:var(--ink);border-color:var(--sumi)}
+.offnote{background:var(--apricot-soft);border:2.5px solid var(--sumi);border-radius:18px}
+.offnote b{background:var(--coral);color:var(--ink);border:2px solid var(--sumi)}
+.mine{background:var(--waka);color:var(--ink);border:1.5px solid var(--sumi)}
+.tag{background:var(--mizu);color:var(--ink);border:1.5px solid var(--sumi)}
+.shf{background:var(--yama);color:var(--ink);border:1.5px solid var(--sumi)}
+.leg{color:var(--ink)}
+.stops li::before{background:var(--coral);color:var(--ink);border:2px solid var(--sumi)}
+.search input,.fm input:not([type=checkbox]),.fm select,.addi input,textarea,.ck input.ni{border:2.5px solid var(--sumi);border-radius:14px;background:var(--washi)}
+.pv{background:var(--sunk);border:2px dashed var(--line);border-radius:16px}
+.plan{border:3px solid var(--sumi);background:#EAF4F9}
+.card.editing{border-style:dashed;border-color:var(--sumi)}
+.offc{border-style:dashed}
+.where svg{color:var(--ink)}
+.wsum .wt{border-radius:999px}
+.wd{background:var(--coral);border:2px solid var(--sumi)}
+.cat{border:1.5px solid var(--sumi)}
+.add summary{color:var(--brick)}
+/* 交通小標籤、必去 */
+.mode{display:inline-block;font-size:11.5px;line-height:1.5;border:2px solid var(--sumi);border-radius:999px;padding:0 9px;margin-right:6px;color:var(--ink);vertical-align:1px}
+.m-plane{background:var(--mizu)}.m-train,.m-bus,.m-sub{background:var(--yama)}.m-car{background:var(--waka)}.m-walk{background:var(--coral)}.m-hotel{background:var(--washi)}
+.must{display:inline-flex;align-items:center;gap:3px;font-size:12px;line-height:1.5;background:var(--coral);color:var(--ink);border:2px solid var(--sumi);border-radius:999px;padding:0 9px 0 7px;margin-left:8px;vertical-align:2px;transform:rotate(-3deg)}
+.must svg{width:12px;height:12px}
+.st.mustst .nm{font-size:17px}
+.dayhead{display:flex;flex-direction:column;gap:6px}
+.countdown{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.countdown .big{font-family:var(--display);font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+/* 動畫 */
+.art g[class]{transform-box:fill-box;transform-origin:center}
+.art .drift{animation:drift 9s ease-in-out infinite alternate}
+.art .fly{animation:fly 6s ease-in-out infinite}
+.art .bob{animation:bob 3.4s ease-in-out infinite}
+.art .sway{animation:sway 5s ease-in-out infinite;transform-origin:50% 100%}
+.art .steam{animation:steam 2.8s ease-in-out infinite;transform-origin:50% 100%}
+.art .puff{animation:puff 3.6s ease-in-out infinite}
+.art .nod{animation:nod 4s ease-in-out infinite;transform-origin:30% 100%}
+.art .glide{animation:glide 8s ease-in-out infinite alternate}
+.art .swing{animation:sway 3s ease-in-out infinite;transform-origin:50% 0}
+.art .pulse{animation:pulse 2.4s ease-in-out infinite}
+.art .spin{animation:spin 30s linear infinite}
+.art .fall{animation:fall 1.2s linear infinite}
+.art .d1{animation-delay:-1.2s}.art .d2{animation-delay:-2.1s}
+@keyframes drift{from{transform:translateX(-6px)}to{transform:translateX(10px)}}
+@keyframes fly{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,-6px)}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(-2deg)}}
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes steam{0%{opacity:.25;transform:translateY(4px) scaleY(.85)}50%{opacity:1}100%{opacity:.2;transform:translateY(-6px) scaleY(1.1)}}
+@keyframes puff{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.12)}}
+@keyframes nod{0%,100%{transform:rotate(0)}50%{transform:rotate(-6deg)}}
+@keyframes glide{from{transform:translate(0,0)}to{transform:translate(78px,-46px)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fall{to{stroke-dashoffset:-12}}
+.bounce{animation:bounceIn .55s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes bounceIn{0%{transform:translateY(14px) scale(.97);opacity:.35}60%{transform:translateY(-5px) scale(1.01);opacity:1}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.art *,.bounce{animation:none!important}.btn:active{transform:none}}
+
+/* ===== 時間軸（尺規＋卡片） ===== */
+.tlx{display:grid;grid-template-columns:58px minmax(0,1fr);gap:8px;align-items:start;margin:-4px -6px}
+.tlx.nor{display:block;height:auto}
+.ruler{position:sticky;top:84px;height:min(calc(100vh - 120px),560px)}
+.ruler .ri{position:absolute;inset:14px 0}
+.ruler [aria-hidden]{}
+.rh{position:absolute;left:0;right:0;height:0}
+.rh span{position:absolute;right:20px;top:-8px;font-size:11px;line-height:16px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rh i{position:absolute;right:2px;width:24px;top:0;border-top:1.5px solid var(--line)}
+.rh.hf i{width:10px;right:9px;border-top-style:dashed}
+.rh.ed span{color:var(--ink);font-weight:700}
+.rh.ed i{border-top-color:var(--sumi)}
+.rs{position:absolute;right:10px;width:8px;border-radius:5px;cursor:pointer;min-height:5px;transition:width .2s,right .2s}
+.rs.on{width:12px;right:8px;box-shadow:0 0 0 2px var(--sumi)}
+.c-spot{--cc:var(--yama)}.c-food{--cc:var(--coral)}.c-hotel{--cc:var(--mizu)}.c-move{--cc:var(--waka)}
+.rs{background:var(--cc)}
+.rm{position:absolute;right:6px;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:var(--washi);border:3px solid var(--sumi);z-index:2;transition:top .12s linear;pointer-events:none}
+.rn{position:absolute;left:0;right:0;height:0;border-top:2px solid var(--brick);z-index:1}
+.rn span{position:absolute;left:0;top:-9px;background:var(--brick);color:#fff;font-size:10px;font-weight:700;border-radius:4px;padding:0 4px;line-height:17px;font-style:normal}
+.tls{position:relative;display:flex;flex-direction:column;gap:12px;padding:4px 4px 8px 2px;scrollbar-width:thin}
+.tlx.nor .tls{overflow:visible}
+.tc{position:relative;border:3px solid var(--sumi);border-radius:22px;background:var(--washi);padding:12px 14px 12px 20px;display:flex;flex-direction:column;gap:3px;box-shadow:inset 7px 0 0 var(--cc);scroll-margin-top:4px}
+.tc.done{opacity:.55}
+.tc.cur{box-shadow:inset 7px 0 0 var(--cc),0 0 0 4px var(--yama)}
+.tch{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px}
+.ctag{font-size:12px;font-weight:700;background:var(--cc);border-radius:999px;padding:1px 10px;line-height:20px}
+.tch .mode{margin:0}
+.tch .sp{flex:1}
+.tc .nm{font-size:17px;font-weight:700;line-height:1.35}
+.tc .tt{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.tc .ds{font-size:13px;color:var(--muted)}
+.tc .sx{margin-top:6px}
+.tc{padding:0;gap:0}
+.tc .th{cursor:pointer;display:flex;align-items:center;gap:8px;padding:10px 14px 10px 20px;min-height:58px}
+.tc:not(.open) .tb{display:none!important}
+.tc .chev{flex:0 0 auto;width:9px;height:9px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
+.tc.open .chev{transform:rotate(-135deg);margin-top:4px}
+.tc .nm{flex:1;min-width:0;font-size:16px}
+.tc .btn.mapb{margin:0;flex:0 0 auto}
+.tc .tb{padding:0 14px 12px 20px;display:flex;flex-direction:column;gap:3px}
+.wdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--brick);margin-left:6px;vertical-align:2px}
+.tleg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);border-top:1.5px solid var(--line);margin-top:12px;padding-top:10px}
+.tleg i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--cc);margin-right:5px}
+.tlhint{font-size:12px;color:var(--muted);margin:0 0 8px}
+.rt{position:absolute;right:12px;width:4px;background:repeating-linear-gradient(var(--waka) 0 4px,transparent 4px 7px);cursor:pointer;border-radius:2px}
+.rt.on{width:8px;right:10px;background:repeating-linear-gradient(var(--sumi) 0 4px,transparent 4px 7px)}
+.tleg i.dash{border-radius:0;width:4px;height:12px;vertical-align:-1px;background:repeating-linear-gradient(var(--waka) 0 3px,transparent 3px 5px)}
+.tv{display:flex;align-items:center;gap:8px;margin:-4px 0;padding:2px 6px 2px 14px;font-size:13px;color:var(--ink);border-left:3px dashed var(--waka);margin-left:18px}
+.tv .tvi{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--waka);border:2px solid var(--sumi);flex:0 0 auto}
+.tv .tvi svg{width:13px;height:13px}
+.tv .tvt{font-weight:700;white-space:nowrap}
+.tv .tvr{color:var(--muted);font-size:12px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tlx2{position:relative;display:flex;flex-direction:column;margin:0 -6px}
+.tr{display:grid;grid-template-columns:62px minmax(0,1fr);gap:6px}
+.tr .rl{position:relative;cursor:pointer}
+.tr .bar{position:absolute;right:8px;top:4px;bottom:4px;width:9px;border-radius:5px;background:var(--cc);transition:width .2s,right .2s,box-shadow .2s}
+.tr.on .bar{width:13px;right:6px;box-shadow:0 0 0 2px var(--sumi)}
+.tr .t1{position:absolute;left:0;top:6px;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+.tr .t2{position:absolute;left:0;bottom:6px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tr.gap{height:10px}
+.trv{--cc:var(--waka)}
+.trv .bar{top:0;bottom:0;width:4px;right:11px;border-radius:2px;background:repeating-linear-gradient(var(--waka) 0 4px,transparent 4px 7px)}
+.trv.on .bar{background:repeating-linear-gradient(var(--sumi) 0 4px,transparent 4px 7px)}
+.trv .tv{margin:6px 0;border-left:0;padding-left:2px}
+.trv.on .bar{width:9px;right:8px}
+.trv .tvl{position:absolute;left:0;top:50%;transform:translateY(-50%);font-size:11px;line-height:1.25;color:var(--ink);font-weight:700}
+.tr .rc{min-width:0;padding:2px 0}
+.tlx2 .rm{position:absolute;left:41px;top:0;width:18px;height:18px;margin-top:-9px;border-radius:50%;background:var(--washi);border:3px solid var(--sumi);z-index:3;pointer-events:none;transition:top .3s cubic-bezier(.4,1.4,.5,1)}
+.tlx2 .rn{position:absolute;left:0;right:4px;height:0;border-top:2px solid var(--brick);z-index:2}
+.tlx2 .rn span{position:absolute;left:0;top:-9px;background:var(--brick);color:#fff;font-size:10px;font-weight:700;border-radius:4px;padding:0 4px;line-height:17px;font-style:normal}
+@media (prefers-reduced-motion: reduce){.tlx2 .rm,.tr .bar{transition:none}}
+.need{padding:0}
+.need summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px}
+.need summary::-webkit-details-marker{display:none}
+.need .nh{flex:1;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.need .nh b{font-size:15px;margin-right:4px}
+.need .chev{width:9px;height:9px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
+.need[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.need .nb{display:flex;flex-direction:column;gap:14px;padding:0 16px 16px}
+.need .nsec{display:flex;flex-direction:column;gap:8px}
+/* ===== SOS ===== */
+nav.tabs a[href="#sos"]{color:var(--brick)}
+nav.tabs a[href="#sos"][aria-current="page"]{background:var(--coral);color:var(--ink)}
+.sosbig{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sosb{display:flex;flex-direction:column;align-items:center;gap:2px;border:3px solid var(--sumi);border-radius:24px;padding:14px 8px;text-decoration:none;color:var(--ink)}
+.sosb b{font-size:40px;line-height:1.1;font-variant-numeric:tabular-nums}
+.sosb span{font-weight:700;font-size:16px}.sosb small{font-size:12px;color:var(--ink);opacity:.8}
+.sosb.pol{background:var(--mizu)}.sosb.amb{background:var(--coral)}
+.sosc{display:flex;flex-direction:column;gap:10px}
+.sosc.here{box-shadow:0 0 0 4px var(--yama)}
+.sr{display:flex;align-items:center;gap:10px;border-top:1.5px dashed var(--line);padding-top:10px}
+.sr>div:first-child{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sr .num{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.sr .mode{align-self:flex-start;margin:0 0 2px}
+.acts2{display:flex;flex-direction:column;gap:6px;flex:0 0 auto}
+.btn.call{min-height:40px;padding:6px 14px;white-space:nowrap}
+.btn.call svg{width:16px;height:16px}
+.adv{display:flex;flex-direction:column;gap:0}.adv>b{margin-top:6px}
+.phr{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.phr li{display:flex;flex-direction:column;background:var(--sunk);border-radius:14px;padding:8px 12px}
+.phr b{font-size:17px;line-height:1.4}.phr span{font-size:13px;color:var(--muted)}
+.lodge2{font-size:13px;background:var(--apricot-soft);border-radius:12px;padding:8px 12px}
+.sd{padding:0;gap:0}
+.sd summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px;min-height:60px}
+.sd summary::-webkit-details-marker{display:none}
+.sd .sh{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.sd .sh b{font-size:16px}.sd .sh .sub{flex-basis:100%}
+.sd .chev{flex:0 0 auto;width:9px;height:9px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
+.sd[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.sd .sbody{display:flex;flex-direction:column;gap:10px;padding:0 16px 16px}
+.sosw{display:flex;flex-direction:column;gap:10px}
+.sostop{margin-bottom:-6px}.sostop h1{font-size:24px}
+.sosbig{gap:10px}
+.sosb{padding:10px 10px 12px;gap:8px;border-radius:20px;align-items:stretch}
+.sosb .st1{display:flex;align-items:center;justify-content:center;gap:8px}
+.sosb .st1 b{font-size:32px;line-height:1}
+.sosb .st1 span{display:flex;flex-direction:column;font-weight:700;font-size:14px;line-height:1.25}
+.sosb .st1 small{font-weight:400;font-size:11px}
+.btn.big1{justify-content:center;background:var(--washi);border:2.5px solid var(--sumi);font-weight:700;min-height:42px}
+.sd summary{padding:10px 14px;min-height:0}
+.sd .sh{gap:0 8px;flex-wrap:nowrap}.sd .sh b{font-size:15px;white-space:nowrap}
+.sd .sh .sub{flex:1 1 auto;flex-basis:auto!important;min-width:0;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sd .sh .pill{white-space:nowrap;font-size:11px;padding:0 8px}
+.sd{margin-top:-6px}
+.sd summary{min-height:46px}
+.sd .sbody{padding:0 14px 14px}
+.fd .hdr{display:flex;align-items:flex-start;gap:6px;flex:0 0 auto}
+.hrs .hx{display:inline-block;font-size:12px;font-weight:700;background:var(--waka);border:2px solid var(--sumi);border-radius:999px;padding:2px 9px;white-space:nowrap;margin-top:4px}
+.hrs .hx.off{background:var(--coral)}
+.gph{position:relative;margin:6px -4px 2px;border-radius:16px;overflow:hidden;border:2.5px solid var(--sumi);aspect-ratio:16/10;background:var(--sunk)}
+.gph img{display:block;width:100%;height:100%;object-fit:cover}
+.gph .cr{position:absolute;right:6px;bottom:6px;font-size:10px;background:rgba(255,252,246,.85);border-radius:6px;padding:0 5px;color:var(--ink)}
+body.gp-on .gpoff{display:none}
+/* ===== 日期列（點＋線） ===== */
+.dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
+.dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
+.dl button.dp{width:auto!important;border:0!important;background:none!important;border-radius:0!important;padding:0 0 4px!important;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font:inherit;color:var(--ink);position:relative}
+.dl .dd{width:16px;height:16px;border-radius:50%;background:var(--washi);border:3px solid var(--sumi);position:relative;z-index:1}
+.dl button[aria-pressed="true"] .dd{background:var(--waka)}
+.dl .dw{font-size:12px;color:var(--muted);margin-top:2px}
+.dl .dn{font-size:17px;font-weight:700;line-height:1;width:32px;height:32px;display:grid;place-items:center;border-radius:12px;font-variant-numeric:tabular-nums}
+.dl button[aria-pressed="true"] .dn{background:var(--waka);border:2.5px solid var(--sumi)}
+.dl button[aria-pressed="true"] .dw{color:var(--ink);font-weight:700}
+.dl button.today::after{content:"今天";font-size:10px;font-weight:700;color:var(--brick)}
+.dl .wd{position:absolute;top:-2px;right:calc(50% - 14px);z-index:2}
+.dl .dveh{position:absolute;top:0;width:34px;height:26px;margin-left:-17px;transition:left .5s cubic-bezier(.5,1.6,.5,1);pointer-events:none}
+.dl .dveh svg{width:34px;height:26px;stroke:var(--sumi);fill:var(--washi)}
+/* ===== 景點美食地圖 ===== */
+.fmap{border:3px solid var(--sumi);border-radius:22px;overflow:hidden;margin-top:6px;background:var(--washi)}
+.fmh{background:var(--mizu);padding:12px 14px;display:flex;flex-direction:column;gap:6px;border-bottom:3px solid var(--sumi)}
+.fml{font-size:10px;letter-spacing:.25em;color:var(--sumi);opacity:.7}
+.fmt{font-family:var(--display);font-size:19px;line-height:1.25}
+.fmb{display:flex;gap:8px}
+.fmb button{font:inherit;font-size:13px;font-weight:700;border:2.5px solid var(--sumi);border-radius:12px;background:var(--washi);padding:5px 12px;cursor:pointer;color:var(--ink)}
+.fmb button[aria-pressed="true"]{background:var(--sumi);color:var(--washi)}
+.fmsub{font-size:12px;color:var(--muted);padding:8px 14px 0}
+.fmf{position:relative;height:300px;margin:8px 0 0;background:var(--sunk)}
+.fmf iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.fmf .fb{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;font-size:13px;color:var(--muted)}
+.fmft{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.fmft a{color:var(--sumi);font-weight:700;text-decoration:none}
+.fmap .go{margin:0 14px 14px}
+@media (prefers-reduced-motion: reduce){.dl .dveh,.rm,.rs{transition:none}}
+</style>
+
+<div class="wrap" id="app"></div>
+<nav class="tabs" aria-label="主選單"><div class="in" id="tabs"></div></nav>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ---------- 圖示 ---------- */
+const I={
+ phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+ sos:'<path d="M12 3l9 16H3z"/><path d="M12 10v4"/><path d="M12 17h.01"/>',
+ sun:'<path d="M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M5.6 18.4l-1.4 1.4M19.8 4.2l-1.4 1.4"/><circle cx="12" cy="12" r="4"/>',
+ cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+ bowl:'<path d="M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 2-2 2-4M13 8c0-2 2-2 2-4"/>',
+ check:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12l3 3 5-6"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+ nav:'<path d="M3 11 21 3l-8 18-2-8z"/>',
+ pin:'<path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+ plane:'<path d="M2 13l20-8-7 16-3-6z"/>',
+ car:'<path d="M5 17h14v-5l-2-5H7l-2 5z"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/>',
+ train:'<path d="M6 15V7a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3z"/><path d="M6 10h12M9 22l2-4M15 22l-2-4"/>',
+ bus:'<rect x="4" y="3" width="16" height="15" rx="2"/><path d="M4 11h16M8 21v-3M16 21v-3"/>',
+ bed:'<path d="M3 18V7M3 14h18v4M21 14v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11" r="2"/>',
+ copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>',
+ star:'<path d="M12 5v14M5 12h14"/>',
+ mstar:'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+ search:'<circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/>',
+ ticket:'<path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/>',
+ photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 8"/>',
+ menu:'<path d="M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M9 8h6M9 12h6M9 16h4"/>'
+};
+const ic=(n,w=2)=>`<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${I[n]}</svg>`;
+const mapUrl=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+const photoUrl=q=>"https://www.google.com/search?tbm=isch&q="+encodeURIComponent(q+" 料理");
+const menuUrl=q=>"https://www.google.com/search?q="+encodeURIComponent(q+" メニュー 食べログ");
+const infoUrl=q=>"https://www.google.com/search?q="+encodeURIComponent(q+" 料金 営業時間");
+const spotPhotoUrl=q=>"https://www.google.com/search?tbm=isch&q="+encodeURIComponent(q);
+const navUrl=q=>"https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(q);
+
+/* ---------- 住宿 ---------- */
+const HOTELS={
+ hakata:{bk:"Agoda・兩段住宿各 2 筆訂單",n:"&HOTEL HAKATA",q:"&HOTEL HAKATA 福岡市博多区冷泉町9-6",addr:"博多區冷泉町 9-6",tel:"+81 50-1808-3989",out:"11:00 退房",rooms:"2 間房",nights:"11/30、12/6–12/8 共 3 晚"},
+ kuma:{bk:"Agoda・2 筆訂單",n:"fav KUMAMOTO",q:"fav KUMAMOTO 熊本市中央区鍛冶屋町9-1",addr:"熊本市中央區鍛冶屋町 9-1",tel:"+81 92-292-2431",out:"10:00 退房",rooms:"2 間房",nights:"12/1–12/3 共 2 晚"},
+ beppu:{bk:"Agoda・1 筆訂單",n:"beppu Ohana",q:"beppu Ohana 別府市小倉町27-17",addr:"別府市小倉町 27-17",tel:"",out:"10:00 退房",rooms:"1 間房",nights:"12/3–12/5 共 2 晚"},
+ kokura:{bk:"Agoda・2 筆訂單",n:"Rakuten STAY 小倉站前",q:"Rakuten STAY 小倉駅前 北九州市小倉北区米町1-3-14",addr:"北九州市小倉北區米町 1-3-14",tel:"",out:"10:00 退房",rooms:"2 間房",nights:"12/5 1 晚"}
+};
+
+/* ---------- 行程 ----------
+ st(時間, 名稱, 說明, 類型[spot|move|hotel|plane|car|bus|train], 地圖搜尋) */
+const st=(t,n,d,k,q)=>({t,n,d,k,q});
+const DAYS=[
+{d:"2026-11-30",w:"一",title:"抵達北九州＋博多市區散步",tag:"凌晨出發・今天搭大眾運輸",route:"北九州機場 → 博多",hotel:"hakata",
+ stops:[
+  st("01:00–03:00","桃園國際機場","第一航廈報到・03:00 起飛・星悅航空 7G 800","plane","桃園國際機場 第一航廈"),
+  st("06:15–07:15","北九州機場","抵達・入境、領行李","plane","北九州空港"),
+  st("07:16–07:26","北九州機場","搭機場巴士到小倉（每人 ¥710），再轉新幹線到博多（自由席每人 ¥2,160）","bus","北九州空港 バス乗り場"),
+  st("08:37–09:37","&HOTEL HAKATA","寄放行李，15:00 起入住","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6"),
+  st("09:45–10:45","Yodobashi Camera 博多","博多站旁的大型電器行，買相機、玩具、日用品","spot","ヨドバシカメラ マルチメディア博多"),
+  st("10:52–11:22","櫛田神社","博多人的守護神社，境內有祇園山笠的大型裝飾","spot","櫛田神社"),
+  st("11:27–12:27","一蘭拉麵 本社總本店","午餐・中洲那珂川旁的一蘭總店","food","一蘭 本社総本店"),
+  st("12:31–13:31","&HOTEL HAKATA","回飯店休息，凌晨的班機，下午補眠","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6")],
+ legs:[["桃園 → 北九州機場","約 2 小時 15 分","飛機"],["北九州機場 → &HOTEL HAKATA","約 1 小時 10 分","巴士＋新幹線"],["飯店 → Yodobashi Camera","7 分"],["Yodobashi → 櫛田神社","7 分"],["櫛田神社 → 一蘭拉麵","4 分"],["一蘭 → &HOTEL HAKATA","4 分"]],
+ tips:["03:00 起飛，前一晚提早到機場報到","機場巴士不能預約，出關直接去搭","上午先寄放行李，輕裝逛博多","凌晨的班機，下午早點回飯店補眠"],
+ foods:["博多明太子","博多一口餃子","博多通りもん（伴手禮）"],food:["hakata"]},
+{d:"2026-12-01",w:"二",title:"太宰府＋柳川鰻魚飯＋前往熊本",tag:"取車日・開車約 3 小時",route:"博多 → 太宰府 → 柳川 → 清水寺 → 熊本",hotel:"kuma",
+ stops:[
+  st("08:00–09:00","&HOTEL HAKATA","退房・福岡取車・尾款 ¥57,600 當日付清，收據收好；請店員示範裝雪鏈","car","&HOTEL HAKATA 福岡市博多区冷泉町9-6"),
+  st("09:26–10:26","太宰府天滿宮","學問之神，參道上可以吃梅枝餅","spot","太宰府天満宮"),
+  st("11:31–12:31","柳川運河遊船","搭傳統小船遊水鄉，船夫邊划邊唱歌","spot","柳川 川下り"),
+  st("12:40–13:40","若松屋","午餐・鰻魚蒸籠飯百年老店","food","うなぎ料理 若松屋 柳川"),
+  st("14:04–16:04","清水寺本坊庭園","相傳由畫僧雪舟設計的山寺庭園","spot","清水寺本坊庭園"),
+  st("17:03–18:03","fav KUMAMOTO","入住・連住 2 晚","hotel","fav KUMAMOTO 熊本市中央区鍛冶屋町9-1"),
+  st("18:17–19:17","水前寺成趣園","17 世紀的日式庭園，有小富士山造景","spot","水前寺成趣園")],
+ legs:[["博多 → 太宰府","26 分"],["太宰府 → 柳川","1 小時 5 分"],["柳川運河 → 若松屋","8 分"],["若松屋 → 清水寺","24 分"],["清水寺 → fav KUMAMOTO","58 分"],["飯店 → 水前寺","14 分"]],
+ tips:["取車帶台灣駕照正本＋日文譯本、護照","確認兒童安全座椅、ETC 卡、雪鏈","若松屋週三和每月第 3 個週二公休，12/1 是第 1 個週二，可以去","第一天開車，日本靠左行駛，慢慢熟悉路況"],
+ foods:["太宰府梅枝餅","柳川鰻魚蒸籠飯","熊本拉麵"],food:["dazaifu","yanagawa","kumamoto","kurume"]},
+{d:"2026-12-02",w:"三",title:"熊本城稻荷＋老書店喫茶＋豬排午餐",tag:"市區短程・下午回飯店休息",route:"熊本市區",hotel:"kuma",
+ stops:[
+  st("08:00–09:00","fav KUMAMOTO","早餐・不用收行李的一天","hotel","fav KUMAMOTO 熊本市中央区鍛冶屋町9-1"),
+  st("09:05–10:05","熊本城稻荷神社","就在熊本城旁，參拜完順道遠眺熊本城","spot","熊本城稲荷神社"),
+  st("10:12–11:12","勝烈亭 新市街本店","50 年豬排老店","food","勝烈亭 新市街本店"),
+  st("11:18–12:18","長崎次郎喫茶室","百年老書店二樓的喫茶室，有形文化財","food","長崎次郎喫茶室"),
+  st("12:20–13:20","fav KUMAMOTO","回飯店午睡充電，明天是最長移動日","hotel","fav KUMAMOTO 熊本市中央区鍛冶屋町9-1")],
+ legs:[["飯店 → 稻荷神社","5 分"],["稻荷神社 → 勝烈亭","6 分"],["勝烈亭 → 長崎次郎","5 分"],["長崎次郎 → fav KUMAMOTO","2 分"]],
+ tips:["勝烈亭和長崎次郎喫茶室營業時間先確認","下午好好休息，明天開車很久","可以趁空檔洗衣服","晚上早點睡"],
+ foods:["熊本太平燕","いきなり団子","勝烈亭豬排"],food:["kumamoto"]},
+{d:"2026-12-03",w:"四",title:"草千里＋南阿蘇＋高千穗＋夜宿別府",tag:"全程最長移動日・21:00 前後到民宿",route:"熊本 → 阿蘇 → 南阿蘇 → 高千穗 → 別府",hotel:"beppu",
+ stops:[
+  st("08:00–09:00","fav KUMAMOTO","退房出發・零食、水、暈車藥帶上車","car","fav KUMAMOTO 熊本市中央区鍛冶屋町9-1"),
+  st("10:16–11:16","草千里","阿蘇火山旁的大草原，天氣好能看到火山煙","spot","草千里ヶ浜"),
+  st("11:45–12:15","赤牛之館","午餐・南阿蘇的赤牛料理","food","あか牛の館 南阿蘇"),
+  st("12:27–13:27","白川水源","清澈的湧泉，帶空水壺來裝水","spot","白川水源"),
+  st("13:40–14:40","上色見熊野座神社","石燈籠一路排進森林深處的參道","spot","上色見熊野座神社"),
+  st("15:24–16:24","高千穗天照鐵道","在舊鐵道上搭觀光小車過高橋","spot","高千穂あまてらす鉄道"),
+  st("16:28–16:58","高千穗神社","被高大杉木包圍的古老神社，晚上有夜神樂","spot","高千穂神社"),
+  st("17:02–18:44","高千穗峽","真名井瀑布和峽谷步道，可以划船","spot","高千穂峡"),
+  st("20:59–21:59","beppu Ohana","抵達・連住 2 晚・夜間路程約 2 小時 15 分","hotel","beppu Ohana 別府市小倉町27-17")],
+ legs:[["fav KUMAMOTO → 草千里","1 小時 16 分"],["草千里 → 赤牛之館","28 分"],["赤牛之館 → 白川水源","12 分"],["白川水源 → 上色見","13 分"],["上色見 → 天照鐵道","44 分"],["天照鐵道 → 高千穗神社","3 分"],["高千穗神社 → 高千穗峽","3 分"],["高千穗峽 → beppu Ohana（夜間）","2 小時 15 分"]],
+ tips:["山上比市區冷很多，厚外套放隨手處","白川水源記得帶空水壺","晚上路程長，駕駛輪流休息","裝上雪鏈後時速約 30 公里以內，不急煞、不急轉","回到沒雪沒冰的路面就拆鏈","要裝鏈時，停在寬敞的停車場或空地"],
+ plan:{title:"天黑・結冰備案",items:["12 月高千穗大約 17:15 就天黑，高千穗峽排 17:02 到，划船已停止受理，步道也快暗了","想看高千穗峽的話，可以把高千穗峽移到天照鐵道前面，或縮短南阿蘇的停留時間","預報有雪或結冰，就跳過草千里，直接去赤牛之館、白川水源","晚上可能結冰時，不走阿蘇・九重山路，改經延岡、走東九州自動車道到別府","當天早上查道路封閉和雪鏈規定"],links:[["阿蘇天氣（tenki.jp）","https://tenki.jp/forecast/9/46/8620/43214/1hour.html"],["道路交通資訊（JARTIC）","https://www.jartic.or.jp/"],["導航：高千穗 → 延岡 → 別府","https://www.google.com/maps/dir/?api=1&origin=%E9%AB%98%E5%8D%83%E7%A9%82%E5%B3%A1&destination=beppu%20Ohana%20%E5%88%A5%E5%BA%9C%E5%B8%82%E5%B0%8F%E5%80%89%E7%94%BA27-17&waypoints=%E5%BB%B6%E5%B2%A1IC"]]},
+ foods:["阿蘇赤牛丼","高千穗峽流水麵","阿蘇牛奶霜淇淋"],food:["aso","nobeoka","kurokawa"]},
+{d:"2026-12-04",w:"五",title:"野生動物園＋由布院＋別府採買",tag:"親子最愛・開車約 2 小時",route:"別府 → 安心院 → 由布院 → 別府",hotel:"beppu",
+ stops:[
+  st("08:00–09:00","beppu Ohana","出發・續住，輕裝出門","car","beppu Ohana 別府市小倉町27-17"),
+  st("09:25–12:25","九州自然動物公園","African Safari・開車或搭叢林巴士穿越的野生動物園","spot","九州自然動物公園アフリカンサファリ"),
+  st("12:51–13:51","由布まぶし 心 金鱗湖本店","午餐・由布院人氣釜飯，建議先訂位","food","由布まぶし 心 金鱗湖本店"),
+  st("13:53–14:53","金鱗湖","由布院代表景點，冬天清晨湖面常起霧","spot","金鱗湖"),
+  st("15:26–16:26","TRIAL 別府店","大型超市，補貨、買零食","spot","スーパーセンタートライアル別府店"),
+  st("16:40–17:40","唐吉訶德 別府店","藥妝、零食、伴手禮一次買齊","spot","ドン・キホーテ 別府店"),
+  st("17:57–18:57","beppu Ohana","回民宿・傍晚泡湯放鬆","hotel","beppu Ohana 別府市小倉町27-17")],
+ legs:[["beppu Ohana → 動物公園","25 分"],["動物公園 → 由布まぶし","26 分"],["由布まぶし → 金鱗湖","1 分"],["金鱗湖 → TRIAL","33 分"],["TRIAL → 唐吉訶德","14 分"],["唐吉訶德 → beppu Ohana","16 分"]],
+ tips:["動物園可自駕或搭叢林巴士，現場先問清楚","由布院街道人多，推車注意","TRIAL、唐吉訶德大採買前，想想回程托運只有 115kg","傍晚回民宿泡湯"],
+ foods:["由布院金賞可樂餅","由布院蛋糕捲","大分豐後牛"],food:["yufuin","beppu","hita"]},
+{d:"2026-12-05",w:"六",title:"別府地獄巡禮＋Outlet＋皿倉山＋前往小倉",tag:"開車約 2.5 小時",route:"別府 → 八幡 → 小倉",hotel:"kokura",
+ stops:[
+  st("08:00–09:00","beppu Ohana","退房・收好行李上車","car","beppu Ohana 別府市小倉町27-17"),
+  st("09:06–09:36","岡本屋賣店","明礬溫泉旁的小店，招牌地獄蒸布丁","food","岡本屋売店 別府"),
+  st("09:41–10:11","海地獄","鈷藍色溫泉池，地獄巡禮的代表","spot","海地獄 別府"),
+  st("10:13–10:43","鬼山地獄","養了許多鱷魚，又叫鱷魚地獄","spot","鬼山地獄"),
+  st("10:57–11:57","別府空中纜車","搭纜車上鶴見岳，俯瞰別府和海灣","spot","別府ロープウェイ"),
+  st("13:36–14:36","THE OUTLETS KITAKYUSHU","八幡的大型 Outlet，有美食街和兒童遊戲區","spot","THE OUTLETS KITAKYUSHU"),
+  st("14:48–15:03","皿倉山纜車 山麓站","通往皿倉山的纜車，山上可眺望北九州","spot","皿倉山ケーブルカー 山麓駅"),
+  st("15:25–16:25","Rakuten STAY 小倉站前","入住・15:00 起可以進房","hotel","Rakuten STAY 小倉駅前")],
+ legs:[["beppu Ohana → 岡本屋","6 分"],["岡本屋 → 海地獄","5 分"],["海地獄 → 鬼山地獄","2 分"],["鬼山地獄 → 別府空中纜車","13 分"],["別府空中纜車 → THE OUTLETS","1 小時 39 分"],["THE OUTLETS → 皿倉山","11 分"],["皿倉山 → Rakuten STAY","22 分"]],
+ tips:["海地獄、鬼山地獄可用地獄巡禮共通券","纜車山頂風大，多穿一件","別府到八幡會經過中津，可以買炸雞在車上吃","皿倉山只停 15 分，想搭纜車上山要多抓時間"],
+ foods:["地獄蒸布丁","中津炸雞","小倉燒烏龍"],food:["beppu","nakatsu","kokura"]},
+{d:"2026-12-06",w:"日",title:"門司港懷舊＋唐戶市場＋小倉城＋還車",tag:"還車日",route:"小倉 → 門司港 → 下關唐戶 → 小倉 → 福岡",hotel:"hakata",
+ stops:[
+  st("08:22–09:22","Rakuten STAY 小倉站前","退房・行李直接帶上車","car","Rakuten STAY 小倉駅前"),
+  st("09:44–10:14","門司港車站","大正時期落成的西式車站建築","spot","門司港駅"),
+  st("10:15–11:15","九州鐵道紀念館","真的火車可以上去看，還有小朋友能開的迷你列車","spot","九州鉄道記念館"),
+  st("11:19–13:19","門司港懷舊區","紅磚洋館林立，沿著港邊散步","spot","門司港レトロ"),
+  st("13:20–14:20","Princess Phi Phi","午餐・門司港燒咖哩排隊名店","food","プリンセスピピ門司港"),
+  st("14:22–14:37","藍翼橋","會定時升起的行人吊橋，很好拍","spot","ブルーウィングもじ"),
+  st("14:53–15:53","唐戶市場","過關門海峽到下關，週末有壽司攤","food","唐戸市場"),
+  st("16:29–18:28","小倉城庭園","小倉城旁的日式庭園，可以體驗抹茶","spot","小倉城庭園"),
+  st("19:34–20:34","&HOTEL HAKATA","福岡還車後回飯店・連住 3 晚","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6")],
+ legs:[["小倉 → 門司港車站","22 分"],["門司港車站 → 九州鐵道紀念館","步行 1 分"],["鐵道紀念館 → 門司港懷舊區","步行 3 分"],["懷舊區 → Princess Phi Phi","步行 1 分"],["Princess Phi Phi → 藍翼橋","步行 2 分"],["藍翼橋 → 唐戶市場","16 分","開車（關門隧道）"],["唐戶市場 → 小倉城庭園","35 分"],["小倉城庭園 → &HOTEL HAKATA","約 1 小時 6 分"]],
+ tips:["藍翼橋升起時間可以先查","唐戶市場的壽司攤賣完就收，想吃要早點去","還車前加滿油、留收據","門司港是香蕉叫賣的發源地，找找香蕉伴手禮"],
+ foods:["門司港燒咖哩","唐戶市場壽司","門司港香蕉甜點"],food:["mojiko","kokura"]},
+{d:"2026-12-07",w:"一",title:"麵包超人博物館＋福岡自由行",tag:"不開車・睡飽再出門",route:"福岡市區",hotel:"hakata",
+ stops:[
+  st("08:00–09:00","&HOTEL HAKATA","早餐・慢慢出門","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6"),
+  st("09:05–10:05","麵包超人兒童博物館","博多河岸商場 5–6F・需購票","spot","福岡アンパンマンこどもミュージアムinモール"),
+  st("10:09–11:09","&HOTEL HAKATA","回飯店休息，下午自由安排","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6")],
+ legs:[["飯店 → 麵包超人兒童博物館","5 分"],["博物館 → &HOTEL HAKATA","4 分"]],
+ tips:["今天不開車，搭地鐵或計程車","下午想出門可以去海之中道海浜公園、糸島，或晚上逛中洲屋台","伴手禮可以先買一部分，明天輕鬆一點"],
+ foods:["中洲屋台","博多水炊雞肉鍋","牛腸鍋"],food:["hakata","extra"]},
+{d:"2026-12-08",w:"二",title:"帶著回憶回家",tag:"AK 1511・16:10 起飛",route:"福岡市區 → 福岡機場 → 桃園",hotel:null,
+ stops:[
+  st("13:04–14:04","&HOTEL HAKATA","回飯店拿行李","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6"),
+  st("14:20–16:10","福岡機場","國際線航廈・提早報到托運","bus","福岡空港 国際線ターミナル"),
+  st("16:10","福岡機場","起飛・亞洲航空 AK 1511","plane","福岡空港 国際線ターミナル"),
+  st("17:55","桃園國際機場","抵達第一航廈・平安到家","plane","桃園國際機場 第一航廈")],
+ legs:[["飯店 → 福岡機場","約 15 分"],["福岡 → 桃園國際機場","約 2 小時 45 分","飛機"]],
+ tips:["國際線提早到機場報到","免稅消耗品在日本別先拆封","寶寶的奶粉、尿布放隨身","回程托運共 115kg，比去程少，出發前先秤重"],
+ foods:["明太子","博多通りもん","＿＿＿＿"],food:null}
+];
+
+/* ---------- 注意事項：err 時間衝突、warn 要注意、chk 出發前確認 ---------- */
+const WARN={
+"2026-11-30":[
+ ["warn","飯店 15:00 才能入住：08:37 先寄放行李，12:31 回來也還不能進房，可以先在大廳休息，或問問能不能提早入住","&HOTEL HAKATA"],
+ ["chk","機場巴士不能預約，出關後直接到巴士站搭往小倉的車，小倉站轉新幹線到博多","北九州機場"],
+ ["chk","Yodobashi Camera 9:30 開門，09:45 到剛好","Yodobashi"]],
+"2026-12-01":[
+ ["chk","清水寺本坊庭園週一和每月 18 日休息（12/1 是週二，可以去），開放 9:00–17:00，門票 ¥500","清水寺"],
+ ["chk","若松屋週三和每月第 3 個週二公休，12/1 是第 1 個週二，可以去；鰻魚名店中午常排隊，可先打電話問能否預約","若松屋"],
+ ["err","水前寺成趣園 8:30–17:00（最後入園 16:30），排 18:17 已經關門。建議移到 D3 下午（12:20 回飯店之後）","水前寺"]],
+"2026-12-02":[
+ ["err","勝烈亭 11:30 才開門，排 10:12–11:12 會吃不到","勝烈亭"],
+ ["warn","長崎次郎喫茶室 11:26 開門，排 11:18 會早到 8 分鐘","長崎次郎"],
+ ["warn","建議改成：稻荷神社 → 長崎次郎喫茶室 11:30 → 勝烈亭午餐；下午有空，可以把水前寺成趣園排回來","熊本城稻荷"]],
+"2026-12-03":[
+ ["warn","天照鐵道最後一班 15:40 發車，15:24 到只剩 16 分鐘買票，上色見早點出發比較保險。另外第 3 個週四和天氣不好時停駛（12/3 是第 1 個週四）","天照"],
+ ["err","高千穗峽划船最後受理 16:30，排 17:02 已經划不到；12 月大約 17:15 天黑，17:02–18:44 幾乎都在天黑後，步道也不安全。建議把高千穗峽移到天照鐵道前面","高千穗峽"],
+ ["warn","赤牛之館午餐只排 30 分鐘，帶寶寶可能不夠；餐廳 11:00–16:30，不定休，先打電話確認（按上面的撥打電話）","赤牛"],
+ ["warn","高千穗神社的夜神樂是 20:00–21:00，16:58 就離開會錯過；想看要在附近吃晚餐等到 20:00，到別府會超過 23:00","高千穗神社"],
+ ["warn","20:59 才到 beppu Ohana，請先通知民宿會晚到","beppu Ohana"],
+ ["warn","晚上 2 小時以上的山路，可能結冰，要有裝雪鏈的心理準備，或改走延岡備案路線","beppu Ohana"]],
+"2026-12-04":[
+ ["chk","九州自然動物公園冬天的開園時間可能比較晚，09:25 到之前先看官網或打電話確認","動物公園"],
+ ["warn","由布まぶし 心 10:30–18:30，不定休，平日也大排長龍；官網可以預約，建議先訂位","由布まぶし"]],
+"2026-12-05":[
+ ["warn","11:57 別府纜車到 13:36 THE OUTLETS 之間沒有排午餐，開車 1 小時 39 分；可以到 Outlet 美食街吃（10:00–21:00），或路上在中津買炸雞","別府空中纜車"],
+ ["warn","皿倉山只排 15 分鐘，纜車單程就要 5 分鐘，15 分鐘只夠到山麓站看看。想上山看風景要多抓 1 小時","皿倉山"],
+ ["chk","皿倉山纜車週二公休（12/5 是週六，可以搭）","皿倉山"]],
+"2026-12-06":[
+ ["warn","Funliday 上這天第一站寫 06:15 從博多 &HOTEL HAKATA 出發、開 1 小時 7 分到小倉，但前一晚住小倉，應該是誤植；App 先從 08:22 小倉飯店退房開始","Rakuten"],
+ ["chk","九州鐵道紀念館 9:00–17:00（最後入館 16:30），不定休，出發前看官網","九州鐵道"],
+ ["chk","Princess Phi Phi 11:00–20:30，不接受訂位，燒咖哩名店常要排隊","Princess"],
+ ["warn","藍翼橋每天 10:00、11:00、13:00、14:00、15:00、16:00 升起 20 分鐘。14:22 到時橋剛放下；想看升起要 14:00 前到，或等 15:00","藍翼橋"],
+ ["err","唐戶市場週日 8:00 開始、15:00 結束，壽司攤賣完就收，14:53 到幾乎都收了。想吃壽司要改成上午先去（從門司港搭渡輪約 5 分鐘）","唐戶"],
+ ["chk","小倉城庭園 11–3 月開到 19:00（活動期間可能調整），16:29–18:28 可以；出發前到官網確認","小倉城"],
+ ["chk","還車時間和地點跟租車公司確認；19:34 才到飯店，還車要排在這之前，記得加滿油","&HOTEL HAKATA"]],
+"2026-12-07":[
+ ["err","麵包超人博物館 10:00 才開館（最後入館 16:00），09:05 到要等快 1 小時。建議 09:50 再出門","麵包超人"]],
+"2026-12-08":[
+ ["chk","飯店 11:00 退房，先寄放行李再出門，13:04 回來拿","&HOTEL HAKATA"],
+ ["chk","亞洲航空報到櫃台通常起飛前 1 小時關閉，14:20 到機場時間足夠","福岡機場"]]
+};
+const WLV={err:["時間衝突","!"],route:["路線不順","↺"],warn:["要注意","i"],chk:["出發前確認","✓"]};
+function warnHTML(day){const w=WARN[day.d]||[];if(!w.length)return"";
+  const c=lv=>w.filter(x=>x[0]===lv).length;
+  return`<div class="wsum">${c("err")?`<span class="wt e">${c("err")} 個時間衝突</span>`:""}${c("warn")?`<span class="wt w">${c("warn")} 個要注意</span>`:""}${c("chk")?`<span class="wt c">${c("chk")} 個出發前確認</span>`:""}<span class="sub">標在各行程點下方</span></div>`}
+const needOpen=new Set();
+function needHTML(day){const b=BOOK[day.d]||[],w=WARN[day.d]||[];if(!b.length&&!w.length)return"";
+  const todo=b.filter(([st,,,id])=>!(st==="done"||(id&&bookDone.has(id)))).length;
+  const c=lv=>w.filter(x=>x[0]===lv).length;
+  const chips=[todo?`<span class="wt w">${todo} 項待處理</span>`:"",c("err")?`<span class="wt e">${c("err")} 個時間衝突</span>`:"",c("warn")+c("route")?`<span class="wt c">${c("warn")+c("route")} 個要注意</span>`:"",c("chk")?`<span class="wt c">${c("chk")} 個出發前確認</span>`:""].join("");
+  return`<details class="card need" data-need="${day.d}"${needOpen.has(day.d)?" open":""}><summary><span class="nh"><b>需完成事項</b>${chips||'<span class="sub">都處理好了</span>'}</span><span class="chev" aria-hidden="true"></span></summary>
+   <div class="nb">${b.length?`<div class="nsec"><span class="label">預訂</span>${bookHTML(day)}</div>`:""}
+   ${w.length?`<div class="nsec"><span class="label">行程注意事項（也標在各站裡）</span><ul class="wl">${w.map(([lv,t,a])=>`<li class="${lv}"><span class="wt">${WLV[lv][0]}</span><span>${a?`<b>${esc(day.stops.find(x=>key(x).includes(a))?.n||a)}</b>：`:""}${esc(t)}</span></li>`).join("")}</ul></div>`:""}</div></details>`}
+document.addEventListener("toggle",e=>{const d=e.target.dataset&&e.target.dataset.need;if(d)e.target.open?needOpen.add(d):needOpen.delete(d)},true);
+function stopWarn(day,s){const w=s.u?[]:(WARN[day.d]||[]).filter(x=>key(s).includes(x[2]));
+  if(s.u&&s.detour!=null&&s.detour>=15)w.push(["route",`這個點不太順路，比直接從「${s.legFrom}」到下一站多繞約 ${s.detour} 分。${s.better?"建議："+s.better:""}`]);
+  if(!w.length)return"";
+  return`<ul class="wl">${w.map(([lv,t])=>`<li class="${lv}"><span class="wt">${WLV[lv][0]}</span><span>${esc(t)}</span></li>`).join("")}</ul>`}
+/* ---------- Funliday 票券（依行程點名稱比對） ---------- */
+const FUNLIDAY_TRIP="https://www.funliday.com/m_NmFkYjhjZmU4MzVlZmY4OWRhYzJhMDNk0/trips/6adb8d2bd3d8279fed7d81a1";
+const FA="https://www.funliday.com/affiliate2?region=tw&type=affiliate&id=";
+const TICKETS=[
+ ["麵包超人",[["麵包超人兒童博物館門票","TWD 414",1,FA+"467744241&source=ec&language=zh_tw&extras=aff_adid%3D723169&os=2"]]],
+ ["柳川運河",[["柳川遊船（龍聖）","TWD 372",1,FA+"1040065&source=ec&language=zh_tw&extras=aff_adid%3D723169&os=2"],["柳川水鄉遊船預售票（Donko 船）","TWD 414",0,FA+"974870&source=ec&language=zh_tw&extras=ud1%3Dpoi&os=2"]]],
+ ["水前寺",[["水前寺成趣園門票","TWD 365",0,FA+"575306832&source=ec&language=zh_tw&extras=ouid%3Dpoi&os=2"]]],
+ ["海地獄",[["海地獄門票","TWD 375",0,FA+"25979781&source=ec&language=zh_tw&extras=ouid%3Dpoi&os=2"],["別府地獄門票","TWD 503",0,FA+"25970750&source=ec&language=zh_tw&extras=ouid%3Dpoi&os=2"]]],
+ ["鬼山地獄",[["別府地獄門票","TWD 503",0,FA+"25970750&source=ec&language=zh_tw&extras=ouid%3Dpoi&os=2"]]],
+ ["門司港懷舊區",[["門司港懷舊展望室門票","TWD 62",1,FA+"1005458&source=ec&language=zh_tw&extras=aff_adid%3D723169&os=2"]]],
+ ["小倉城庭園",[["小倉城＋小倉城庭園聯票（官方）","TWD 145",1,FA+"926280&source=ec&language=zh_tw&extras=ud1%3Dpoi&os=2"],["小倉城庭園茶道體驗（抹茶＋和菓子）","TWD 400",1,FA+"299683822&source=ec&language=zh_tw&extras=ud1%3Dpoi&os=2"]]]
+];
+function stopTickets(s){const t=TICKETS.find(x=>key(s).includes(x[0]));if(!t)return"";
+  return`<div class="tix">${t[1].map(([n,p,inst,u])=>`<a class="tk" href="${u}" target="_blank" rel="noopener">${ic("ticket")}<span><b>${esc(n)}</b><small>${inst?'<em>即買即用</em>':""}${p}・Funliday</small></span></a>`).join("")}</div>`}
+/* ---------- 美食 ---------- */
+const CATS={ramen:["拉麵","#C2553C"],nabe:["鍋物","#A3477E"],local:["在地料理","#B86A2C"],beef:["牛肉・燒肉","#8E3B46"],eel:["鰻魚飯","#6B5A2A"],yatai:["屋台","#C98A22"],gyoza:["餃子","#7A5A2E"],tori:["雞肉串燒","#3D8A5A"],fried:["炸雞・南蠻雞","#5C7A2E"],udon:["烏龍麵・蕎麥","#2F78B5"],sea:["海鮮・河豚","#16858A"],cafe:["咖啡・洋食","#5F6FA8"],sweet:["甜點・伴手禮","#8A63C9"]};
+/* f(名稱, 日文（地圖搜尋用）, 分類, 小區, 價位, 親子OK, 介紹, 推薦來源) */
+const f=(name,jp,cat,area,p,kid,t,src)=>({name,jp,cat,area,p,kid,t,src});
+const S={hk01:"HK01 2025",gofuF:"GoFun 福岡 2026",gofuK:"GoFun 熊本 2026",gofuO:"GoFun 大分 2026",honichi:"訪日外客人氣榜 2025",funD:"Funliday 太宰府 2026",funY:"Funliday 由布院 2025",tbY:"食べログ 柳川 2025",nta:"日本旅行 熊本拉麵 2024",napA:"なっぷ 阿蘇赤牛丼 2026",mapT:"まっぷる 高千穗 2023",mapM:"まっぷる 門司港 2025",napB:"なっぷ 別府 2026",tbK:"食べログ 小倉 2022",bring:"Bring You 熊本 2025",cross:"Crossroad Fukuoka"};
+const FOOD=[
+{k:"hakata",name:"博多・天神",days:"D1・D8",spots:[
+ f("一蘭 本社總本店","一蘭 本社総本店","ramen","中洲","¥1,000〜",false,"一人一格的味集中座位，24 小時營業。",S.gofuF),
+ f("博多一幸舍 總本店","博多一幸舎 総本店","ramen","博多站","¥900〜",true,"泡系豚骨的代表，湯頭濃但不膩。",S.gofuF),
+ f("ShinShin 天神本店","博多らーめん ShinShin 天神本店","ramen","天神","¥800〜",true,"細麵、湯頭偏清爽，第一次吃豚骨很好接受，開到凌晨 3 點。",S.hk01),
+ f("麵屋兼虎 天神本店","麺屋兼虎 天神本店","ramen","天神","¥1,000〜",true,"濃厚魚介沾麵，可以加醋或熱湯調味道。",S.hk01),
+ f("元祖長濱屋","元祖長浜屋","ramen","長濱","¥550〜",false,"長濱拉麵元祖，只有一種拉麵，點餐只要說麵的硬度。"),
+ f("博多一雙 博多站東本店","博多一双 博多駅東本店","ramen","博多站東","¥850〜",true,"排隊名店，建議避開用餐尖峰。"),
+ f("拉麵競技場","ラーメンスタジアム キャナルシティ博多","ramen","Canal City","¥900〜",true,"一層樓集合各地拉麵，有座位有廁所，帶小孩最方便。D1 就在運河城。"),
+ f("元祖博多達摩 總本店","元祖博多だるま 総本店","ramen","渡邊通","¥800〜",false,"重口味濃厚豚骨，喜歡濃湯的人必吃。"),
+ f("中洲屋台街","中洲屋台","yatai","中洲","¥1,500〜",false,"那珂川沿岸的屋台，傍晚 6 點後陸續開張。",S.gofuF),
+ f("長濱屋台 やまちゃん 中洲店","長浜屋台やまちゃん 中洲店","yatai","中洲","¥1,000〜",false,"湯頭清爽的長濱拉麵配串燒，叉燒有名。週三到週六晚上營業。",S.gofuF),
+ f("天神屋台區","天神 屋台 渡辺通り","yatai","天神","¥1,500〜",false,"比中洲更在地，有法式、天婦羅等特色屋台。"),
+ f("長野水炊","水たき長野","nabe","冷泉町","¥3,000〜",true,"老字號雞肉水炊，湯頭清甜，建議先訂位。就在飯店附近。"),
+ f("水炊 鳥田 博多本店","水炊き名店 鳥田 博多本店","nabe","博多","¥3,500〜",true,"雞湯熬 6 小時，帶骨雞肉配博多蔥涮著吃。",S.gofuF),
+ f("博多味處 いろは 本店","博多味処 いろは 博多本店","nabe","博多","¥4,000〜",true,"鹿兒島赤雞熬湯的水炊，附自製橘醋。",S.gofuF),
+ f("水炊・とりまぶし","水炊き とりまぶし 博多","nabe","櫛田神社前","¥2,000〜",true,"雞湯水炊加炭烤雞肉丼套餐，D1 逛櫛田神社順路。",S.hk01),
+ f("華味鳥 中洲本店","博多華味鳥 中洲本店","nabe","中洲","¥3,500〜",true,"店員會幫忙煮水炊，第一次吃很安心。"),
+ f("牛腸鍋 樂天地 博多站前","博多もつ鍋 楽天地 博多駅前店","nabe","博多站","¥1,800〜",true,"大份量、價格親民，醬油湯底配滿滿韭菜。訪日旅客人氣第 2 名。",S.honichi),
+ f("牛腸鍋 樂天地 天神今泉總本店","元祖もつ鍋 楽天地 天神今泉総本店","nabe","天神","¥1,800〜",true,"樂天地的元祖店，一鍋吃得到 6 種牛內臟。",S.hk01),
+ f("牛腸鍋 田しゅう 大名本店","もつ鍋 田しゅう 福岡大名本店","nabe","大名","¥2,000〜",false,"四種味噌湯底，招牌田しゅう鍋帶一點韓式辣味。",S.gofuF),
+ f("牛腸鍋 一慶 春吉本店","もつ鍋 一慶 春吉本店","nabe","春吉","¥2,500〜",false,"白味噌湯底的牛腸鍋，最後加麵收尾。"),
+ f("牛かつ もと村 博多PARCO店","牛かつもと村 博多パルコ店","beef","博多站","¥1,800〜",true,"炸牛排自己在小石板上烤到喜歡的熟度。訪日旅客人氣第 1 名。",S.honichi),
+ f("肉屋肉一 燒肉","にく屋肉いち 焼肉 博多","beef","博多站南","¥4,000〜",false,"黑毛和牛七種部位拼盤，熱門時段建議提早一兩個月網路訂位。",S.hk01),
+ f("吉塚鰻魚屋","吉塚うなぎ屋","eel","中洲","¥3,500〜",true,"現點現烤、外皮酥香的鰻魚飯，週三公休。",S.gofuF),
+ f("元祖博多めんたい重","元祖博多めんたい重","local","西中洲","¥2,000〜",true,"整條明太子鋪在飯上，也有明太子沾麵。",S.gofuF),
+ f("寶雲亭 中洲本店","宝雲亭 中洲本店","gyoza","中洲","¥600〜",true,"博多一口餃子始祖之一，皮薄酥脆。"),
+ f("鐵鍋餃子 祇園","博多祇園 鉄なべ","gyoza","祇園","¥550〜",true,"整盤鐵鍋端上桌，底部焦脆，推薦配柚子胡椒。",S.hk01),
+ f("雞皮 かわ屋 警固店","とりかわ かわ屋 警固店","tori","警固","¥2,000〜",false,"反覆烤六天的招牌雞皮串，一次點 10 串很正常。"),
+ f("とり皮 みつます 天神店","とり皮みつます 天神店","tori","天神","¥150／串",false,"國產雞脖子皮串，油少香脆。",S.gofuF),
+ f("天婦羅 平尾 大名店","天麩羅処ひらお 大名店","udon","大名","¥900〜",true,"現炸天婦羅一樣一樣送上來，免費醃花枝是隱藏主角。"),
+ f("茶壺烏龍麵 博多あかちょこべ","博多あかちょこべ","udon","中洲川端","¥1,000〜",true,"烏龍麵裝在茶壺裡上桌，有咖哩、納豆、牛腸等沾醬。",S.hk01),
+ f("大地のうどん 博多站前","大地のうどん 博多駅前","udon","博多站","¥800〜",true,"招牌牛肉牛蒡天烏龍麵，現點現炸。",S.gofuF),
+ f("因幡烏龍麵 博多DEITOS","因幡うどん 博多デイトス","udon","博多站","¥600〜",true,"博多軟烏龍麵，湯頭溫和，小朋友很好入口。"),
+ f("烏龍麵 平 住吉","うどん平 住吉","udon","住吉","¥500〜",true,"在地人排隊的牛蒡天烏龍麵。"),
+ f("The Full Full Hakata","パン屋 THE FULL FULL HAKATA","sweet","祇園","¥300〜",true,"明太子法國麵包名店，每人限購 5 條，離飯店很近。",S.hk01),
+ f("鈴懸 本店","鈴懸 本店","sweet","上川端","¥300〜",true,"近百年和菓子店，店內聖代很有名，鈴乃最中適合當伴手禮。",S.hk01),
+ f("福屋 中洲本店","ふくや 中洲本店","sweet","中洲","¥1,000〜",true,"明太子的創始店，伴手禮首選。"),
+ f("I'm donut? 福岡店","I'm donut? 福岡","sweet","天神南","¥300〜",true,"生甜甜圈，開心果內餡最受歡迎。",S.hk01),
+ f("IVORISH 福岡本店","アイボリッシュ 福岡本店","sweet","大名","¥1,500〜",true,"法式吐司專賣，口感像布丁。"),
+ f("白金茶房","白金茶房","cafe","藥院","¥1,500〜",true,"用福岡在地麵粉做的厚鬆餅，空間寬敞。",S.hk01),
+ f("bills 福岡","bills 福岡","cafe","中洲水上公園","¥2,000〜",true,"香蕉奶油鬆餅，河景位置，約等 20 分鐘。",S.gofuF),
+ f("幸福鬆餅 福岡天神店","幸せのパンケーキ 福岡天神","cafe","天神","¥1,400〜",true,"入口即化的舒芙蕾鬆餅。",S.gofuF),
+ f("長濱鮮魚市場 市場會館","長浜鮮魚市場 市場会館","sea","長濱","¥1,500〜",true,"市場食堂吃海鮮丼，早上去最好。"),
+ f("柳橋連合市場","柳橋連合市場","sea","春吉","¥500〜",true,"「博多的廚房」，邊走邊吃魚板、明太子飯糰。")]},
+{k:"dazaifu",name:"太宰府",days:"D2",spots:[
+ f("かさの家","かさの家 太宰府","sweet","參道","¥150〜",true,"百年老店現烤梅枝餅，可以坐下來配抹茶。",S.funD),
+ f("寺田屋","寺田屋 太宰府","sweet","參道","¥150〜",true,"梅枝餅加抹茶的套餐，後面有小庭園。"),
+ f("天山","天山 太宰府","sweet","參道","¥200〜",true,"老舖和菓子，草莓大福夾心最中很受歡迎。",S.funD),
+ f("小鳥居茶房","小鳥居茶房 太宰府","sweet","參道","¥500〜",true,"昭和懷舊風茶館，招牌布丁霜淇淋，有抹茶和原味。",S.funD),
+ f("寺子屋本舗 太宰府店","おかき処 寺子屋本舗 太宰府店","sweet","參道","¥200〜",true,"現烤米果，口感 Q 軟，有明太子口味。",S.funD),
+ f("ふくや 太宰府（明太子茶泡飯）","ふくや 太宰府","local","參道","¥800〜",true,"站著吃的明太子茶泡飯，也買得到明太子醬。",S.funD),
+ f("拉麵 魁源 Oigen","拉麺 魁源 太宰府","ramen","太宰府","¥900〜",true,"招牌蝦油醬油拉麵，湯頭清爽，想換換豚骨口味可以來。",S.funD),
+ f("coba cafe","coba cafe 太宰府","cafe","太宰府","¥1,200〜",true,"古民家咖啡館，特製鬆餅和聖代很好拍。",S.funD),
+ f("九博庭園 足湯茶屋","九州国立博物館 足湯 茶屋","cafe","九州國立博物館","¥500〜",true,"邊泡足湯邊吃糰子、鰻魚飯糰。",S.funD),
+ f("星巴克 太宰府表參道店","スターバックス 太宰府天満宮表参道店","cafe","參道","¥600〜",true,"隈研吾設計的木條建築，進去喝杯咖啡順便拍照。",S.funD),
+ f("梅の花 太宰府店","梅の花 太宰府店","local","太宰府","¥3,000〜",true,"豆腐懷石料理，有包廂，帶小孩用餐比較從容。")]},
+{k:"yanagawa",name:"柳川",days:"D2 午餐",spots:[
+ f("元祖本吉屋 本店","元祖本吉屋 本店 柳川","eel","柳川","¥5,000〜",true,"三百多年老店，鰻魚蒸籠飯的元祖，食べログ鰻魚百名店，有庭園座位。",S.tbY),
+ f("若松屋","若松屋 柳川","eel","沖端","¥4,000〜",true,"百年老店，也是鰻魚百名店，有包廂。週三和每月第 3 個週二公休。",S.tbY),
+ f("鰻魚處 川よし","うなぎ処 川よし 柳川","eel","柳川","¥3,000〜",true,"在地人愛去的運河邊老店，套餐小菜多。",S.tbY),
+ f("古蓮","古蓮 柳川","eel","西鐵柳川站","¥3,000〜",true,"車站附近，蒸籠飯分好幾個等級，特上有 5 片鰻魚。",S.tbY),
+ f("民藝茶屋 六騎","民芸茶屋 六騎 柳川","eel","沖端","¥3,000〜",true,"國產鰻魚炭烤，蒸籠飯有三種份量。週二公休。",S.tbY),
+ f("皿屋 福柳","皿屋 福柳 柳川","eel","沖端","¥2,000〜",true,"町家風格，價格比較親民，名物鰻魚飯糰「うなむす」可外帶。",S.tbY),
+ f("日の出屋","日の出屋 柳川","eel","柳川站","¥2,000〜",true,"車站走 8 分鐘，平價的蒸籠飯定食。",S.tbY),
+ f("楠川","楠川 柳川","eel","柳川","¥2,000〜",true,"CP 值高，蒸籠飯分 3 片、4 片兩種，柳川鍋也好評。",S.tbY)]},
+{k:"kumamoto",name:"熊本",days:"D2・D3",spots:[
+ f("黑亭 本店","黒亭 本店","ramen","二本木","¥900〜",true,"60 年老店，焦蒜油豚骨，加生蛋黃的玉子拉麵是招牌。",S.nta),
+ f("桂花拉麵 本店","熊本ラーメン 桂花 本店","ramen","花畑町","¥900〜",true,"熊本城附近，招牌桂花拉麵，熊本拉麵的經典。",S.nta),
+ f("こむらさき 上通本店","熊本ラーメン こむらさき 上通本店","ramen","上通","¥800〜",true,"1950 年代開業，大片叉燒、價格實惠。",S.nta),
+ f("天外天 熊本站店","天外天 熊本駅","ramen","熊本站","¥800〜",true,"車站就到得了，燉得軟嫩的叉燒配大量蒜粉。",S.nta),
+ f("火之國文龍 總本店","火の国文龍 総本店","ramen","東區戶島","¥900〜",true,"市內最濃郁的湯頭之一，座位多。週二公休。",S.gofuK),
+ f("紅蘭亭 下通本店","紅蘭亭 下通本店","local","下通","¥1,000〜",true,"熊本太平燕（冬粉湯麵）的發源店，清淡適合小朋友。",S.bring),
+ f("勝烈亭 新市街本店","勝烈亭 新市街本店","local","新市街","¥1,500〜",true,"50 年豬排老店，價格實在，平日午餐套餐很划算。",S.gofuK),
+ f("山見茶屋（熊本城旁）","阿蘇庭 山見茶屋 熊本城","beef","熊本城二之丸","¥1,500〜",true,"熊本城旁，赤牛丼和熔岩石烤馬肉。D3 參拜稻荷神社順路。",S.gofuK),
+ f("菅乃屋 銀座通り店","菅乃屋 銀座通り店","local","下通","¥3,000〜",false,"馬肉懷石專門店，馬肉涮涮鍋、馬肉生魚片，米其林推薦。",S.gofuK),
+ f("馬櫻 下通店","馬櫻 熊本下通り店","local","下通","¥3,000〜",false,"馬肉生魚片、烤馬肉。",S.bring),
+ f("熊本屋台村","熊本屋台村","yatai","城東町","¥1,500〜",false,"2022 年開的屋台村，有居酒屋和小店，週三公休。",S.gofuK),
+ f("櫻之小路","城彩苑 桜の小路","sweet","城彩苑","¥200〜",true,"熊本城旁的美食街，必吃「いきなり團子」。",S.gofuK)]},
+{k:"aso",name:"阿蘇・高千穗",days:"D4",spots:[
+ f("あか牛料理專門店 やま康","あか牛料理専門店 やま康 高森","beef","南阿蘇・高森","¥2,500〜",true,"赤牛丼每天換部位，肉賣完就關店。離上色見、白川水源很近，最順路。週三公休，冬季可能長休，先查。",S.napA),
+ f("いまきん食堂","いまきん食堂 阿蘇","beef","阿蘇內牧","¥2,500〜",true,"赤牛丼的發源老店，平日也大排長龍。10:00–16:00，週三公休（D4 是週四）。從草千里過去要繞路。",S.napA),
+ f("赤牛丼專門店 ごとう屋","あか牛丼専門店 ごとう屋 阿蘇","beef","阿蘇市","¥2,000〜",true,"專做赤牛丼，也有糰子湯、高菜飯，阿蘇有好幾家分店。",S.napA),
+ f("よかよか亭 あか牛館 宮地店","よかよか亭 あか牛館 宮地店","beef","阿蘇宮地","¥1,500〜",true,"肉舖直營，赤牛丼、漢堡排、咖哩都有，價格親民，無休。",S.napA),
+ f("310食堂","310食堂 西原村","beef","西原村","¥2,000〜",true,"定食風赤牛丼，熊本往阿蘇的路上。週四公休（D4 剛好休息）。",S.napA),
+ f("かんざらしの店 結","かんざらしの店 結 阿蘇","sweet","阿蘇宮地","¥500〜",true,"用湧泉水煮的白玉糰子，淋蜂蜜或黑糖蜜。","FUN! JAPAN 阿蘇"),
+ f("千穗之家 元祖流水麵","千穂の家 元祖流しそうめん","local","高千穗峽","¥700〜",true,"高千穗峽旁的元祖流水麵，湧泉水冰涼。10:00–16:00，建議 14:30 搭天照鐵道前先吃。",S.mapT),
+ f("こびる処（峽谷糰子）","高千穂峡 こびる処","sweet","高千穗峽","¥350",true,"峽谷糰子、日向夏霜淇淋，划船前後的點心站。",S.mapT),
+ f("燒肉・牛排 初榮","焼肉＆ステーキの店 初栄 高千穂","beef","高千穗","¥1,500〜",true,"高千穗牛燒肉午餐，11:00–14:00，週一公休。",S.mapT),
+ f("あららぎ乃茶屋","あららぎ乃茶屋 高千穂","local","高千穗","¥1,320〜",true,"烤雞和竹筒酒，鱒魚定食，全雞要先預約。",S.mapT),
+ f("そば処 天庵","そば処 天庵 高千穂","udon","高千穗","¥1,700",true,"石臼手打蕎麥麵，週四公休（D4 剛好休息）。",S.mapT)]},
+{k:"yufuin",name:"動物公園・由布院",days:"D5",spots:[
+ f("自然動物公園 園內餐廳","九州自然動物公園 レストラン","cafe","園內","¥1,000〜",true,"園區附近幾乎沒有餐廳，園內有咖哩、兒童餐。"),
+ f("由布まぶし 心","由布まぶし 心 金鱗湖本店","beef","金鱗湖","¥2,500〜",true,"豐後牛或地雞釜飯，三種吃法，最後做成茶泡飯。D5 午餐，建議先抽號碼牌。",S.gofuO),
+ f("龜之井別莊 湯之岳庵","亀の井別荘 湯の岳庵","local","金鱗湖","¥3,000〜",true,"安靜的和風老宅，牛排、鰻魚料理。",S.gofuO),
+ f("手打蕎麥 泉","手打ちそば 泉 由布院","udon","金鱗湖","¥1,500〜",true,"鴨肉熱沾醬蕎麥麵，剩下的沾醬可以做成鴨湯。",S.gofuO),
+ f("B-speak","B-speak 由布院","sweet","湯之坪","¥300〜",true,"湯布院最有名的瑞士捲，每天限量，常常中午前就賣完。",S.funY),
+ f("金賞可樂餅","湯布院 金賞コロッケ","local","湯之坪","¥200〜",true,"得過獎的可樂餅，熱熱的邊走邊吃。",S.funY),
+ f("Milch","ミルヒ 由布院","sweet","站前","¥300〜",true,"現烤起司塔、鮮奶霜淇淋和布丁。",S.funY),
+ f("Snoopy 茶屋 由布院店","スヌーピー茶屋 由布院店","cafe","湯之坪","¥1,200〜",true,"史努比造型甜點和抹茶提拉米蘇，小朋友會很開心。",S.funY),
+ f("由布院 鞠智 CUCUCHI","由布院 鞠智 cucuchi","sweet","湯之坪","¥300〜",true,"銅鑼燒有名，也有可麗餅、牛肉可樂餅。",S.funY),
+ f("YURARI 甜點工房","YURARI 由布院 シュークリーム","sweet","湯之坪","¥300〜",true,"用由布院牛奶做的泡芙。",S.funY),
+ f("湯布珈琲","湯布珈琲","cafe","湯之坪","¥600〜",true,"古民家自家烘焙咖啡和湯布布丁。",S.funY),
+ f("Cafe La Ruche","カフェ ラ リューシュ","cafe","金鱗湖","¥1,200〜",true,"就在金鱗湖邊，焦糖布丁和手作蛋糕，週三公休。",S.funY),
+ f("天井棧敷","天井桟敷 亀の井別荘","cafe","金鱗湖","¥1,000〜",false,"舊酒藏改建的老咖啡館，安靜的古民家氣氛。",S.gofuO)]},
+{k:"beppu",name:"別府",days:"D4–D6",spots:[
+ f("地獄蒸工房 鐵輪","地獄蒸し工房 鉄輪","local","鐵輪","¥1,000〜",true,"自己把食材放進溫泉蒸氣裡蒸，小朋友會玩得很開心。",S.gofuO),
+ f("鐵輪豬肉包本舖","鉄輪豚まん本舗","local","鐵輪","¥200〜",true,"溫泉蒸氣蒸的肉包，每月第 2 個週一公休。",S.napB),
+ f("岡本屋賣店（地獄蒸布丁）","岡本屋売店 別府","sweet","明礬","¥400〜",true,"1988 年就用同樣做法的地獄蒸布丁元祖，D6 第一站。",S.gofuO),
+ f("とよ常 本店","とよ常 本店","local","北濱","¥1,000〜",true,"特上天丼和雞肉天婦羅都是招牌，常常要排隊。"),
+ f("東洋軒","レストラン東洋軒 別府","local","石垣","¥1,500〜",true,"大分雞肉天婦羅的發源店，昭和風老洋食館，可外帶。",S.napB),
+ f("豐後牛 そむり","豊後牛 そむり 別府","beef","別府站","¥2,000〜",true,"二樓的老派牛排館，多汁的漢堡排最受好評。",S.gofuO),
+ f("元祖別府拉麵","元祖別府ラーメン","ramen","別府","¥800〜",true,"湯頭帶大分柑橘香的小店，現點現煮要排一下。",S.gofuO),
+ f("六盛 冷麵（TOKIWA 地下 1 樓）","六盛 トキハ別府店","ramen","北濱","¥800〜",true,"Q 彈別府冷麵，在百貨地下樓，吃飯方便。",S.napB),
+ f("胡月（別府冷麵）","胡月 別府","ramen","別府站","¥700〜",false,"別府冷麵代表店，蕎麥粉麵條加牛骨湯。"),
+ f("甘味茶屋","甘味茶屋 別府","local","實相寺","¥600〜",true,"味噌糰子湯和大分鄉土料理。",S.napB),
+ f("杏樹 ゴトー饅頭店","杏樹 ゴトー饅頭店 別府","sweet","千代町","¥400〜",true,"霜淇淋堆得滿出甜筒，很好拍，饅頭也受歡迎。",S.napB),
+ f("とらや（大判燒）","とらや 別府 大判焼き","sweet","楠町","¥100〜",true,"紅豆大判燒，便宜好吃，在地人常買。",S.napB),
+ f("Bakery フクミミ 別府店","ベーカリーフクミミ 別府店","sweet","別府站前","¥200〜",true,"炸麵包，黃豆粉口味最經典。",S.napB),
+ f("塩月堂老舗（柚子饅頭）","塩月堂老舗 別府","sweet","元町","¥150〜",true,"柚子香的和菓子，甜度低，適合當伴手禮。",S.napB),
+ f("Genova 冰淇淋","冷乳果工房 GENOVA 別府","sweet","北濱","¥400〜",true,"十幾種口味的義式冰淇淋。",S.napB)]},
+{k:"mojiko",name:"門司港・下關",days:"D7",spots:[
+ f("伽哩本舗","伽哩本舗 門司港レトロ店","local","懷舊區","¥1,500〜",true,"門司港唯一的燒咖哩專門店，看得到海。D7 早餐站，營業時間先確認。",S.mapM),
+ f("BEAR FRUITS 門司港本店","BEAR FRUITS 門司港本店","local","門司港","¥1,210〜",true,"超燒咖哩上過電視，起司半熟蛋烤得金黃，不接受預約。",S.mapM),
+ f("Princess Phi Phi","プリンセスピピ 門司港","local","西海岸","¥1,260〜",true,"排隊燒咖哩名店，有明太子燒咖哩、炸河豚。11:00 開門。",S.cross),
+ f("港屋千兵衛","港屋千兵衛 門司港","udon","懷舊區","¥918〜",true,"手打烏龍麵配燒咖哩，看得到關門海峽。",S.mapM),
+ f("洋膳茶房 にしき","洋膳茶房 にしき 門司港","cafe","門司港","¥1,510〜",true,"60 年老屋改建，蔬菜咖哩焗烤。",S.mapM),
+ f("三宜樓茶寮 KAITO","三宜楼茶寮 KAITO","sea","門司港","預約制",false,"昭和老料亭建築裡吃河豚，正餐要預約，白天是咖啡館。",S.mapM),
+ f("海鮮處 迴轉壽司 海人","海鮮処 廻転寿司 海人 門司港","sea","門司港","¥275／貫〜",true,"一樓迴轉壽司用唐戶市場的魚，虎河豚握壽司一貫 ¥275。",S.mapM),
+ f("ふくの店 志げる","門司港ふく料理 志げる","sea","門司港","¥7,700〜",false,"家族經營的河豚專門店，每天從下關進貨。",S.mapM),
+ f("Café Matiere","カフェ・マチエール 門司港","sweet","門司港","¥850",true,"自家烘焙咖啡，烤香蕉蜂蜜吐司。",S.mapM),
+ f("BRASS MOJIKO","門司港旅カフェ BRASS MOJIKO","cafe","懷舊區","¥1,200〜",true,"復古風咖啡館，香蕉巧克力鬆餅，看得到海峽。",S.mapM),
+ f("海峽廣場","門司港レトロ 海峡プラザ","sweet","懷舊區","¥300〜",true,"伴手禮和小吃集中，香蕉甜點是門司港特產。"),
+ f("唐戶市場","唐戸市場","sea","下關","¥1,500〜",true,"搭渡輪 5 分鐘到對岸，週五到週日有壽司攤（12/6 是週日）。")]},
+{k:"kokura",name:"小倉",days:"D6 晚・D7",spots:[
+ f("だるま堂（小倉燒烏龍發源店）","だるま堂 小倉 焼きうどん","udon","鳥町食道街","¥700〜",true,"小倉燒烏龍的發源店，D6 晚餐很適合。",S.tbK),
+ f("資さんうどん 魚町店","資さんうどん 魚町店","udon","魚町","¥600〜",true,"北九州人從小吃到大的烏龍麵連鎖店，牛肉牛蒡天烏龍和萩餅都有名。","GLTJP"),
+ f("旦過市場 大學堂","旦過市場 大學堂","sea","旦過市場","¥500〜",true,"先買一碗白飯，再到附近攤位挑配料，做成自己的大學丼。","たびまがじん"),
+ f("旦過うどん","旦過うどん","udon","旦過市場","¥500〜",true,"手打烏龍麵，牛蒡天烏龍、燒什錦麵。","たびまがじん"),
+ f("小倉かまぼこ 本店","小倉かまぼこ 旦過","sweet","旦過市場","¥200〜",true,"1920 年創業，名物炸魚漿「カナッペ」常常賣完。",S.tbK),
+ f("ぎょらん亭 本店","ぎょらん亭 本店 小倉","ramen","三萩野","¥800〜",true,"1946 年創業的豚骨拉麵，濃稠的「どろラーメン」一天約 30 碗。",S.tbK),
+ f("一真軒","一真軒 小倉","ramen","三萩野","¥800〜",true,"北九州系拉麵，蔥叉燒飯也有名，常排隊。",S.tbK),
+ f("青空酒場 まぐろの気晴れ屋","青空酒場 まぐろの気晴れ屋 小倉","sea","小倉站","¥1,500〜",false,"鮪魚專門居酒屋，海鮮蓋飯和本鮪拼盤。",S.tbK),
+ f("ぷらっとぴっと（小倉站月台）","ぷらっとぴっと 4号売店 小倉駅","udon","小倉站 7/8 月台","¥400〜",true,"站著吃的雞肉烏龍，可外帶，D1 轉新幹線也可以看一眼。",S.tbK)]},
+{k:"kurume",off:1,name:"久留米",days:"D2 可繞",note:"不在行程上。D2 從太宰府往柳川的路上，下高速繞進市區約多 20 分鐘。久留米是豚骨拉麵的發源地。",spots:[
+ f("大砲拉麵 本店","大砲ラーメン 本店 久留米","ramen","通外町","¥880〜",true,"1953 年從屋台起家，招牌「昔ラーメン」加自家炸的豬油渣。無休。","まっぷる 久留米 2026"),
+ f("元祖 南京千兩 本家","元祖 南京千両 本家 久留米","ramen","野中町","¥550〜",true,"1937 年創業，久留米拉麵的元祖。週三、週四公休（D2 是週二）。","まっぷる 久留米 2026"),
+ f("大榮拉麵","大栄ラーメン 久留米","ramen","東町","¥700〜",true,"重新開業時沿用冷凍保存的「命之湯」老湯頭，也有山藥泥拉麵。無休。","まっぷる 久留米 2026"),
+ f("くいよい軒","くいよい軒 久留米","ramen","國分町","¥500〜",true,"湯頭溫和、價格親民，有套餐。週三公休。","まっぷる 久留米 2026"),
+ f("龍の家 上津店","龍の家 上津店","ramen","上津","¥680〜",true,"香味油很有特色的濃厚豚骨，炒飯也受歡迎。無休。","まっぷる 久留米 2026")]},
+{k:"kurokawa",off:1,name:"黑川溫泉・小國",days:"D4 可繞",note:"不在行程上。從草千里往北約 1 小時，溫泉街很適合邊走邊吃，但要放棄部分 D4 行程。",spots:[
+ f("どらどら（銅鑼燒）","どらどら 黒川温泉","sweet","黑川溫泉","¥999 以下",true,"外帶專門，招牌是夾奶油的銅鑼燒「どらどらバーガー」。","食べログ 黑川溫泉 2022"),
+ f("パティスリー 麓","パティスリー麓 黒川温泉","sweet","黑川溫泉","¥999 以下",true,"鹽麴泡芙等適合邊走邊吃的甜點。","食べログ 黑川溫泉 2022"),
+ f("とうふ吉祥","とうふ吉祥 黒川温泉","local","黑川溫泉","¥999 以下",true,"手作豆腐料理和豆乳霜淇淋。","食べログ 黑川溫泉 2022"),
+ f("山のいぶき（小國澤西牛奶）","山のいぶき 小国","sweet","小國","¥999 以下",true,"牧場直營，小國澤西牛奶和布丁。","食べログ 黑川溫泉 2022"),
+ f("湯音","湯音 黒川温泉","cafe","黑川溫泉","¥1,000〜",true,"小國澤西牛奶製品、いきなり團子、赤牛小菜。","食べログ 黑川溫泉 2022"),
+ f("山の飯 沙羅","山の飯 沙羅 黒川温泉","udon","黑川溫泉","¥1,000〜",true,"圍爐裏地雞蕎麥麵、烏骨雞蛋拌飯。","食べログ 黑川溫泉 2022"),
+ f("わろく屋","わろく屋 黒川温泉","beef","黑川溫泉","¥2,000〜",true,"明治時期古民家咖啡館，赤牛重和咖哩。","食べログ 黑川溫泉 2022"),
+ f("自然薯料理 やまたけ","自然薯料理 やまたけ 小国","local","小國","¥1,000〜",true,"山藥料理和小國田樂膳，在圍爐裏邊烤邊吃。","食べログ 黑川溫泉 2022")]},
+{k:"nobeoka",off:1,name:"延岡（D4 備案路線）",days:"D4 晚",note:"D4 晚上如果改走備案路線（高千穗 → 延岡 → 別府），會經過延岡，正好吃晚餐。延岡是南蠻炸雞的發源地。",spots:[
+ f("直ちゃん","直ちゃん 延岡 チキン南蛮","fried","延岡","¥999 以下",true,"南蠻炸雞元祖之一，不加塔塔醬，用醋汁調味，可加芥末或柚子胡椒。","食べログ 延岡 2024"),
+ f("おぐら 出北店","おぐら 出北店 延岡","fried","延岡","¥1,000〜",true,"雞胸、雞腿各半的南蠻炸雞，塔塔醬濃郁還能加點。","食べログ 延岡 2024"),
+ f("國技館","国技館 延岡","fried","延岡","¥1,000〜",true,"雞腿肉配自製塔塔醬，有午間套餐。","食べログ 延岡 2024")]},
+{k:"hita",off:1,name:"日田",days:"D5 可繞",note:"不在行程上。從由布院往西開約 50 分鐘，有江戶老街「豆田町」，日田炒麵最有名。",spots:[
+ f("想夫戀 總本店（日田炒麵）","焼そばの想夫恋 総本店 日田","local","日田","¥1,150〜",true,"日田炒麵的發源店，麵條煎得焦脆，有兒童椅。","なっぷ 日田 2026"),
+ f("日田まぶし 千屋","日田まぶし 千屋","eel","豆田町","¥3,400",true,"町家建築裡吃鰻魚飯「日田まぶし」，玉子燒也好吃。","なっぷ 日田 2026"),
+ f("いた屋本家","いた屋本家 日田","eel","日田","¥990〜",true,"鰻重、釜飯，有包廂和兒童椅，帶寶寶方便。","なっぷ 日田 2026"),
+ f("すてーき茶寮 和くら","すてーき茶寮 和くら 日田","beef","豆田町","¥2,600〜",true,"百年酒藏改建，和牛牛排和漢堡排午餐。","なっぷ 日田 2026"),
+ f("赤牛專門店 うしとさかな","あか牛専門店 うしとさかな 日田","beef","日田","¥980〜",true,"赤牛咖哩，只有午餐、只收現金，常客滿。","なっぷ 日田 2026"),
+ f("御食事處 お多幸","御食事処 お多幸 日田","local","日田","¥900",true,"家常的雞肉天婦羅定食，只收現金。","なっぷ 日田 2026"),
+ f("旭饅頭","旭饅頭 日田","sweet","豆田町","¥180〜",true,"豆田町老店的蕎麥饅頭。","なっぷ 日田 2026")]},
+{k:"nakatsu",off:1,name:"中津",days:"D6 路上",note:"不在行程上，但 D6 從別府開往小倉會經過，下交流道約 10 分鐘。中津是日本炸雞（唐揚げ）的聖地，多半是外帶秤重賣。",spots:[
+ f("總本家もり山 三光本店","総本家もり山 三光本店","fried","三光","¥248／100g〜",true,"1970 年創業，被稱為中津炸雞的發源店，鹽味蒜香，老闆推薦帶骨。","JAL ONTRIP 2023"),
+ f("もり山 萬田本店","もり山 万田本店","fried","萬田","¥250／100g〜",true,"清爽鹽味，2019 年炸雞大賽總冠軍。","JAL ONTRIP 2023"),
+ f("からいち 中津總本店","からいち 中津総本店","fried","中津","¥270／100g〜",true,"醬油底醃一晚，在地人很愛。","JAL ONTRIP 2023"),
+ f("あげ處 ぶんごや","あげ処 ぶんごや 中津","fried","中津","¥270／100g〜",true,"用熟成一個月的醬汁醃製，配飯、配酒都好。","JAL ONTRIP 2023"),
+ f("からあげの鳥しん","からあげの鳥しん 中津","fried","中津","¥560／200g〜",true,"薄皮多汁，有內用區。","JAL ONTRIP 2023"),
+ f("舷喜屋","舷喜屋 中津 からあげ","fried","中津","¥270／100g〜",true,"雞胸肉放涼了也很嫩，得過獎。","JAL ONTRIP 2023"),
+ f("チキンハウス 中津本店","チキンハウス 中津本店","fried","中津","¥280／100g〜",true,"1989 年創業的懷舊口味，外皮酥脆，有午餐套餐。","JAL ONTRIP 2023"),
+ f("諭吉のからあげ 中津店","諭吉のからあげ 中津店","fried","中津","¥240／100g〜",true,"加了大分酸橘和胡椒的酸辣口味。","JAL ONTRIP 2023")]},
+{k:"extra",name:"自由日備選：糸島・海之中道",days:"D8",spots:[
+ f("岐志漁港 牡蠣小屋","岐志漁港 かき小屋","sea","糸島","¥2,000〜",true,"12 月牡蠣季，一桶牡蠣自己烤；穿不怕弄髒的外套。"),
+ f("船越漁港 牡蠣小屋","船越漁港 かき小屋","sea","糸島","¥2,000〜",true,"另一個牡蠣小屋聚集地，從福岡市區過來比較近。"),
+ f("Beach Cafe SUNSET","ビーチカフェ サンセット 糸島","cafe","糸島","¥1,500〜",true,"糸島海邊咖啡館始祖，看海吃漢堡、咖哩。"),
+ f("海之中道水族館 餐廳","マリンワールド海の中道","cafe","海之中道","¥1,000〜",true,"邊看海邊吃，有兒童餐，看完海豚秀直接用餐。"),
+ f("金印熱狗","金印ドッグ 志賀島","local","志賀島","¥500〜",true,"志賀島名物，熱狗裡夾炸魚和海鮮。")]}
+];
+FOOD.forEach(a=>a.spots.forEach((p,i)=>{p.id=a.k+"-"+i;p.kind="food"}));
+/* ---------- 景點 ---------- */
+const SCATS={shrine:["神社寺院","#A3477E"],nature:["自然風景","#3D8A5A"],kids:["親子遊樂","#C98A22"],museum:["博物館・美術館","#5F6FA8"],onsen:["溫泉・足湯","#16858A"],history:["古蹟・老街","#B86A2C"],view:["展望・夜景","#2F78B5"],shop:["購物・市場","#8A63C9"]};
+/* g(名稱, 日文（地圖搜尋）, 分類, 小區, 費用, 親子OK, 介紹, 來源, 建議停留分鐘) */
+const g=(name,jp,cat,area,p,kid,t,src,stay)=>({name,jp,cat,area,p,kid,t,src,stay,kind:"spot"});
+const SR={gofuF:"GoFun 福岡 2026",gofuK:"GoFun 熊本 2026",todoF:"todolist 福岡親子 2026",tsuA:"tsunagu 阿蘇 2024",todoK:"todolist 北九州 2026",gltY:"GLTJP 由布院 2026",aso:"asoview 別府 2025",iko:"いこーよ 大分親子 2025",tabiT:"たびまがじん 高千穗",funT:"FUN! JAPAN 高千穗",mine:"行程中"};
+const SIGHTS=[
+{k:"s-hakata",name:"福岡市",days:"D1・D8",spots:[
+ g("福岡麵包超人兒童博物館","福岡アンパンマンこどもミュージアムinモール","kids","中洲川端","門票約 ¥2,000",true,"1–6 歲最愛，角色舞台和遊戲區；10:00–17:00，最後入館 16:00。",SR.todoF,150),
+ g("BOSS E・ZO FUKUOKA（teamLab）","BOSS E・ZO FUKUOKA","kids","百道濱","依設施",true,"teamLab Forest 互動數位藝術、刺激設施、美食街。主要展區不能推嬰兒車。",SR.gofuF,120),
+ g("三麗鷗 Dream!ng Park","サンリオキャラクターズ ドリーミングパーク","kids","百道濱","免費入場",true,"BOSS E・ZO 7 樓，和三麗鷗角色拍照、買周邊。",SR.gofuF,60),
+ g("福岡塔","福岡タワー","view","百道濱","依年齡",true,"海邊的瞭望塔，日落前 30–45 分上去最美。",SR.todoF,60),
+ g("大濠公園","大濠公園","nature","中央區","免費",true,"湖畔散步公園，推車好走，旁邊就是福岡城跡。",SR.gofuF,60),
+ g("福岡城跡・舞鶴公園","福岡城跡 舞鶴公園","history","中央區","免費",true,"福岡城遺址，石垣和天守台可以登高看市區。",SR.gofuF,45),
+ g("福岡市動植物園","福岡市動植物園","kids","南公園","依年齡",true,"大象、企鵝、小型遊樂設施和摩天輪；週一休園，9:00–16:30。",SR.gofuF,180),
+ g("福岡市科學館","福岡市科学館","museum","六本松","展覽、天象儀分開買",true,"4–12 歲適合，下雨天的好去處。",SR.todoF,150),
+ g("KidZania 福岡","キッザニア福岡","kids","LaLaport 福岡","依日期、時段",true,"3–15 歲職業體驗，熱門日期要早點訂。",SR.todoF,300),
+ g("福岡玩具美術館","福岡おもちゃ美術館","kids","LaLaport 福岡","依年齡",true,"嬰幼兒到小學都能玩的木頭玩具館。",SR.todoF,120),
+ g("LaLaport 福岡（實物大鋼彈）","ららぽーと福岡","shop","那珂","免費",true,"200 多家店，門口有實物大鋼彈。",SR.gofuF,120),
+ g("那珂川水上巴士","那珂川 水上バス","view","中洲","依路線",true,"30–45 分鐘遊船，中洲路線晚上最漂亮。",SR.gofuF,45),
+ g("櫛田神社","櫛田神社","shrine","博多","免費",true,"博多總鎮守，境內有巨大的山笠裝飾。",SR.gofuF,30),
+ g("福岡亞洲美術館","福岡アジア美術館","museum","博多河岸","—",true,"亞洲當代藝術，和麵包超人博物館同一棟；週三休。",SR.gofuF,60),
+ g("南藏院（臥佛）","南蔵院 篠栗","shrine","篠栗","—",true,"巨大的青銅臥佛，博多搭 JR 約 30 分。",SR.gofuF,60)]},
+{k:"s-dazaifu",name:"太宰府・柳川",days:"D2",spots:[
+ g("太宰府天滿宮","太宰府天満宮","shrine","太宰府","免費",true,"學問之神；12–3 月開到 18:30，本殿整修中有臨時本殿。",SR.gofuF,60),
+ g("九州國立博物館","九州国立博物館","museum","太宰府","依展覽",true,"1 樓免費體驗區可以穿古裝、玩互動展品；週一休館。",SR.gofuF,90),
+ g("柳川遊船","柳川 川下り","nature","柳川","依船公司",true,"搭小船遊水鄉運河約 1 小時，冬天有暖桌船。",SR.gofuF,70),
+ g("高橋商店（柚子胡椒工廠）","高橋商店 柳川","shop","柳川","DIY 另計",true,"柚子胡椒、海苔老店，可以參觀和 DIY。",SR.gofuF,40)]},
+{k:"s-kumamoto",name:"熊本",days:"D2・D3",spots:[
+ g("熊本城","熊本城","history","熊本市","大人 ¥850、國中小 ¥300",true,"震後重新開放的天守閣，9:00–17:00，最後入場 16:30。",SR.gofuK,90),
+ g("櫻之馬場 城彩苑","桜の馬場 城彩苑","shop","熊本城旁","免費",true,"江戶風美食街和伴手禮，冬天 9:00–18:00。",SR.gofuK,60),
+ g("熊本熊部長辦公室","くまモンスクエア","kids","鶴屋百貨","免費",true,"熊本熊有時會現身，小朋友很開心；10:00–19:00。",SR.gofuK,40),
+ g("水前寺成趣園","水前寺成趣園","nature","熊本市","¥400",true,"湧泉池庭園和小富士，8:30–17:00。",SR.gofuK,60),
+ g("島田美術館","島田美術館 熊本","museum","西區","—",false,"宮本武藏相關收藏，安靜不能拍照；週二、第 2・4 週三休。",SR.gofuK,60),
+ g("熊本市動植物園","熊本市動植物園","kids","東區","—",true,"市區的動物園和遊樂設施。",SR.gofuK,150),
+ g("下通・上通商店街","下通 商店街 熊本","shop","市中心","免費",true,"有屋頂的商店街，下雨也好逛。",SR.gofuK,60)]},
+{k:"s-aso",name:"阿蘇",days:"D4",spots:[
+ g("草千里","草千里ヶ浜","nature","阿蘇山上","免費（停車另計）",true,"火山腳下的大草原，可以騎馬。",SR.gofuK,60),
+ g("阿蘇神社","阿蘇神社","shrine","一之宮","免費",true,"全國阿蘇神社的總本社，6:00–18:00。",SR.gofuK,40),
+ g("阿蘇中岳火山口","阿蘇山 中岳火口","nature","阿蘇山上","—",false,"活火山口，常因火山氣體管制，出發前查能不能上去。",SR.gofuK,45),
+ g("大觀峰","大観峰","view","阿蘇北外輪山","免費",true,"海拔 936 公尺 360 度觀景台，常有雲海。",SR.tsuA,30),
+ g("白川水源","白川水源","nature","南阿蘇","維護費約 ¥100",true,"清澈湧泉，帶水壺來裝水。",SR.tsuA,30),
+ g("上色見熊野座神社","上色見熊野座神社","shrine","高森","免費",false,"石燈籠參道很美，200 多階石階，帶寶寶用背巾。",SR.gofuK,50),
+ g("高森湧水隧道公園","高森湧水トンネル公園","nature","高森","—",true,"約 2 公里的廢棄鐵道隧道，有湧泉和燈光。",SR.tsuA,40),
+ g("月廻公園","月廻り公園 南阿蘇","kids","南阿蘇","—",true,"大草坡滑草、卡丁車、動物廣場。",SR.tsuA,90),
+ g("阿蘇農場樂園","阿蘇ファームランド","kids","南阿蘇","依設施",true,"全天候迷宮、動物互動、手作體驗。",SR.tsuA,120),
+ g("阿蘇坊中溫泉 夢之湯","阿蘇坊中温泉 夢の湯","onsen","阿蘇站旁","大人 ¥400、家族湯 ¥1,100／60 分",true,"露天、三溫暖，家族湯帶寶寶方便。",SR.tsuA,60),
+ g("鍋之瀑布","鍋ヶ滝","nature","小國","—",false,"可以走到瀑布後面看，階梯多。",SR.tsuA,40)]},
+{k:"s-takachiho",name:"高千穗",days:"D4",spots:[
+ g("高千穗峽","高千穂峡","nature","高千穗","划船約 ¥4,100 起",true,"柱狀岩壁和真名井瀑布，划船 8:30–17:00，最後受理 16:30。","JAL ONTRIP",60),
+ g("高千穗天照鐵道","高千穂あまてらす鉄道","kids","高千穗站","—",true,"無頂小火車過 105 公尺高的鐵橋，9:40–15:40，第 3 週四停駛。",SR.funT,40),
+ g("高千穗神社（夜神樂）","高千穂神社","shrine","高千穗","夜神樂約 ¥1,000",true,"杉木林中的古社，每天 20:00–21:00 有夜神樂表演。",SR.funT,30),
+ g("天岩戶神社","天岩戸神社","shrine","岩戶","免費（遙拜所隨喜）",true,"天照大神躲進岩洞的神話地，遙拜所 8:30–16:30。",SR.tabiT,40),
+ g("天安河原","天安河原","nature","岩戶","免費",false,"眾神開會的河原洞窟，從天岩戶神社沿河步行約 10 分。",SR.tabiT,40),
+ g("國見之丘","国見ヶ丘","view","高千穗","免費",true,"秋到初冬清晨有雲海，要很早起。",SR.funT,30)]},
+{k:"s-yufuin",name:"由布院・安心院",days:"D5",spots:[
+ g("九州自然動物公園","九州自然動物公園アフリカンサファリ","kids","安心院","依年齡",true,"開車或搭叢林巴士看獅子、長頸鹿，建議停留 3 小時。",SR.iko,180),
+ g("金鱗湖","金鱗湖","nature","由布院","免費",true,"冬天清晨湖面起霧最美，湖邊有天祖神社。",SR.gltY,40),
+ g("湯之坪街道","湯の坪街道","shop","由布院","免費",true,"約 800 公尺的商店街，小吃甜點一路逛到金鱗湖。",SR.gltY,90),
+ g("湯布院花卉村","湯布院フローラルヴィレッジ","kids","由布院","免費入場",true,"英國小鎮風格，有小動物和角色商店。",SR.gltY,40),
+ g("湯布院昭和館","湯布院昭和館","museum","由布院","—",true,"重現昭和教室、玩具店，部分展品可以摸、可拍照。",SR.iko,45),
+ g("宇奈岐日女神社","宇奈岐日女神社","shrine","由布院","免費",true,"由布院的守護神社，巨杉是天然紀念物。",SR.gltY,30),
+ g("佛山寺","佛山寺 由布院","shrine","由布院","—",false,"茅草山門的古剎，週末可預約坐禪抄經。",SR.gltY,30),
+ g("COMICO ART MUSEUM","COMICO ART MUSEUM YUFUIN","museum","由布院","—",false,"隈研吾設計的建築，現代藝術。",SR.gltY,60),
+ g("狹霧台","狭霧台","view","山並高速公路","免費",true,"海拔 680 公尺俯瞰由布院盆地。",SR.gltY,20),
+ g("菊家 無何有の郷（工廠直營店）","お菓子の菊家 無何有の郷","shop","由布市","免費",true,"大分名點工廠參觀，買東西送咖啡。",SR.iko,40),
+ g("Harmonyland（三麗鷗）","サンリオキャラクターパーク ハーモニーランド","kids","日出町","依票種",true,"戶外三麗鷗樂園，從別府約 30 分。",SR.iko,240)]},
+{k:"s-beppu",name:"別府",days:"D4–D6",spots:[
+ g("海地獄","海地獄","nature","鐵輪","依門票",true,"鈷藍色溫泉池，地獄巡禮的代表。",SR.iko,30),
+ g("鬼山地獄（鱷魚地獄）","鬼山地獄","nature","鐵輪","依門票",true,"溫泉養了很多鱷魚。",SR.iko,25),
+ g("鐵輪地獄地帶公園","鉄輪地獄地帯公園","kids","鐵輪","免費",true,"地獄造型大型遊具、溫泉噴水，逛地獄時順便放電。",SR.iko,40),
+ g("城島高原樂園","城島高原パーク","kids","城島高原","大人 ¥1,500、4 歲–國小 ¥600",true,"日本第一座木造雲霄飛車，有室內遊樂區，冬天有溜冰。",SR.aso,240),
+ g("別府 Rakutenchi 樂天地","別府ラクテンチ","kids","別府","大人 ¥1,300、3 歲–國小 ¥600",true,"搭纜車上山的老遊樂園，鴨子賽跑、動物區；週二休，冬季可能休園。",SR.aso,180),
+ g("別府兒童遊樂館","別府こどもあそびめぐり","kids","別府","—",true,"室內 10 萬顆球池，小小孩也安心。",SR.iko,90),
+ g("杉乃井飯店（設施）","杉乃井ホテル","onsen","觀海寺","依設施",true,"大型溫泉度假村，保齡球、遊戲區、兒童樂園。",SR.iko,120),
+ g("大分香之博物館","大分香りの博物館","museum","別府","大人 ¥700、國中小 ¥300",true,"親子一起調配專屬香水。",SR.aso,60),
+ g("森林冒險樂園 別府","フォレストアドベンチャー・別府","kids","別府","¥3,000 起",false,"樹上攀爬和滑索，身高 110 公分以上。",SR.aso,120),
+ g("別府空中纜車","別府ロープウェイ","view","鶴見岳","—",true,"搭纜車上鶴見岳，看別府灣。","行程中",60)]},
+{k:"s-mojiko",name:"門司港",days:"D7",spots:[
+ g("門司港懷舊區","門司港レトロ","history","門司港","免費",true,"紅磚洋館和港邊步道。",SR.todoK,90),
+ g("門司港車站","門司港駅","history","門司港","免費",true,"大正時期的西式車站建築。",SR.todoK,20),
+ g("九州鐵道紀念館","九州鉄道記念館","kids","門司港","—",true,"歷代列車、迷你電車駕駛、模擬器，親子最愛；9:00–17:00。",SR.todoK,90),
+ g("關門海峽博物館","関門海峡ミュージアム","museum","門司港","部分免費",true,"大螢幕看海峽歷史，有兒童區和頂樓露台；9:00–17:00。",SR.todoK,60),
+ g("門司港懷舊展望室","門司港レトロ展望室","view","門司港","收費",true,"31 樓看關門海峽和大橋，10:00–22:00。",SR.todoK,30),
+ g("藍翼橋","ブルーウィングもじ","view","門司港","免費",true,"每天定時升起 20 分鐘的行人吊橋。",SR.todoK,15),
+ g("舊門司三井俱樂部","旧門司三井倶楽部","history","門司港","—",false,"愛因斯坦住過的房間；9:00–17:00。",SR.gofuF,30),
+ g("關門隧道人行道","関門トンネル人道","nature","和布刈","—",true,"走海底隧道到本州下關，地上有分界線可以拍照。",SR.todoK,45)]},
+{k:"s-kokura",name:"小倉・八幡",days:"D6–D7",spots:[
+ g("小倉城","小倉城","history","小倉","收費",true,"天守內有射箭、決鬥拍照等體驗。",SR.gofuF,60),
+ g("小倉城庭園","小倉城庭園","history","小倉","收費（可買聯票）",true,"重現江戶武家宅邸，可體驗抹茶。",SR.todoK,60),
+ g("旦過市場","旦過市場","shop","小倉","免費",true,"在地市場，午餐時間逛最好。",SR.todoK,60),
+ g("北九州市漫畫博物館","北九州市漫画ミュージアム","museum","小倉站","—",true,"可以看漫畫的博物館，下雨天好去處。",SR.todoK,60),
+ g("皿倉山（夜景）","皿倉山 ケーブルカー","view","八幡","纜車另計",true,"日本新三大夜景，纜車＋斜坡車上山；週二休。",SR.gofuF,90),
+ g("北九州生命之旅博物館","北九州市立いのちのたび博物館","museum","八幡東","—",true,"恐龍骨架和自然史，規模很大。",SR.todoK,120),
+ g("THE OUTLETS 北九州","THE OUTLETS KITAKYUSHU","shop","八幡東","免費",true,"和 AEON 連在一起，300 多家店。",SR.gofuF,150),
+ g("TOTO 博物館","TOTOミュージアム","museum","小倉南","免費",false,"日本衛浴文化和設計展，出發前查休館日。",SR.todoK,60)]},
+{k:"s-extra",name:"自由日備選：海之中道・能古島・糸島",days:"D8",spots:[
+ g("海之中道海洋世界（水族館）","マリンワールド海の中道","kids","海之中道","依年齡",true,"海豚、海獅、企鵝表演，建議 3–4 小時。",SR.todoF,210),
+ g("海之中道海濱公園","海の中道海浜公園","kids","海之中道","入園費",true,"花海、遊戲區、動物森林，至少半天。",SR.todoF,180),
+ g("能古島海島公園","のこのしまアイランドパーク","nature","能古島","—",true,"搭船 10 分，花海、小動物、彩繪陶器。",SR.gofuF,180),
+ g("櫻井二見浦 夫婦岩","桜井二見ヶ浦","view","糸島","免費",true,"海上白鳥居和夫婦岩，看夕陽很美。",SR.gofuF,30),
+ g("宮地嶽神社","宮地嶽神社","shrine","福津","—",true,"1,700 年古社，2 月、10 月有「光之道」。",SR.gofuF,40)]},
+{k:"s-kuju",off:1,name:"九重・黑川（行程外）",days:"D4 可繞",note:"不在行程上。D4 往北繞，或晚上回別府改走九重方向時會經過，但要多花不少時間。",spots:[
+ g("黑川溫泉","黒川温泉","onsen","南小國","泡湯手形 ¥1,500 前後",true,"約 30 間旅館的溫泉街，部分有家族湯。",SR.gofuK,120),
+ g("九重夢大吊橋","九重“夢”大吊橋","view","九重町","—",true,"日本最高的步行吊橋，海拔 777 公尺。",SR.gltY,45),
+ g("瀨之本高原","瀬の本高原","view","南小國","免費",true,"平緩高原，遠眺阿蘇群峰。",SR.tsuA,20)]},
+{k:"s-usa",off:1,name:"宇佐・耶馬溪（行程外）",days:"D5–D6 可繞",note:"不在行程上。宇佐神宮離動物公園約 25 分；耶馬溪在中津南邊，D6 往小倉時可以繞。",spots:[
+ g("宇佐神宮","宇佐神宮","shrine","宇佐","免費",true,"全國八幡宮的總本宮，1,300 年歷史。",SR.gltY,60),
+ g("耶馬溪","耶馬渓","nature","中津","免費",true,"奇岩溪谷與古剎，青之洞門很有名。",SR.gltY,60)]}
+];
+SIGHTS.forEach(a=>a.spots.forEach((p,i)=>p.id=a.k+"-"+i));
+
+
+/* ---------- 清單 ---------- */
+/* 每項 "文字|小提醒"；分三頁：出國必帶、自駕、伴手禮 */
+const SECS=[
+{k:"todo",name:"出發前待辦",intro:"要「做完」的事，做完就點一下打勾。要「帶」的東西在「出國必帶」。",groups:[
+ ["證件與保險",["旅平險・不便險投保|出發前投保，保單截圖存手機","Visit Japan Web 入境申報|6 人都要，申報後的 QR Code 截圖存手機","線上簽證|台灣護照免簽 90 天，不用辦","確認帶護照|效期至少 6 個月，寶寶也要","駕照日文譯本|監理站或線上申請 NT$100，每位駕駛都要"]],
+ ["網路與錢",["eSIM|出發前買好並下載設定","換日圓現金|牡蠣小屋、屋台、鄉下小店常只收現金","信用卡開通海外交易"]],
+ ["預約與聯絡",["租車公司確認雪鏈、兒童座椅、ETC 卡","通知 beppu Ohana 12/3 晚上 22:30 左右才入住","由布まぶし 心 訂位|12/4 中午","買麵包超人博物館門票|D1，Funliday 有即買即用票","確認九州自然動物公園冬季開園時間|12/4 排 09:25 到"]],
+ ["手機準備",["下載 Google 地圖離線地圖|阿蘇、高千穗山區訊號可能不穩","4 間住宿確認信截圖","把這個 App 加到手機主畫面"]]]},
+{k:"go",name:"行李清單",intro:"9 天 8 夜・5 大人＋1 寶寶。12 月九州市區白天約 12–13°C、早晚 3–6°C；阿蘇、由布院清晨會到 0°C 以下。衣服數量以「D3 熊本休息日洗一次衣服」計算，不洗就照括號多帶。",groups:[
+ ["證件與錢",["護照 6 本（含寶寶）|效期 6 個月以上","護照影本＋大頭照 2 張|遺失補辦用，和正本分開放","機票電子票|訂位代號看航空公司確認信","4 間住宿訂房確認信","信用卡 2 張","日圓現金|牡蠣小屋、屋台、鄉下小店常只收現金","Suica 等 IC 卡|機場巴士、地鐵都能刷，車上不找大鈔","零錢包|日本硬幣很多，投幣置物櫃、自動販賣機常用","寶寶的出生證明或戶籍謄本影本|有些國家會查，帶著備用"]],
+ ["大人衣物（每人）",["羽絨外套|每人 1 件，防風、可壓縮的最好；D4 阿蘇草千里、高千穗峽很冷","輕羽絨背心或刷毛外套|每人 1 件，車上、室內脫外套後穿","發熱衣・保暖褲|發熱衣每人 3 件、保暖褲 2 件（不洗就 5 件、3 件）","長袖上衣|每人 4 件（不洗就 7 件），選好穿脫的","毛衣或刷毛上衣|每人 2 件，中間層","上衣・褲子|長褲每人 2–3 條，至少 1 條刷毛或保暖褲","內衣褲・襪子|內衣褲每人 5 套（不洗就 9 套）；襪子 5 雙＋1 雙厚羊毛襪","睡衣|每人 1 套，飯店多半有睡衣，民宿不一定","毛帽・圍巾・手套|每人各 1，手套選可滑手機的；脖圍比圍巾好收","好走的鞋|每人 1 雙防水、止滑的，高千穗峽步道、上色見石階會濕滑","拖鞋|飯店、民宿室內穿","泳衣泳褲|飯店泳池或包租湯用；日本大眾溫泉不能穿泳衣","換洗衣物|多 1 套放隨身行李，萬一托運晚到"]],
+ ["寶寶衣物",["保暖連身衣・包巾・帽子|連身羽絨或防風外套 2 件（一件備用）、包巾或小毯 1 條","換洗衣物多帶兩套|貼身衣褲每天 2 套 × 5 天＝10 套（D3 洗衣），不洗就 18 套","寶寶發熱衣・內搭|4–5 件，冬天搭在外層裡面","寶寶長褲・內搭褲|6 條，容易弄髒","寶寶襪子|8 雙＋2 雙厚襪；學步鞋 1 雙（會走路的話）","寶寶毛帽・手套|各 2 頂／雙，掉了有備用","寶寶睡衣・睡袋|2 套；民宿晚上比較冷，可帶防踢睡袋","口水巾・小方巾|6–8 條"]],
+ ["寶寶吃喝",["奶粉・奶瓶・副食品|放隨身，過安檢主動說是寶寶用；奶粉帶全程份量＋2 天備用","奶瓶|3–4 支，外出包隨時放 1 支","奶瓶刷・奶瓶清潔劑・消毒用品|旅行用小瓶或消毒錠","保溫瓶|1 支裝熱水沖奶；飯店多半有熱水壺","分裝奶粉盒|3–4 格，外出帶當天份","副食品・寶寶零食|帶 2–3 天份，其他在日本藥妝店買（和光堂、Pigeon 很多選擇）","寶寶餐具・圍兜|湯匙叉子 1 組、吸盤碗 1 個、圍兜 3–5 條（拋棄式圍兜很方便）","寶寶水杯・吸管杯|1 個","起降時喝的奶或水|飛機起飛降落喝東西，耳朵比較不會痛"]],
+ ["寶寶換尿布與清潔",["尿布・濕紙巾|每天 6–8 片 × 9 天約 60–70 片；建議只帶 3 天份約 25 片，其他在日本藥妝店、超市買，省托運重量","濕紙巾|帶 3–4 包，日本可補；手口用的另外 1 包","隔尿墊|拋棄式 10 片，換尿布時墊著","尿布垃圾袋|1 捲，日本垃圾要自己帶走的地方很多","尿布疹膏","寶寶沐浴乳・洗髮乳|旅行小瓶","寶寶乳液・護唇膏|九州冬天很乾","寶寶指甲剪・棉花棒"]],
+ ["寶寶外出與睡覺",["推車或背巾|高千穗峽、神社石階用背巾比較方便；輕便推車市區好用，兩個都帶最安心","推車防風雨罩|冬天擋風很重要","安撫巾・奶嘴|奶嘴 2 個＋奶嘴鍊","車上玩具・繪本|每天開車 1.5–5 小時，安靜的玩具、貼紙書、平板下載好卡通","寶寶外出包|裝 1 天份尿布、奶、換洗 1 套","兒童安全座椅|跟租車公司租，取車時確認型號適合寶寶的年齡體重"]],
+ ["寶寶藥品",["寶寶退燒藥・體溫計|找小兒科開好，附劑量說明","生理食鹽水・吸鼻器|乾冷天氣容易鼻塞","寶寶腸胃藥・止瀉|醫師開的","寶寶小藥盒|分裝好、標好名字","寶寶健保卡・疫苗紀錄|就醫時有幫助"]],
+ ["飛機上隨身",["頸枕・眼罩|03:00 起飛的凌晨班機，上機就睡","薄外套|機上冷氣強；下機後直接穿羽絨","液體夾鏈袋|每瓶 100ml 以下，總共 1 公升透明袋","寶寶隨身包（飛機上）|尿布、濕紙巾、換洗 1 套、奶","小包裝零食・水"]],
+ ["電子用品",["手機","平板與充電器","自拍棒","Wi-Fi 分享器（沒買 eSIM 的話）","行動電源|只能放隨身行李，不能托運；2 萬 mAh 以下","充電線・多孔充電頭|日本插座和台灣一樣是兩孔，不用轉接頭","耳機","延長線（短）|飯店插座常常不夠","充電式暖暖包|隨身行李可帶"]],
+ ["盥洗用品",["牙刷・牙膏|商務飯店多半有，民宿不一定","毛巾","泡湯小毛巾|每人 1 條","洗面乳・沐浴乳","卸妝・保養品|化妝水、乳液、乳霜","刮鬍刀","隱形眼鏡・藥水・眼鏡","防曬油|冬天山上紫外線也強","防蚊液|12 月幾乎用不到，可不帶"]],
+ ["藥品與保養",["感冒・腸胃・止痛常備藥","暈車藥|D4 山路開約 5 小時","OK 繃・優碘","口罩","乳液・護唇膏|冬天九州很乾","護手霜","過敏藥","酒精棉片・乾洗手","暖暖包|貼式、手握式，日本便利商店、藥妝店都有"]],
+ ["洗衣",["洗衣袋 2–3 個|D3 熊本休息日洗衣","洗衣球或洗衣粉小包|投幣洗衣店多半有賣","折疊衣架・曬衣夾|4–6 個","髒衣服收納袋|每人 1 個"]],
+ ["其他",["行李秤|回程托運共 115kg，比去程少","折疊購物袋","夾鏈袋・垃圾袋","雨傘","水瓶或保溫瓶|白川水源可以裝水","筆|填表格用","環保餐具","行李箱鎖・行李吊牌","摺疊後背包|伴手禮多時多一個袋子","面紙・小包衛生紙"]],
+ ["不能帶進日本",["肉製品不要帶|肉乾、香腸、肉鬆、含肉調理包都禁止","新鮮水果不要帶|芒果、柚子、香蕉等多半禁止"]]]},
+{k:"car",name:"自駕",intro:"八人車一台・12/1 福岡取車 → 12/6 福岡還車。",groups:[
+ ["證件資料（每位駕駛都要帶）",["台灣駕照正本|效期 6 個月以上","駕照日文譯本|監理站或線上申請，NT$100；不用國際駕照","護照","租車預約單・訂單號碼","租車公司電話|寫在 D2 筆記，出事時要打"]],
+ ["費用",["尾款 ¥57,600|12/1 取車時付清，收據收好","ETC 卡已含在訂單|高速公路費用還車時另外結算","油錢・停車費預備現金"]],
+ ["取車時確認",["兒童安全座椅|日本法規 6 歲以下必須坐，寶寶用嬰兒座椅，裝在後座兩側","ETC 卡已插好","車身刮痕先拍照錄影","確認油種|多半是レギュラー（一般汽油）","導航改成中文|輸入電話號碼或 MAPCODE 找目的地","還車地點、時間"]],
+ ["雪鏈（D4 阿蘇・高千穗用）",["雪鏈已放在後車廂最上面|租車公司沒有雪胎，只有雪鏈","請店員示範怎麼裝|チェーンの付け方を教えてください","問清楚裝前輪還是後輪|前輪と後輪、どちらに付けますか？","自己試裝一次並錄影","確認雪鏈尺寸合這台車、零件齊全"]],
+ ["裝雪鏈的工具",["工作手套或防水手套","頭燈或手電筒|晚上裝鏈要用","防水墊或大垃圾袋|跪在地上時墊著","擦手毛巾"]],
+ ["車上用品",["手機車架","車用 USB 充電器","零食・水","面紙・濕紙巾","垃圾袋","車窗遮陽簾"]],
+ ["出發前準備",["Google 地圖下載離線地圖|阿蘇、高千穗山區訊號可能不穩","把每天景點存成 Google 地圖清單","複習日本交通規則|靠左行駛、右駕；紅燈不能轉彎","看到「止まれ」一定要完全停車","平交道前先停車再過","酒駕零容忍|喝一點點也不能開"]],
+ ["還車時",["加滿油，收據收好","車內物品檢查一遍|寶寶的東西最容易忘","ETC 費用結算"]]]},
+{k:"gift",name:"伴手禮",intro:"買到就勾起來。標「當天吃」的保存期限很短，不適合帶回台灣。",groups:[
+ ["福岡・博多",["博多通りもん|明月堂・博多站、福岡機場都買得到","明太子|ふくや・要冷藏，D8 最後一天再買","明太子仙貝 めんべい|福太郎","鈴乃最中|鈴懸 本店","小雞饅頭 ひよ子|博多站、機場","PRESS BUTTER SAND 九州限定|甘王草莓口味・博多站、機場","鶴乃子|石村萬盛堂","二○加煎餅|東雲堂"]],
+ ["太宰府",["梅枝餅|かさの家・當天吃","寺子屋本舗 明太子米果"]],
+ ["熊本",["陣太鼓|菓子香梅・熊本站","武者返し 千層酥|菓子香梅","栗千里|福田屋・熊本產和栗","熊本熊年輪蛋糕","阿蘇牛奶餅乾|阿部牧場","黑糖甜甜圈棒|フジバンビ・小包裝適合分送","辛子蓮根|很辣，送人前先問口味","いきなり團子|當天吃"]],
+ ["大分・別府・由布院",["柚子胡椒|放托運行李","謎の鳥天仙貝|雞肉天婦羅口味","ザ・かぼす 酸橘法蘭酥","八湯溫泉香皂|SELECT BEPPU","鞠智 銅鑼燒|由布院湯之坪・當天吃","地獄蒸布丁|岡本屋・當天吃","B-speak 瑞士捲|當天吃"]],
+ ["北九州・門司港",["門司港香蕉甜點|海峽廣場","小倉かまぼこ カナッペ|當天吃"]],
+ ["回台灣要注意",["肉製品不能帶回台灣|含肉乾、肉鬆、含肉三明治、飯糰；罰款 1 萬到 100 萬","溏心蛋、溫泉蛋、新鮮水果也不行","不確定的東西，到檢疫櫃台主動申報|主動申報就不會被罰","一蘭等豚骨泡麵|含豬骨湯包，不確定能不能帶就申報","酒類每位成年人免稅 1 公升","免稅的消耗品在日本不要拆封","液體類（醬料、酒）放托運","回程托運共 115kg，出發前先秤"]]]}
+];
+const ITEMS=[];SECS.forEach(s=>s.groups.forEach(g=>g[1].forEach(t=>{const[x,n]=t.split("|");let hsh=0;for(const ch of s.k+x)hsh=(hsh*31+ch.charCodeAt(0))|0;ITEMS.push({sec:s.k,g:g[0],id:"i"+(hsh>>>0).toString(36),t:x,n:n||""})})));
+let hiddenItems;const isHidden=id=>{if(!hiddenItems)hiddenItems=new Set(LS.get("hiddenItems",[]));return hiddenItems.has(id)};
+let listEdit=false,myGroups,groupNames,itemNotes;
+const GS=()=>{if(!myGroups){myGroups=LS.get("myGroups",[]);groupNames=LS.get("groupNames",{});itemNotes=LS.get("itemNotes",{})}};
+const gHidden=(sec,key)=>isHidden("g:"+sec+"|"+key);
+const secItems=k=>ITEMS.filter(i=>i.sec===k&&!isHidden(i.id)&&!gHidden(k,i.g));
+const doneIn=list=>list.filter(i=>checks.has(i.id)).length;
+
+/* ---------- 儲存 ---------- */
+const LS={get(k,d){try{const v=localStorage.getItem("ky9-"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("ky9-"+k,JSON.stringify(v))}catch(e){}}};
+let favs=new Set(LS.get("favs",[])),checks=new Set(LS.get("checks2",[])),notes=LS.get("notes",{});
+let listSec=LS.get("sec","go"),dayIdx=null,foodArea=LS.get("area","hakata"),spotArea=LS.get("sarea","s-hakata"),exKind=LS.get("exKind","spot"),foodFilter="all",foodQuery="";
+const XS=()=>exKind==="spot"?{areas:SIGHTS,cats:SCATS,area:spotArea,unit:"個",noun:"景點"}:{areas:FOOD,cats:CATS,area:foodArea,unit:"家",noun:"店家"};
+const catOf=p=>(p.kind==="spot"?SCATS:CATS)[p.cat]||["其他","#888"];
+const allAreas=()=>[...SIGHTS,...FOOD];
+/* ---------- 自己新增的內容（存在這支手機） ---------- */
+let myStops=LS.get("myStops",{}),myFood=LS.get("myFood",[]),myItems=LS.get("myItems",[]);
+const uid=()=>"u"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const PLACE={"桃園 T1 起飛":["桃園國際機場","第一航廈起飛","桃園國際機場 第一航廈"],
+ "抵達北九州機場":["北九州機場","抵達"],
+ "機場巴士 → 小倉 → 新幹線到博多":["博多站","機場巴士 → 小倉 → 新幹線到博多"],
+ "&HOTEL HAKATA 退房・福岡取車":["&HOTEL HAKATA","退房・福岡取車"],
+ "入住 fav KUMAMOTO":["fav KUMAMOTO","入住"],
+ "早餐・慢慢出門":["fav KUMAMOTO","早餐・慢慢出門","fav KUMAMOTO 熊本市中央区鍛冶屋町9-1"],
+ "回 fav KUMAMOTO 休息":["fav KUMAMOTO","回飯店休息"],
+ "fav KUMAMOTO 退房出發":["fav KUMAMOTO","退房出發","fav KUMAMOTO 熊本市中央区鍛冶屋町9-1"],
+ "抵達 beppu Ohana":["beppu Ohana","抵達"],
+ "beppu Ohana 出發":["beppu Ohana","出發","beppu Ohana 別府市小倉町27-17"],
+ "回 beppu Ohana":["beppu Ohana","回民宿"],
+ "beppu Ohana 退房":["beppu Ohana","退房","beppu Ohana 別府市小倉町27-17"],
+ "Rakuten STAY 退房":["Rakuten STAY 小倉站前","退房"],
+ "福岡還車 → &HOTEL HAKATA":["&HOTEL HAKATA","福岡還車後回飯店"],
+ "&HOTEL HAKATA 退房":["&HOTEL HAKATA","退房"],
+ "回飯店拿行李":["&HOTEL HAKATA","回飯店拿行李"],
+ "福岡機場國際線":["福岡機場","國際線航廈"],
+ "福岡機場起飛":["福岡機場","起飛","福岡空港 国際線ターミナル"],
+ "抵達桃園 T1":["桃園國際機場","抵達第一航廈","桃園國際機場 第一航廈"]};
+DAYS.forEach(d=>d.stops.forEach(s=>{const r=PLACE[s.n];if(!r)return;s.o=s.n;s.n=r[0];s.d=r[1]+(s.d?"・"+s.d:"");if(r[2]&&!s.q)s.q=r[2]}));
+const key=s=>s.o||s.n;
+DAYS.forEach(d=>d.base=d.stops.slice());
+const hm=m=>{m=Math.round(m);m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0")};
+const shiftT=(t,dl)=>t.replace(/(\d{1,2}):(\d{2})/g,(_,x,y)=>hm(+x*60+ +y+dl));
+const MODES={drive:["開車","driving"],walk:["步行","walking"],transit:["大眾運輸","transit"]};
+function placeStop(list,c){
+  if(c.an==null){let k=list.length;const r=stopRange(c.t||"");if(r){k=list.findIndex(s=>{const q=stopRange(s.t);return q&&q.s>r.s});if(k<0)k=list.length}list.splice(k,0,{...c});return}
+  let idx=list.findIndex(s=>s.n===c.an&&(s.id||"")===(c.aid||""));if(idx<0)idx=list.findIndex(s=>s.n===c.an);if(idx<0)idx=list.length-1;
+  const a=list[idx],ar=stopRange(a.t||"");let t=c.tm||"";
+  if(!t&&ar){const s0=ar.e+(+c.to||0);t=hm(s0)+"–"+hm(s0+(+c.stay||0))}
+  list.splice(idx+1,0,{...c,t,legFrom:a.n});
+  const r=stopRange(t),nx=list[idx+2];
+  if(c.shift&&r&&nx){const nr=stopRange(nx.t||"");if(nr){const dl=r.e+(+c.back||0)-nr.s;if(dl>0)for(let k=idx+2;k<list.length;k++)if(stopRange(list[k].t||""))list[k]={...list[k],t:shiftT(list[k].t,dl),shifted:(list[k].shifted||0)+dl}}}}
+function applyStops(){DAYS.forEach(d=>{d.stops=d.base.map(s=>({...s}))})}
+FOOD.push({k:"mine",name:"我的口袋名單",days:"自己加的",note:"這一區放你自己加的店。在其他地區新增的店，也會出現在那一區。",spots:[]});
+SIGHTS.push({k:"s-mine",name:"我的口袋名單",days:"自己加的",note:"這一區放你自己加的景點。在其他地區新增的，也會出現在那一區。",spots:[]});
+function applyFood(){allAreas().forEach(a=>{a.spots=a.spots.filter(p=>!p.u)});myFood.forEach(p=>{p.kind=p.kind||"food";const L=p.kind==="spot"?SIGHTS:FOOD;const A=L.find(a=>a.k===p.area0)||L.find(a=>a.k===(p.kind==="spot"?"s-mine":"mine"));A.spots.unshift(p)})}
+function applyItems(){for(let i=ITEMS.length-1;i>=0;i--)if(ITEMS[i].u)ITEMS.splice(i,1);myItems.forEach(c=>ITEMS.push({sec:c.sec,id:c.id,t:c.t,n:c.n||"",u:1,g:c.g}))}
+applyStops();applyFood();applyItems();
+const KINDS=[["spot","景點・活動"],["food","吃飯"],["car","開車移動"],["train","大眾運輸"],["hotel","住宿・休息"]];
+function delBtn(attr,id,label,txt){txt=txt||"刪除";return`<button type="button" class="del" ${attr}="${id}" data-txt="${txt}" aria-label="${txt}${esc(label)}">${txt}</button>`}
+
+
+/* ---------- 時間 ---------- */
+function tokyoNow(){const d=new Date(Date.now()+9*3600e3);return{date:d.toISOString().slice(0,10),min:d.getUTCHours()*60+d.getUTCMinutes()}}
+const dayDiff=(a,b)=>Math.round((Date.parse(b)-Date.parse(a))/864e5);
+function todayIndex(){const n=tokyoNow();return DAYS.findIndex(d=>d.d===n.date)}
+function stopRange(t){const m=t.match(/(\d{1,2}):(\d{2})(?:–(\d{1,2}):(\d{2}))?/);if(!m)return null;
+  const s=+m[1]*60+ +m[2];return{s,e:m[3]?+m[3]*60+ +m[4]:s+20}}
+function stopStates(day){const n=tokyoNow();const res=day.stops.map(()=>"");
+  if(day.d!==n.date)return{res,next:-1};
+  let next=-1;day.stops.forEach((s,i)=>{const r=stopRange(s.t);if(!r)return;
+    if(n.min>=r.e)res[i]="done";else if(n.min>=r.s){res[i]="cur";if(next<0)next=i}else if(next<0)next=i});
+  return{res,next}}
+const md=d=>{const[,m,dd]=d.split("-");return(+m)+"/"+(+dd)};
+
+/* ---------- 共用元件 ---------- */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KIND={move:"car",car:"car",plane:"plane",bus:"bus",train:"train",hotel:"bed"};
+const TEL={"&HOTEL HAKATA":"+815018083989","fav KUMAMOTO":"+81922922431","北九州機場":"+81934754195","Yodobashi Camera 博多":"+81924711010","櫛田神社":"+81922912951","一蘭拉麵 本社總本店":"+81922620433",
+ "若松屋":"+81944723163","清水寺本坊庭園":"+81944622001","水前寺成趣園":"+81963830074","熊本城稻荷神社":"+81963553521","長崎次郎喫茶室":"+81963547973",
+ "草千里":"+81967341600","赤牛之館":"+81967670848","上色見熊野座神社":"+81967621111","高千穗天照鐵道":"+81982723216","高千穗神社":"+81982722413","高千穗峽":"+81982731212",
+ "九州自然動物公園":"+81978482331","由布まぶし 心 金鱗湖本店":"+81977857880","金鱗湖":"+81977843111","TRIAL 別府店":"+81977271166","唐吉訶德 別府店":"+81570200465",
+ "岡本屋賣店":"+81977666115","海地獄":"+81977660121","別府空中纜車":"+81977222278","THE OUTLETS KITAKYUSHU":"+81936637251","皿倉山纜車 山麓站":"+81936714761",
+ "門司港車站":"+81933218843","九州鐵道紀念館":"+81933221006","門司港懷舊區":"+81933320106","Princess Phi Phi":"+81933210303","小倉城庭園":"+81935822747",
+ "麵包超人兒童博物館":"+81922918855","福岡機場":"+81926216059"};
+const telBtn=(t,label)=>`<a class="btn call" href="tel:${t.replace(/[\s-]/g,"")}">${ic("phone")}${label||"撥打"}</a>`;
+const MEAL=/(早餐|午餐|晚餐|餐廳|食堂|拉麵|ラーメン|燒肉|壽司|咖哩|伽哩|カレー|屋台|甜點|晚飯|午飯|用餐)/;
+const SCAT={spot:["景點","c-spot"],food:["餐飲","c-food"],hotel:["住宿","c-hotel"],move:["交通","c-move"]};
+function catStop(s){if(s.k==="hotel")return"hotel";if(["car","plane","bus","train","move"].includes(s.k))return"move";if(s.k==="food"||MEAL.test(s.n))return"food";return"spot"}
+function durTxt(m){const h=Math.floor(m/60),r=m%60;return[h?h+" 小時":"",r?r+" 分鐘":""].filter(Boolean).join(" ")||"0 分鐘"}
+const hhmm=m=>String(Math.floor(m/60)%24).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+function rng(s){const r=stopRange(s.t);if(!r)return null;if(r.e<r.s)r.e+=1440;return r}
+function stopHTML(s,i,n,state,day){
+  const c=catStop(s),r=rng(s),hasE=/–/.test(s.t);
+  const mapb=s.q?`<a class="btn mapb" href="${mapUrl(s.q)}" target="_blank" rel="noopener" aria-label="在地圖上看 ${esc(s.n)}">${ic("pin")}地圖</a>`:"";
+  const x=(day?stopWarn(day,s):"")+stopTickets(s);
+  const w=day?(WARN[day.d]||[]).some(x=>x[2]&&key(s).includes(x[2])):false;
+  const op=state==="cur";
+  return`<div class="tc ${SCAT[c][1]} ${state}${op?" open":""}" ${r?`data-s="${r.s}" data-e="${r.e}"`:""} data-j="${i}">
+   <div class="th" data-tog role="button" tabindex="0" aria-expanded="${op}"><span class="nm">${esc(s.n)}${isMust(s)?`<span class="must">${ic("mstar",2.4)}必去</span>`:""}${w?'<i class="wdot" aria-label="有注意事項"></i>':""}</span>${mapb}<span class="chev" aria-hidden="true"></span></div>
+   <div class="tb"><div class="tt">${esc(s.t)}${hasE&&r?"・"+durTxt(r.e-r.s):""}${state==="cur"?'<span class="badge">進行中</span>':""}</div>
+   ${s.d?`<div class="ds">${esc(s.d)}</div>`:""}${TEL[s.n]&&s.k!=="plane"?`<div class="row" style="margin-top:4px">${telBtn(TEL[s.n],"撥打電話")}</div>`:""}${x?`<div class="sx">${x}</div>`:""}</div></div>`}
+const nrm=t=>t.replace(/（[^）]*）|空中|車站|站/g,"").replace(/\s/g,"");
+function legMap(day){const out={},rest=[];let last=-1;
+  day.legs.forEach(l=>{if(!/→/.test(l[0])){rest.push(l);return}const dest=nrm(l[0].split("→").pop());
+    const tx=s=>nrm(key(s)+s.n+(s.q||""));const ok=[s=>tx(s).includes(dest),s=>/飯店/.test(dest)&&s.k==="hotel",s=>tx(s).includes(dest.slice(0,2))];
+    let j=-1;for(const f of ok){j=day.stops.findIndex((s,i)=>i>last&&i>0&&f(s));if(j>=0)break}
+    if(j<0||out[j]){rest.push(l);return}out[j]=l;last=j});return{out,rest}}
+function legMode(day,j,txt,mins){let m=modeOf(day.stops[j],day)||modeOf(day.stops[j-1],day);
+  if(/步行/.test(txt))return"walk";if(m==="walk"&&mins>10)m=null;
+  if(!m&&day.stops.some(x=>x.k==="car")&&j>day.stops.findIndex(x=>x.k==="car"))m="car";return m}
+const minsOf=t=>{const h=t.match(/(\d+)\s*小時/),mm=t.match(/(\d+)\s*分/);return(h?+h[1]*60:0)+(mm?+mm[1]:0)};
+const shortDur=t=>t.replace(/約\s*/,"").replace(/步行\s*/,"").replace(/\s*小時\s*/,"時").replace(/\s+/g,"");
+function tlHTML(day,res){const n={c:0};const LM=legMap(day);const nw=tokyoNow(),isToday=day.d===nw.date;
+  const rows=[];let prev=null;
+  day.stops.forEach((s,j)=>{const r=rng(s);
+    if(j>0){const l=LM.out[j];let txt=null,mins=0;
+      if(l){txt=l[1];mins=minsOf(l[1])}
+      if(txt){const m=legMode(day,j,txt,mins),lab=m&&MODE_TAG[m]&&m!=="walk"||/步行/.test(txt)?"":m&&MODE_TAG[m]?MODE_TAG[m][0]+" ":"";const lb=l[2]?l[2]+" ":m&&MODE_TAG[m]&&!/步行/.test(txt)?MODE_TAG[m][0]+" ":"";
+        const nowIn=isToday&&r&&prev&&nw.min>=prev.e&&nw.min<r.s?`<em class="rn" style="top:${((nw.min-prev.e)/(r.s-prev.e)*100).toFixed(1)}%"><span>${hhmm(nw.min)}</span></em>`:"";
+        rows.push(`<div class="tr trv" data-j="t${j}"><div class="rl"><b class="bar"></b>${nowIn}</div><div class="tv"><span class="tvi">${ic(m==="walk"||/步行/.test(txt)?"nav":m==="train"||m==="transit"||m==="bus"?"train":"car")}</span><span class="tvt">${esc(lb)}${esc(txt)}</span><span class="tvr">${esc(l[0])}</span></div></div>`)}
+      else rows.push(`<div class="tr gap"></div>`)}
+    const c=catStop(s);const nowIn=isToday&&r&&nw.min>=r.s&&nw.min<r.e?`<em class="rn" style="top:${((nw.min-r.s)/(r.e-r.s)*100).toFixed(1)}%"><span>${hhmm(nw.min)}</span></em>`:"";
+    rows.push(`<div class="tr ${SCAT[c][1]}" data-j="${j}"><div class="rl" data-go="${j}"><span class="t1">${r?hhmm(r.s):esc(s.t)}</span>${r&&/–/.test(s.t)?`<span class="t2">${hhmm(r.e)}</span>`:""}<b class="bar"></b>${nowIn}</div><div class="rc">${stopHTML(s,j,n,res[j],day)}</div></div>`);
+    if(r)prev=r});
+  const leg=`<div class="tleg">${Object.values(SCAT).map(c=>`<span class="${c[1]}"><i></i>${c[0]}</span>`).join("")}<span class="c-move"><i class="dash"></i>路上</span></div>${LM.rest.length?`<div class="legs" style="margin-top:8px">${LM.rest.map(l=>`<span>${esc(l[0])}</span><span>${esc(l[1])}</span>`).join("")}</div>`:""}`;
+  return`<div class="card"><p class="tlhint">點行程，左邊圓點會跳到那一站；虛線是路上的交通時間。</p>
+   <div class="tlx2">${rows.join("")}<i class="rm" aria-hidden="true"></i></div>${leg}</div>`}
+function setOpen(c,o){c.classList.toggle("open",o);c.querySelector("[data-tog]").setAttribute("aria-expanded",o)}
+document.addEventListener("click",e=>{const h=e.target.closest("[data-tog]");if(!h||e.target.closest("a"))return;const c=h.parentElement;setOpen(c,!c.classList.contains("open"))});
+document.addEventListener("keydown",e=>{const h=e.target.closest&&e.target.closest("[data-tog]");if(!h||e.target!==h||(e.key!=="Enter"&&e.key!==" "))return;e.preventDefault();h.click()});
+const TOPH=84;
+function pinRow(row){const x=row&&row.closest(".tlx2");if(!x)return;const m=x.querySelector(".rm");
+  m.style.top=(row.offsetTop+(row.classList.contains("trv")?row.offsetHeight/2:12))+"px";x.querySelectorAll(".tr").forEach(r=>r.classList.toggle("on",r===row))}
+document.addEventListener("click",e=>{
+  const g=e.target.closest(".tlx2 [data-go]");if(g){const row=g.closest(".tr"),c=row.querySelector(".tc");setOpen(c,!c.classList.contains("open"));requestAnimationFrame(()=>pinRow(row));return}
+  const tv=e.target.closest(".tlx2 .trv");if(tv){pinRow(tv);return}
+  const h=e.target.closest(".tlx2 [data-tog]")||e.target.closest(".tlx2 .mapb");if(h){const row=h.closest(".tr");requestAnimationFrame(()=>pinRow(row))}});
+function updTL(){}
+function initTL(){app.querySelectorAll(".tlx2").forEach(x=>{const row=x.querySelector(".tc.cur")?.closest(".tr")||x.querySelector(".tr[data-j]:not(.trv)");pinRow(row)})}
+function hotelHTML(k,title){const h=HOTELS[k];if(!h)return"";
+  return`<div class="card hotel" style="display:flex;flex-direction:column;gap:6px">
+   <span class="label">${title}</span><h3 style="font-size:17px">${esc(h.n)}</h3>
+   <div class="sub" style="color:var(--ink)">${h.rooms}・15:00 入住・${h.out}</div>
+   <div class="row">${h.tel?telBtn(h.tel):""}
+   <a class="btn p" href="${navUrl(h.q)}" target="_blank" rel="noopener">${ic("nav")}導航回飯店</a></div></div>`}
+function routeHTML(day){const{res}=stopStates(day);
+  const rest=day.stops.map((s,i)=>({...s,i})).filter(s=>s.q&&res[s.i]!=="done");if(!rest.length)return"";
+  const chunks=[];for(let i=0;i<rest.length;i+=4)chunks.push(rest.slice(i,i+4));
+  const mode=day.stops.some(s=>s.k==="car")?"driving":"transit";
+  return`<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>${todayIndex()===DAYS.indexOf(day)?"今天":"這天"}的整條路線</h3>
+   <span class="sub">從你現在的位置出發，依序走完${todayIndex()===DAYS.indexOf(day)?"今天還沒去的":"這天的"}地點${chunks.length>1?"；地點多，分成幾段比較不會漏站":""}。</span>
+   ${chunks.map((c,ci)=>{const dest=c[c.length-1],wp=c.slice(0,-1),origin=ci===0?"":chunks[ci-1][chunks[ci-1].length-1].q;
+     let u="https://www.google.com/maps/dir/?api=1&travelmode="+mode+"&destination="+encodeURIComponent(dest.q);if(origin)u+="&origin="+encodeURIComponent(origin);if(wp.length)u+="&waypoints="+wp.map(w=>encodeURIComponent(w.q)).join("%7C");
+     return`<a class="btn ${ci===0?"p":""} big" href="${u}" target="_blank" rel="noopener">${ic("nav")}<span>${chunks.length>1?`第 ${ci+1} 段・`:""}${ci===0?"從我這裡出發":esc(chunks[ci-1][chunks[ci-1].length-1].n)+" 出發"}<small>${c.map(s=>esc(s.n)).join(" → ")}</small></span></a>`}).join("")}</div>`}
+const NEAR=[["ラーメン","拉麵"],["レストラン","餐廳"],["カフェ","咖啡廳"],["スイーツ","甜點"],["コンビニ","便利商店"],["ドラッグストア","藥妝店"],["授乳室","哺乳室"],["公衆トイレ","廁所"],["駐車場","停車場"],["ガソリンスタンド","加油站"]];
+function nearHTML(){return`<div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>找我附近的</h3>
+   <div class="nearby">${NEAR.map(([q,n])=>`<a class="btn ph" href="${mapUrl(q)}" target="_blank" rel="noopener">${n}</a>`).join("")}</div>
+   <span class="sub">會用你現在的位置在 Google 地圖搜尋。</span></div>`}
+function dayBody(day,i){
+  const {res}=stopStates(day);const n={c:0};
+  const legs=day.legs.length?`<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>${day.stops.some(s=>s.k==="car")?"開車時間":"交通"}</h3><div class="legs">${day.legs.map(l=>`<span>${esc(l[0])}</span><span>${esc(l[1])}</span>`).join("")}</div></div>`:"";
+  return`${needHTML(day)}${weatherHTML(day)}${flightHTML(day)}${routeHTML(day)}${tlHTML(day,res)}
+  ${day.plan?`<div class="card plan" style="display:flex;flex-direction:column;gap:8px"><h3>${esc(day.plan.title)}</h3><ul class="tips">${day.plan.items.map(t=>`<li>${esc(t)}</li>`).join("")}</ul><div class="row">${day.plan.links.map(l=>`<a class="btn" href="${l[1]}" target="_blank" rel="noopener">${ic("nav")}${esc(l[0])}</a>`).join("")}</div></div>`:""}
+  <div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>小提醒</h3><ul class="tips">${day.tips.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>
+  ${nearHTML()}
+  ${day.hotel?hotelHTML(day.hotel,"今晚住宿"):""}
+  <div class="card" style="display:flex;flex-direction:column;gap:8px"><label for="note-${i}"><h3>D${i+1} 筆記</h3></label>
+   <textarea id="note-${i}" data-note="${i}" placeholder="想去的店、花了多少、寶寶今天的小事……只存在這支手機">${esc(notes[i]||"")}</textarea></div>`}
+
+function foodCard(p,showArea){const A=showArea?allAreas().find(a=>a.spots.includes(p)):null;const C=catOf(p),isS=p.kind==="spot";const G=gpGet(p.id);
+  return`<div class="card fd"><div class="hd"><div style="min-width:0"><div class="nm">${esc(p.name)}${p.u?'<span class="mine">自己加的</span>':""}</div>${p.jp!==p.name?`<div class="jp">${esc(p.jp)}</div>`:""}</div>
+    <div class="hdr"><span class="hrs" data-gh="${p.id}">${G?gpHrs(G):""}</span><button class="heart" data-fav="${p.id}" aria-pressed="${favs.has(p.id)}" aria-label="收藏 ${esc(p.name)}">${favs.has(p.id)?"♥":"♡"}</button></div></div>
+    <div class="gph" data-gp="${p.id}" data-q="${esc(p.jp)}" ${G&&G.u?"":"hidden"}>${G&&G.u?gpImg(G,p):""}</div>
+    <div class="row" style="gap:6px"><span class="sub"><span class="cat" style="background:${C[1]}"></span>${C[0]}・${A?esc(A.name)+"・":""}${esc(p.area)}・${esc(p.p)}${isS&&p.stay?`・建議停留 ${p.stay} 分`:""}</span>${p.kid?'<span class="tag">親子OK</span>':""}</div>
+    ${p.t?`<p>${esc(p.t)}</p>`:""}${p.src?`<div class="src">推薦來源：${esc(p.src)}</div>`:""}<div class="acts"><a class="btn ph gpoff" href="${isS?spotPhotoUrl(p.jp):photoUrl(p.jp)}" target="_blank" rel="noopener">${ic("photo")}看照片</a>
+    ${isS?`<a class="btn ph" href="${infoUrl(p.jp)}" target="_blank" rel="noopener">${ic("menu")}門票・介紹</a>`:`<a class="btn ph" data-gm="${p.id}" href="${G&&G.m||mapUrl(p.jp)}" target="_blank" rel="noopener">${ic("menu")}菜單</a>`}
+    <button type="button" class="btn p" data-fmap="${p.id}" aria-expanded="${fmOpen===p.id}">${ic("nav")}${fmOpen===p.id?"收起地圖":"導航"}</button>
+    <a class="btn gpoff" href="${mapUrl(p.jp)}" target="_blank" rel="noopener">${ic("pin")}營業時間</a></div>${fmOpen===p.id?fmapHTML(p,A,C):""}${p.u?`<div class="row">${delBtn("data-delfood",p.id,p.name)}</div>`:""}</div>`}
+/* ---------- Google 地圖照片與營業時間（自架網址＋金鑰才會啟用） ---------- */
+// 把 Google Maps 金鑰貼在下面的引號裡（要開啟 Maps JavaScript API 和 Places API (New)，並限制只能在你的網址使用）
+const GKEY="AIzaSyDPy2RGnPt0biICsdcyA4qhIPm7Dq4_nss";
+let GP=null,gpMem={},gpQ=[],gpBusy=0,gpObs=null;
+function gpGet(id){if(gpMem[id])return gpMem[id];try{const v=JSON.parse(localStorage.getItem("ky9-gp:"+id)||"null");if(v&&Date.now()-v.t<7*864e5){gpMem[id]=v;return v}}catch(e){}return null}
+function gpSet(id,v){gpMem[id]=v;try{localStorage.setItem("ky9-gp:"+id,JSON.stringify(v))}catch(e){}}
+function gpHrs(G){if(!G.h)return G.ok?'<span class="hx">未提供營業時間</span>':"";const d=new Date(Date.now()+9*36e5).getUTCDay(),line=G.h[(d+6)%7]||"";
+  const t=line.replace(/^[^:：]*[:：]\s*/,"").replace(/\s*–\s*/g,"–");return /休|Closed/i.test(t)?'<span class="hx off">今天公休</span>':/24 小時|24 hours/i.test(t)?'<span class="hx">24 小時</span>':`<span class="hx">今天 ${esc(t)}</span>`}
+function gpImg(G,p){return`<img src="${G.u}" alt="${esc(p.name)}" loading="lazy" onerror="this.parentNode.hidden=true">${G.a?`<span class="cr">照片：${esc(G.a)}・Google</span>`:""}`}
+function gpStart(){if(!GKEY||/claude/i.test(location.hostname)||!/^https?:$/.test(location.protocol))return;
+  window.__gpReady=()=>google.maps.importLibrary("places").then(lib=>{GP=lib;document.body.classList.add("gp-on");gpScan()}).catch(()=>{});
+  const sc=document.createElement("script");sc.src="https://maps.googleapis.com/maps/api/js?key="+encodeURIComponent(GKEY)+"&v=weekly&language=zh-TW&region=JP&loading=async&callback=__gpReady";sc.async=true;document.head.appendChild(sc)}
+let gpMO=null,gpT=0;
+function gpScan(){if(!GP)return;if(!gpMO){gpMO=new MutationObserver(()=>{clearTimeout(gpT);gpT=setTimeout(gpScan,120)});gpMO.observe(app,{childList:true,subtree:true})}if(!gpObs)gpObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){gpObs.unobserve(e.target);const g=e.target.querySelector("[data-gp]");if(g)gpLoad(g.dataset.gp,g.dataset.q)}}),{rootMargin:"300px"});
+  app.querySelectorAll("[data-gp]").forEach(el=>{const c=el.closest(".fd");if(!c||c.__gpo)return;const G=gpGet(el.dataset.gp);if(G){if(!el.firstChild&&G.u)gpPaint(el.dataset.gp,G);return}c.__gpo=1;gpObs.observe(c)})}
+async function gpLoad(id,q){if(gpGet(id))return;if(gpBusy>=3){gpQ.push([id,q]);return}gpBusy++;
+  try{const {places}=await GP.Place.searchByText({textQuery:q,fields:["id","displayName","photos","regularOpeningHours","googleMapsURI"],language:"zh-TW",region:"jp",maxResultCount:1});
+    const pl=places&&places[0];let v={t:Date.now(),ok:true};
+    if(pl){const ph=pl.photos&&pl.photos[0];v.h=pl.regularOpeningHours&&pl.regularOpeningHours.weekdayDescriptions||null;v.m=pl.googleMapsURI||"";
+      if(ph){v.u=ph.getURI({maxWidth:800,maxHeight:500});v.a=(ph.authorAttributions&&ph.authorAttributions[0]&&ph.authorAttributions[0].displayName)||""}}
+    gpSet(id,v);gpPaint(id,v)}catch(e){}
+  gpBusy--;const n=gpQ.shift();if(n)gpLoad(n[0],n[1])}
+function gpPaint(id,v){app.querySelectorAll(`[data-gh="${CSS.escape(id)}"]`).forEach(el=>el.innerHTML=gpHrs(v));
+  app.querySelectorAll(`[data-gp="${CSS.escape(id)}"]`).forEach(el=>{if(v.u){const p={name:el.closest(".fd").querySelector(".nm").textContent};el.innerHTML=gpImg(v,p);el.hidden=false}});
+  if(v.m)app.querySelectorAll(`[data-gm="${CSS.escape(id)}"]`).forEach(el=>el.href=v.m)}
+let fmOpen=null,fmMode="place",myPos=null;
+const EMBED_OK=!/claude/i.test(location.hostname);
+function fmapHTML(p,A,C){const q=p.jp,route=fmMode==="route"&&myPos;
+  const src=route?`https://maps.google.com/maps?saddr=${myPos[0]},${myPos[1]}&daddr=${encodeURIComponent(q)}&dirflg=d&hl=zh-TW&output=embed`
+                 :`https://maps.google.com/maps?q=${encodeURIComponent(q)}&z=15&hl=zh-TW&output=embed`;
+  return`<div class="fmap"><div class="fmh"><span class="fml">EXPLORE THE ROUTE</span><div class="fmt">${esc(p.name)}</div>
+   <div class="fmb" role="group" aria-label="地圖模式"><button type="button" data-fmm="place" aria-pressed="${!route}">地點</button><button type="button" data-fmm="route" aria-pressed="${!!route}">路線預覽</button></div></div>
+   <div class="fmsub">${esc(C[0])}・${esc(p.area)}${route?"・從你現在的位置出發":""}</div>
+   <div class="fmf">${EMBED_OK?`<iframe src="${src}" title="${esc(p.name)} 地圖" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>`
+     :`<div class="fb">地圖預覽要等網頁上線（用你自己的網址開）才會出現。<br>現在可以先按下面「在 Google Maps 開啟」。</div>`}</div>
+   <div class="fmft"><span>Google Maps・${route?"開車路線預覽":"已定位所選地標"}</span><a href="${route?navUrl(q):mapUrl(q)}" target="_blank" rel="noopener">在 Google Maps 開啟 ↗</a></div>
+   <a class="btn p big go" href="${navUrl(q)}" target="_blank" rel="noopener">${ic("nav")}開始導航</a></div>`}
+function foodList(){
+  const X=XS(),q=foodQuery.trim().toLowerCase();
+  if(q){const hits=[];X.areas.forEach(a=>a.spots.forEach(p=>{const hay=(p.name+p.jp+p.t+p.area+catOf(p)[0]+a.name).toLowerCase();if(hay.includes(q))hits.push(p)}));
+    return`<div class="sub">找到 ${hits.length} ${X.unit}</div>`+(hits.length?hits.map(p=>foodCard(p,true)).join(""):`<div class="card sub">沒有符合「${esc(foodQuery)}」的${X.noun}，換個關鍵字試試。</div>`)}
+  const A=X.areas.find(a=>a.k===X.area)||X.areas[0];
+  const list=A.spots.filter(p=>foodFilter==="all"||(foodFilter==="fav"?favs.has(p.id):foodFilter==="kid"?p.kid:p.cat===foodFilter));
+  return list.length?list.map(p=>foodCard(p,false)).join(""):`<div class="card sub">${foodFilter==="fav"?`這一區還沒有收藏。點${X.noun}右上角的 ♡ 就會出現在這裡，排行程時也能直接選。`:"這一區沒有符合的項目。"}</div>`}
+
+/* ---------- 繪本插圖（SVG 自己畫） ---------- */
+const PAL={k:"#3E3A39",w:"#FFFCF6",co:"#F2A497",ya:"#F6D27A",mi:"#A8D3E6",wa:"#B9DAA5"};
+const SK=`stroke="${PAL.k}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
+const G=(x,y,inner,cls="",s=1)=>`<g transform="translate(${x} ${y})${s!==1?` scale(${s})`:""}"><g class="${cls}">${inner}</g></g>`;
+const A_={
+ cloud:(x,y,s=1,d="")=>G(x,y,`<path d="M0 16q0-12 12-12q5-11 18-7q10-7 19 3q12 0 12 16z" fill="${PAL.w}" ${SK}/>`,"drift "+d,s),
+ sun:(x,y,r=15)=>G(x,y,`<circle r="${r}" fill="${PAL.ya}" ${SK}/><g ${SK}><path d="M0 -${r+6}v-5M0 ${r+6}v5M-${r+6} 0h-5M${r+6} 0h5M-${r+3} -${r+3}l-4 -4M${r+3} ${r+3}l4 4M${r+3} -${r+3}l4 -4M-${r+3} ${r+3}l-4 4"/></g>`,"spin"),
+ sea:(y,h=150)=>{let d=`M-4 ${y}`;for(let x=-4;x<364;x+=24)d+=` q6 -6 12 0 t12 0`;return`<path d="${d} L364 ${h+4} L-4 ${h+4}Z" fill="${PAL.mi}" ${SK}/>`},
+ waves:(x,y)=>G(x,y,`<path d="M0 0q5-5 10 0t10 0" fill="none" ${SK}/>`,"bob"),
+ hill:(d,c=PAL.wa)=>`<path d="${d}" fill="${c}" ${SK}/>`,
+ plane:(x,y,s=1,flip=false)=>G(x,y,`<g transform="${flip?"scale(-1 1) translate(-70 0)":""}"><path d="M4 6l-8-12h9l9 11z" fill="${PAL.co}" ${SK}/><path d="M0 12q0-9 11-9h42q11 0 15 9q-4 9-15 9h-42q-11 0-11-9z" fill="${PAL.w}" ${SK}/><path d="M26 13l-9 17h11l15-17z" fill="${PAL.co}" ${SK}/><g fill="${PAL.k}"><circle cx="38" cy="10" r="2"/><circle cx="46" cy="10" r="2"/><circle cx="54" cy="10" r="2"/></g></g>`,"fly",s),
+ car:(x,y,s=1)=>G(x,y,`<path d="M0 18v-8q0-4 4-5l8-1 6-8h20l8 8 6 1q4 1 4 5v8z" fill="${PAL.ya}" ${SK}/><path d="M20 -2h15l5 6h-24z" fill="${PAL.mi}" ${SK}/><circle cx="13" cy="19" r="5" fill="${PAL.k}"/><circle cx="43" cy="19" r="5" fill="${PAL.k}"/>`,"bob",s),
+ steam:(x,y,d="")=>G(x,y,`<path d="M0 0q-7-7 0-14t0-14" fill="none" ${SK}/>`,"steam "+d),
+ tree:(x,y,c=PAL.wa,s=1)=>G(x,y,`<path d="M0 0v-16" ${SK}/><circle cy="-26" r="13" fill="${c}" ${SK}/>`,"sway",s),
+ castle:(x,y,s=1)=>G(x,y,`<path d="M-4 64L8 36H92L104 64Z" fill="${PAL.w}" ${SK}/><path d="M14 50h72M10 58h80" ${SK} opacity=".45"/><rect x="18" y="20" width="64" height="16" fill="${PAL.w}" ${SK}/><path d="M6 22L20 10H80L94 22Z" fill="${PAL.k}" ${SK}/><rect x="31" y="-2" width="38" height="12" fill="${PAL.w}" ${SK}/><path d="M22 0L34 -12H66L78 0Z" fill="${PAL.k}" ${SK}/><path d="M34 -12L50 -26L66 -12Z" fill="${PAL.k}" ${SK}/><circle cx="36" cy="-24" r="3" fill="${PAL.ya}" ${SK}/><circle cx="64" cy="-24" r="3" fill="${PAL.ya}" ${SK}/><g fill="${PAL.k}"><rect x="28" y="25" width="6" height="6"/><rect x="47" y="25" width="6" height="6"/><rect x="66" y="25" width="6" height="6"/></g>`,"",s),
+ volcano:(x,y,s=1)=>G(x,y,`<path d="M0 70L44 6H70L114 70Z" fill="${PAL.wa}" ${SK}/><path d="M44 6q13 9 26 0" fill="${PAL.w}" ${SK}/><path d="M24 40q10 6 20 0M70 40q10 6 20 0" fill="none" ${SK} opacity=".5"/>`
+   +G(50,-6,`<circle r="9" fill="${PAL.w}" ${SK}/>`,"puff")+G(62,-18,`<circle r="11" fill="${PAL.w}" ${SK}/>`,"puff d1")+G(48,-32,`<circle r="8" fill="${PAL.w}" ${SK}/>`,"puff d2"),"",s),
+ torii:(x,y,s=1)=>G(x,y,`<path d="M-6 0q30 -8 66 0l-3 7q-30 -5 -60 0z" fill="${PAL.co}" ${SK}/><rect x="4" y="14" width="46" height="6" fill="${PAL.co}" ${SK}/><rect x="9" y="7" width="7" height="55" fill="${PAL.co}" ${SK}/><rect x="38" y="7" width="7" height="55" fill="${PAL.co}" ${SK}/>`,"",s),
+ plum:(x,y)=>G(x,y,`<path d="M0 0q4-20-6-34M-3-20q12-6 18-16M-5-30q-10-4-14-12" fill="none" ${SK}/>`+[[-6,-36],[14,-36],[-18,-42],[16,-20],[-12,-24],[4,-44]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="5" fill="${PAL.co}" ${SK}/>`).join(""),"sway"),
+ boat:(x,y,s=1)=>G(x,y,`<path d="M0 0h70l-10 12h-50z" fill="${PAL.ya}" ${SK}/><path d="M48 0v-26" ${SK}/><circle cx="48" cy="-31" r="5" fill="${PAL.w}" ${SK}/><path d="M38 -36h20l-10 -8z" fill="${PAL.ya}" ${SK}/><path d="M48 -24l12 30" ${SK}/>`,"bob",s),
+ giraffe:(x,y,s=1)=>G(x,y,`<ellipse cx="0" cy="0" rx="22" ry="12" fill="${PAL.ya}" ${SK}/><path d="M-14 10v20M-4 10v20M8 10v20M16 8v22" ${SK}/>`
+   +G(14,-6,`<path d="M0 0l6-40" stroke="${PAL.k}" stroke-width="12" stroke-linecap="round"/><path d="M0 0l6-40" stroke="${PAL.ya}" stroke-width="6" stroke-linecap="round"/><ellipse cx="12" cy="-44" rx="11" ry="7" fill="${PAL.ya}" ${SK}/><path d="M4 -50l-2 -8M10 -51l0 -8" ${SK}/><circle cx="15" cy="-45" r="1.8" fill="${PAL.k}"/>`,"nod")
+   +[[-10,-3],[3,2],[-2,-7]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="3" fill="${PAL.co}"/>`).join(""),"",s),
+ cow:(x,y,s=1)=>G(x,y,`<rect x="0" y="0" width="40" height="20" rx="9" fill="${PAL.co}" ${SK}/><path d="M6 20v10M16 20v10M28 20v10M36 20v10" ${SK}/><ellipse cx="44" cy="4" rx="9" ry="8" fill="${PAL.co}" ${SK}/><circle cx="46" cy="3" r="1.6" fill="${PAL.k}"/>`,"nod",s),
+ gorge:(x,y)=>`<path d="M${x} ${y+60}V${y}l20 6 10 -4V${y+60}Z" fill="${PAL.wa}" ${SK}/><path d="M${x+80} ${y+60}V${y-4}l-14 8 -10 -2V${y+60}Z" fill="${PAL.wa}" ${SK}/><path class="fall" d="M${x+36} ${y+4}V${y+50}M${x+44} ${y+4}V${y+50}M${x+52} ${y+4}V${y+50}" stroke="${PAL.mi}" stroke-width="5" stroke-linecap="round" stroke-dasharray="6 6"/>`,
+ tub:(x,y,c=PAL.mi)=>G(x,y,`<ellipse cx="0" cy="0" rx="34" ry="10" fill="${c}" ${SK}/>`)+A_.steam(x-14,y-10,"")+A_.steam(x,y-12,"d1")+A_.steam(x+14,y-10,"d2"),
+ gondola:(x1,y1,x2,y2)=>`<path d="M${x1} ${y1}L${x2} ${y2}" ${SK}/>`+G(x1+20,y1-((y1-y2)*20/(x2-x1)),`<path d="M0 0v8" ${SK}/><rect x="-11" y="8" width="22" height="16" rx="5" fill="${PAL.co}" ${SK}/><rect x="-6" y="12" width="12" height="6" fill="${PAL.w}" ${SK}/>`,"glide"),
+ station:(x,y,s=1)=>G(x,y,`<rect x="0" y="20" width="120" height="44" fill="${PAL.ya}" ${SK}/><path d="M-6 22L10 6H110L126 22Z" fill="${PAL.wa}" ${SK}/><rect x="42" y="-6" width="36" height="26" fill="${PAL.ya}" ${SK}/><path d="M36 -4L60 -22L84 -4Z" fill="${PAL.wa}" ${SK}/><circle cx="60" cy="8" r="6" fill="${PAL.w}" ${SK}/><path d="M60 8v-4M60 8h3" ${SK}/>`+[12,30,82,100].map(a=>`<rect x="${a}" y="30" width="10" height="16" fill="${PAL.mi}" ${SK}/>`).join("")+`<rect x="50" y="38" width="20" height="26" fill="${PAL.w}" ${SK}/>`,"",s),
+ ship:(x,y,s=1)=>G(x,y,`<path d="M0 0h80l-12 16h-58z" fill="${PAL.co}" ${SK}/><rect x="20" y="-16" width="34" height="16" fill="${PAL.w}" ${SK}/><rect x="30" y="-28" width="10" height="12" fill="${PAL.ya}" ${SK}/>`,"bob",s),
+ bridge:(x,y)=>`<path d="M${x} ${y}h40l2 -34z" fill="${PAL.mi}" ${SK}/><path d="M${x+100} ${y}h-40l-2 -34z" fill="${PAL.mi}" ${SK}/>`,
+ tower:(x,y)=>`<path d="M${x} ${y}L${x+12} ${y-96}h8L${x+32} ${y}Z" fill="${PAL.mi}" ${SK}/><path d="M${x+6} ${y-40}h20M${x+9} ${y-64}h14" ${SK}/><rect x="${x+8}" y="${y-86}" width="16" height="10" fill="${PAL.w}" ${SK}/>`,
+ yatai:(x,y)=>G(x,y,`<rect x="0" y="10" width="60" height="30" fill="${PAL.ya}" ${SK}/><path d="M-6 12L6 0H54L66 12Z" fill="${PAL.co}" ${SK}/><circle cx="12" cy="44" r="6" fill="${PAL.k}"/><circle cx="48" cy="44" r="6" fill="${PAL.k}"/><path d="M8 10v14h44v-14" fill="${PAL.w}" ${SK}/>`)+G(x+70,y+2,`<path d="M0 0v6" ${SK}/><ellipse cx="0" cy="16" rx="8" ry="10" fill="${PAL.co}" ${SK}/>`,"swing"),
+ house:(x,y)=>G(x,y,`<rect x="0" y="20" width="60" height="40" fill="${PAL.ya}" ${SK}/><path d="M-8 22L30 -8L68 22Z" fill="${PAL.co}" ${SK}/><rect x="24" y="36" width="14" height="24" fill="${PAL.w}" ${SK}/><rect x="6" y="30" width="12" height="10" fill="${PAL.mi}" ${SK}/>`)+G(x+30,y-26,`<path d="M0 6q-10-8-10-14a5 5 0 0 1 10-2a5 5 0 0 1 10 2q0 6-10 14z" fill="${PAL.co}" ${SK}/>`,"pulse"),
+ buildings:(x,y)=>[[0,46,22,PAL.mi],[26,64,26,PAL.ya],[56,36,20,PAL.co],[80,54,24,PAL.wa],[108,40,20,PAL.mi]].map(([a,h,w,c])=>`<rect x="${x+a}" y="${y-h}" width="${w}" height="${h}" fill="${c}" ${SK}/><path d="M${x+a+6} ${y-h+10}h${w-12}M${x+a+6} ${y-h+20}h${w-12}" ${SK} opacity=".45"/>`).join("")
+};
+const SCENES={
+ kyushu:()=>A_.sun(318,30)+A_.cloud(190,8,.9)+A_.cloud(250,52,.6,"d1")+A_.plane(112,26,.75)+A_.volcano(8,58)+A_.hill("M200 124q40-40 90-30t80 10V150H200Z")+A_.castle(176,74,.66)+A_.tub(306,110)+A_.sea(128)+A_.car(116,108,.75)+A_.waves(40,140),
+ hakata:()=>A_.sun(36,30,13)+A_.cloud(250,14,.8)+A_.plane(150,14,.9)+A_.buildings(170,120)+A_.tree(60,118,PAL.wa)+A_.tree(90,118,PAL.ya,.8)+A_.sea(120)+A_.waves(40,138)+A_.waves(300,140),
+ dazaifu:()=>A_.cloud(250,10,.8)+A_.torii(26,52,.9)+A_.plum(120,100)+A_.hill("M150 104q60-34 120-14t100 4V150H150Z")+A_.sea(112)+A_.boat(196,104,.9)+A_.waves(70,136),
+ kumamoto:()=>A_.sun(310,30,13)+A_.cloud(30,18,.8)+A_.castle(120,58,1)+A_.tree(60,128,PAL.ya)+A_.tree(290,128,PAL.ya,.9)+A_.hill("M-4 128q90-14 184 0t184 0V150H-4Z"),
+ aso:()=>A_.cloud(240,8,.7)+A_.volcano(10,56,.95)+A_.hill("M-4 126q80-30 170-10t200 0V150H-4Z")+A_.cow(130,100,.8)+A_.gorge(250,70)+A_.boat(270,124,.5),
+ yufuin:()=>A_.hill("M140 120L210 40L235 62L260 34L340 120Z")+A_.cloud(20,10,.8)+A_.sea(112)+A_.cloud(200,96,.9,"d2")+A_.hill("M-4 116q70-12 140 0q8 4 0 40H-4Z")+A_.giraffe(56,92,.95)+A_.tree(120,118,PAL.wa,.7),
+ beppu:()=>A_.cloud(26,10,.7)+A_.hill("M190 128L270 38L364 128Z")+A_.gondola(150,112,266,42)+A_.hill("M-4 122q100-10 200 2t170-2V150H-4Z")+A_.tub(56,118)+A_.tub(132,136)+A_.steam(96,104,"d2"),
+ mojiko:()=>A_.cloud(270,8,.8)+A_.station(20,62,.95)+A_.sea(118)+A_.bridge(170,124)+A_.ship(270,112,.7)+A_.waves(150,142),
+ fukuoka:()=>A_.sun(320,30,13)+A_.cloud(140,10,.8)+A_.tower(40,124)+A_.sea(124)+A_.yatai(170,70)+A_.waves(110,142),
+ home:()=>A_.cloud(30,40,.9)+A_.cloud(150,70,1,"d1")+A_.plane(120,16,1)+A_.house(260,70)+A_.hill("M180 132q60-10 180 0V150H180Z")
+};
+const DAY_ART={"2026-11-30":"hakata","2026-12-01":"dazaifu","2026-12-02":"kumamoto","2026-12-03":"aso","2026-12-04":"yufuin","2026-12-05":"beppu","2026-12-06":"mojiko","2026-12-07":"fukuoka","2026-12-08":"home"};
+const ART_LABEL={kyushu:"九州插圖：阿蘇火山冒煙、熊本城、溫泉、飛機和小車",hakata:"博多插圖：飛機飛過海邊的城市",dazaifu:"太宰府與柳川插圖：紅色鳥居、梅花和遊船",kumamoto:"熊本插圖：熊本城和銀杏樹",aso:"阿蘇與高千穗插圖：冒煙的火山、赤牛和峽谷瀑布",yufuin:"由布院插圖：由布岳、起霧的湖和長頸鹿",beppu:"別府插圖：冒著熱氣的溫泉和空中纜車",mojiko:"門司港插圖：復古車站、藍翼橋和船",fukuoka:"福岡插圖：福岡塔、海和屋台",home:"回家插圖：飛機和溫暖的家"};
+function art(k){const f=SCENES[k]||SCENES.kyushu;return`<svg class="art" viewBox="0 0 360 150" role="img" aria-label="${ART_LABEL[k]||""}" preserveAspectRatio="xMidYMid meet">${f()}</svg>`}
+
+/* ---------- 交通小標籤、必去 ---------- */
+const MUST=["麵包超人","太宰府天滿宮","柳川運河","熊本城稻荷","水前寺","草千里","高千穗峽","九州自然動物公園","金鱗湖","海地獄","門司港懷舊區","小倉城庭園"];
+const WALKS=["九州鐵道紀念館","Princess","門司港懷舊區","伽哩本舗","藍翼橋","金鱗湖","櫛田神社","博多運河城","一蘭"];
+const MODE_TAG={plane:["飛機","m-plane"],train:["電車","m-train"],bus:["巴士","m-bus"],car:["開車","m-car"],walk:["步行","m-walk"],transit:["大眾運輸","m-train"],drive:["開車","m-car"],sub:["地鐵","m-sub"]};
+function modeOf(s,day){if(s.u&&s.mode)return s.mode;if(["plane","train","bus","car"].includes(s.k))return s.k;if(s.k==="hotel")return null;
+  if(/步行/.test(s.d||"")||WALKS.some(w=>key(s).includes(w)))return"walk";if(/地鐵/.test(s.d||""))return"sub";
+  const i=day.stops.indexOf(s),ci=day.stops.findIndex(x=>x.k==="car");if(ci>=0&&i>ci)return"car";return null}
+function modeTag(s,day){const m=day&&modeOf(s,day);if(!m||!MODE_TAG[m])return"";const t=MODE_TAG[m];return`<span class="mode ${t[1]}">${t[0]}</span>`}
+const isMust=s=>s.k==="spot"&&MUST.some(m=>key(s).includes(m));
+let bounceNext=false,dayPrev=0;
+const dayVeh=i=>{const d=DAYS[i];if(d.stops.some(s=>s.k==="plane"))return"plane";if(d.stops.some(s=>s.k==="car")||(d.d>="2026-12-01"&&d.d<="2026-12-06"))return"car";return"train"};
+/* ---------- 畫面 ---------- */
+const V={
+today(){
+  const n=tokyoNow(),ti=todayIndex(),first=DAYS[0].d,last=DAYS[DAYS.length-1].d;
+  let hero,body="";
+  if(n.date<first){const left=dayDiff(n.date,first);const TD=secItems("todo"),done=doneIn(TD),total=TD.length,undone=TD.filter(i=>!checks.has(i.id)).slice(0,3);
+    hero=`<div class="hero">${art("kyushu")}<span class="label">九州 9 天 8 夜・5 大人＋1 寶寶</span>
+     <h1 style="font-size:32px;margin:4px 0 6px">九州親子小旅行</h1>
+     <div class="countdown"><span>還有</span><span class="big">${left}</span><span>天出發</span></div>
+     <div class="meta">11/30（一）凌晨從桃園出發・12/8（二）回家</div></div>
+     ${flightHTML(DAYS[0])}
+     <a class="card" href="#list" data-sec="todo" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px">
+      <div class="row" style="justify-content:space-between"><h3>出發前待辦</h3><span class="sub">已完成 ${done} / ${total}</span></div>
+      <div class="prog"><i style="width:${total?done/total*100:0}%"></i></div>
+      ${undone.length?`<ul class="tips">${undone.map(i=>`<li><span>${esc(i.t)}${i.n?`<br><span class="sub">${esc(i.n)}</span>`:""}</span></li>`).join("")}</ul><span class="sub">還有 ${total-done} 項，點這裡打勾</span>`:'<span class="sub">全部完成了，出發吧！</span>'}</a>
+     <h2 style="margin-top:4px">第一天預覽</h2>`;
+    body=dayBody(DAYS[0],0).replace(flightHTML(DAYS[0]),"");}
+  else if(n.date>last){hero=`<div class="hero">${art("home")}<span class="label">旅行結束</span><div class="ttl" style="font-size:22px">歡迎回家！</div><div class="meta">行程、筆記都還留著，到「行程」頁慢慢回味。</div></div>`}
+  else{const day=DAYS[ti];const {next}=stopStates(day);const ns=next>=0?day.stops[next]:null;
+    hero=`<div class="hero">${art(DAY_ART[day.d])}<span class="label">${md(day.d)}（${day.w}）・${esc(day.tag)}</span>
+     <div class="big">D${ti+1}<small>／9</small></div><div class="ttl">${esc(day.title)}</div><div class="meta">${esc(day.route)}</div></div>
+     ${ns?`<div class="now"><span class="label">${stopRange(ns.t)&&stopRange(ns.t).s<=n.min?"現在":"下一站"}・${esc(ns.t)}</span><b>${esc(ns.n)}</b>${ns.q?`<div class="row"><a class="btn p" href="${navUrl(ns.q)}" target="_blank" rel="noopener">${ic("nav")}導航過去</a></div>`:""}</div>`:""}`;
+    body=dayBody(day,ti);}
+  return`<header class="top"><h1>${n.date<first?"首頁":"今天"}</h1><div class="sub">日本時間 ${String(Math.floor(n.min/60)).padStart(2,"0")}:${String(n.min%60).padStart(2,"0")}</div></header>${hero}${body}`},
+plan(){
+  if(dayIdx==null){const t=todayIndex();dayIdx=t>=0?t:0}
+  const ti=todayIndex(),day=DAYS[dayIdx];
+  return`<header class="top"><div class="row" style="justify-content:space-between;align-items:flex-end"><div><h1>行程</h1><div class="sub">11/30 – 12/8・自駕 12/1 取車 → 12/6 還車</div></div><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a></div><div class="sub" style="margin-top:4px">行程同步自 Funliday（11/12 03:45 最後確認）</div></header>
+  <div class="days dl" role="group" aria-label="選擇日期" style="--n:${DAYS.length}"><span class="dveh" style="left:${(dayPrev+.5)/DAYS.length*100}%" data-to="${(dayIdx+.5)/DAYS.length*100}">${ic(dayVeh(dayIdx),1.6)}</span>${DAYS.map((d,i)=>`<button class="dp ${i===ti?"today":""}" data-day="${i}" aria-pressed="${i===dayIdx}" aria-label="D${i+1} ${md(d.d)}（${d.w}）">${(WARN[d.d]||[]).some(x=>x[0]==="err")?'<i class="wd" aria-label="有時間衝突"></i>':""}<span class="dd"></span><span class="dw">週${d.w}</span><span class="dn">${+d.d.slice(8)}</span></button>`).join("")}</div>
+  <div class="dayview" style="display:flex;flex-direction:column;gap:14px">
+  <div class="artcard">${art(DAY_ART[day.d])}</div>
+  <div class="dayhead"><h2 style="font-size:24px">${esc(day.title)}</h2></div>
+  ${dayBody(day,dayIdx)}</div>`},
+food(){
+  const X=XS(),A=X.areas.find(a=>a.k===X.area)||X.areas[0];
+  const cats=[...new Set(A.spots.map(p=>p.cat))];
+  const favCount=a=>a.spots.filter(p=>favs.has(p.id)).length;
+  const tot=L=>L.reduce((n,a)=>n+a.spots.length,0);const favTot=L=>L.reduce((n,a)=>n+favCount(a),0);
+  const isS=exKind==="spot";
+  return`<header class="top"><h1>景點美食</h1><div class="sub">收錄近幾年網路推薦。按 ♡ 收藏，排行程時就能直接選</div></header>
+  <div class="seg two" role="group" aria-label="景點或美食"><button data-exk="spot" aria-pressed="${isS}"><b>景點</b><small>${tot(SIGHTS)} 個${favTot(SIGHTS)?"・♥"+favTot(SIGHTS):""}</small></button><button data-exk="food" aria-pressed="${!isS}"><b>美食</b><small>${tot(FOOD)} 家${favTot(FOOD)?"・♥"+favTot(FOOD):""}</small></button></div>
+  <div class="search"><label for="fq" class="vh">搜尋${X.noun}</label>${ic("search")}<input id="fq" type="search" placeholder="${isS?"搜尋全部地區：神社、親子、夜景……":"搜尋全部地區：拉麵、鰻魚、布丁……"}" value="${esc(foodQuery)}" autocomplete="off"></div>
+  <div class="chips" role="group" aria-label="地區">${X.areas.map(a=>`<button data-farea="${a.k}" class="${a.off?"off":""}" aria-pressed="${a.k===A.k&&!foodQuery}">${esc(a.name)}<small>${a.days}${favCount(a)?" ・♥"+favCount(a):""}</small></button>`).join("")}</div>
+  <div class="chips" role="group" aria-label="分類" ${foodQuery?"hidden":""}><button data-ff="all" aria-pressed="${foodFilter==="all"}">全部 ${A.spots.length}</button><button data-ff="fav" aria-pressed="${foodFilter==="fav"}">♥ ${isS?"想去":"想吃"}</button><button data-ff="kid" aria-pressed="${foodFilter==="kid"}">親子OK</button>
+   ${cats.map(c=>`<button data-ff="${c}" aria-pressed="${foodFilter===c}"><span class="cat" style="background:${X.cats[c][1]}"></span>${X.cats[c][0]}</button>`).join("")}</div>
+  ${A.note&&!foodQuery?`<div class="offnote">${A.off?"<b>行程外</b>":""}${esc(A.note)}</div>`:""}
+  <details class="add card"><summary>${ic("star")}新增${X.noun}</summary>
+   <form data-form="food" data-kind="${exKind}" class="fm">
+    <label>${isS?"景點名稱":"店名"}<input name="name" placeholder="${isS?"例：竈門神社":"例：牧のうどん"}" required></label>
+    <label>地圖搜尋用名稱（選填，日文最準）<input name="jp" placeholder="${isS?"例：竈門神社 太宰府":"例：牧のうどん 博多バスターミナル店"}"></label>
+    <div class="f2"><label>地區<select name="area0">${X.areas.map(a=>`<option value="${a.k}" ${a.k===A.k?"selected":""}>${esc(a.name)}</option>`).join("")}</select></label>
+    <label>分類<select name="cat">${Object.entries(X.cats).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join("")}</select></label></div>
+    <div class="f2"><label>${isS?"門票（選填）":"價位（選填）"}<input name="p" placeholder="${isS?"例：免費、¥500":"例：¥1,000〜"}"></label>
+    ${isS?`<label>建議停留（分）<input name="stay" type="number" min="0" step="10" value="60" inputmode="numeric"></label>`:`<label class="cb"><input type="checkbox" name="kid" checked>親子OK</label>`}</div>
+    ${isS?`<label class="cb" style="padding-top:0"><input type="checkbox" name="kid" checked>親子OK</label>`:""}
+    <label>為什麼想去（選填）<input name="t" placeholder="例：朋友推薦、IG 看到"></label>
+    <button class="btn p" type="submit">${ic("star")}加入${X.noun}清單</button></form></details>
+  <div id="flist" style="display:flex;flex-direction:column;gap:14px">${foodList()}</div>
+  <p class="note">${isS?"「看照片」「門票・介紹」會開新分頁搜尋這個景點。門票和開放時間常調整，出發前按「營業時間」確認。":"「看照片」「看菜單」會開新分頁，顯示網路上這家店的料理照片和菜單（多半是食べログ）。營業時間和公休常變動，出發前按「營業時間」確認。"}每一項下方標了推薦來源與年份。</p>`},
+list(){
+  const S=SECS.find(s=>s.k===listSec)||SECS[0];GS();
+  let gi=0;const E=listEdit;
+  const groups=[...S.groups.map(g=>({key:g[0],name:groupNames[S.k+"|"+g[0]]||g[0],base:g[1]})),...myGroups.filter(x=>x.sec===S.k).map(x=>({key:x.id,name:x.name,base:[],custom:1}))].filter(g=>!gHidden(S.k,g.key));
+  const row=(it,x,n,mine)=>{const un=itemNotes[it.id]||"";
+    const lab=`<label for="${it.id}"><input type="checkbox" id="${it.id}" data-ck="${it.id}" ${checks.has(it.id)?"checked":""}><span class="ckt"><span>${esc(x)}${mine?'<span class="mine">自己加的</span>':""}</span>${n?`<small>${esc(n)}</small>`:""}${un&&!E?`<small class="unote">備註：${esc(un)}</small>`:""}</span></label>`;
+    return E?`<div class="ckrow ed"><div class="ckm">${lab}<label class="vh" for="nt-${it.id}">${esc(x)}的備註</label><input class="ni" id="nt-${it.id}" data-inote="${it.id}" value="${esc(un)}" placeholder="備註，例如：放在藍色行李箱、還差一件"></div>${delBtn(mine?"data-delitem":"data-hideitem",it.id,x)}</div>`:lab};
+  const hidN=ITEMS.filter(i=>i.sec===S.k&&isHidden(i.id)).length+[...S.groups.map(g=>g[0])].filter(k=>gHidden(S.k,k)).length;
+  return`<header class="top"><div class="row" style="justify-content:space-between;align-items:flex-end"><div><h1>清單</h1><div class="sub">勾選會記在這支手機上</div></div>
+   <button type="button" class="btn ${E?"p":""}" data-ledit aria-pressed="${E}">${E?"完成":"編輯"}</button></div></header>
+  <div class="seg" role="group" aria-label="清單分類">${SECS.map(s=>{const it=secItems(s.k);return`<button data-sec="${s.k}" aria-pressed="${s.k===S.k}"><b>${s.name}</b><small data-cnt="${s.k}">${doneIn(it)} / ${it.length}</small></button>`}).join("")}</div>
+  ${E?`<div class="offnote"><b>編輯中</b>可以改分類名稱、幫每個項目寫備註、刪除分類或項目、新增項目和分類。改好按右上角「完成」。</div>`:""}
+  <div class="card" style="display:flex;flex-direction:column;gap:8px"><div class="row" style="justify-content:space-between"><h3>${S.name}進度</h3><span class="sub" id="ckcount">${doneIn(secItems(S.k))} / ${secItems(S.k).length}</span></div>
+   <div class="prog"><i id="ckbar" style="width:${secItems(S.k).length?doneIn(secItems(S.k))/secItems(S.k).length*100:0}%"></i></div><span class="sub">${esc(S.intro)}</span></div>
+  ${groups.map(g=>`<div class="card${E?" editing":""}" style="display:flex;flex-direction:column;gap:4px">
+    ${E?`<div class="gh"><form data-form="grename" data-isec="${S.k}" data-key="${esc(g.key)}" class="addi" style="margin:0;flex:1"><label class="vh" for="gn-${gi}">分類名稱</label><input id="gn-${gi}" name="name" value="${esc(g.name)}" required><button class="btn" type="submit">改名</button></form>${delBtn(g.custom?"data-delgroup":"data-hidegroup",esc(g.key),g.name,"刪除整組")}</div>`:`<h3>${esc(g.name)}</h3>`}
+    <div class="ck">${g.base.map(t=>{const[x,n]=t.split("|");const it=ITEMS.find(i=>i.sec===S.k&&i.t===x);if(!it||isHidden(it.id))return"";return row(it,x,n,false)}).join("")}
+    ${ITEMS.filter(it=>it.u&&it.sec===S.k&&it.g===g.key).map(it=>row(it,it.t,it.n,true)).join("")}</div>
+    ${E?`<form data-form="item" data-isec="${S.k}" data-g="${esc(g.key)}" class="addi"><label class="vh" for="ai-${gi}">新增到${esc(g.name)}</label><input id="ai-${gi++}" name="t" placeholder="＋ 新增項目到「${esc(g.name)}」" required><button class="btn" type="submit">加入</button></form>`:(gi++,"")}</div>`).join("")}
+  ${E?`<form data-form="gadd" data-isec="${S.k}" class="card addi" style="margin:0"><label class="vh" for="gadd">新增分類</label><input id="gadd" name="name" placeholder="＋ 新增分類，例如：寶寶的副食品" required><button class="btn p" type="submit">新增分類</button></form>`:""}
+  ${E&&hidN?`<button type="button" class="btn" data-restore="${S.k}" style="align-self:flex-start">復原這一頁刪掉的 ${hidN} 個項目或分類</button>`:""}`},
+info(){
+  return`<header class="top"><h1>旅行資訊</h1><div class="sub">5 大人＋1 寶寶・金額皆為日圓</div></header>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>航班</h3>
+   <div style="display:flex;flex-direction:column;gap:2px"><span class="label">去程・11/30（一）</span><b style="font-size:17px">桃園 T1 03:00 → 北九州 06:15</b><span class="sub">星悅航空 7G 800・每人托運 30kg</span></div>
+   <div style="display:flex;flex-direction:column;gap:2px"><span class="label">回程・12/8（二）</span><b style="font-size:17px">福岡 16:10 → 桃園 17:55</b><span class="sub">亞洲航空 AK 1511・手提 7kg，托運共 115kg（25kg×3＋20kg×2），寶寶無額度</span></div></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>住宿（全部已確認・15:00 起入住）</h3>
+   ${Object.values(HOTELS).map(h=>`<div style="display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px dashed var(--line)"><b>${esc(h.n)}</b><span class="sub">${h.nights}・${h.rooms}・15:00 入住・${h.out}</span><span class="sub">${h.bk}</span>
+    <div class="row">${h.tel?telBtn(h.tel):""}<a class="btn" href="${mapUrl(h.q)}" target="_blank" rel="noopener">${ic("pin")}地圖</a></div></div>`).join("")}
+   <a class="btn" href="https://www.agoda.com/zh-tw/trips/shared/0754cb37-56e9-41e4-81c5-4089399a838f" target="_blank" rel="noopener">${ic("bed")}Agoda 訂房行程</a></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>租車</h3>
+   <dl class="kv"><dt>車型</dt><dd>八人車一台（Delica D:5 或同級）</dd><dt>取車</dt><dd>12/1 福岡，自行取車</dd><dt>還車</dt><dd>12/6 福岡</dd><dt>總計</dt><dd>¥72,000（含全保、ETC 卡、10% 稅）</dd><dt>訂金</dt><dd>¥14,400 已匯款</dd><dt>尾款</dt><dd><b style="color:var(--brick)">¥57,600 取車當日付清</b></dd></dl>
+   <ul class="tips"><li>帶台灣駕照正本＋日文譯本、護照</li><li>確認兒童安全座椅、ETC 卡已插好</li><li>還車前加滿油，留好收據</li></ul></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>D1 機場 → 博多時刻表</h3>
+   <div class="tbl"><table><thead><tr><th></th><th>巴士</th><th>到小倉</th><th>新幹線</th><th>到博多</th></tr></thead><tbody>
+   <tr class="me"><td>本次</td><td>07:00</td><td>07:33</td><td>07:41 さくら401</td><td>07:56</td></tr>
+   <tr><td>備案1</td><td>07:20</td><td>07:53</td><td>08:13 みずほ601</td><td>08:28</td></tr>
+   <tr><td>備案2</td><td>07:25</td><td>07:58</td><td>08:26 こだま931</td><td>08:42</td></tr></tbody></table></div>
+   <span class="sub">機場巴士每人 ¥710，新幹線自由席每人 ¥2,160，寶寶免費。巴士、地鐵可刷 Suica。</span></div>
+  <a class="card" href="#sos" style="background:var(--coral);color:var(--ink);text-decoration:none;display:flex;flex-direction:column;gap:4px"><h3>緊急求助</h3><span>110 警察・119 救護車・駐福岡分處・各地醫院和警察局</span><span class="sub" style="color:var(--ink)">點這裡打開，沒網路也能看</span></a>`}
+};
+
+/* ---------- SOS 緊急求助 ---------- */
+const SOS_AREAS=[
+ {k:"fuk",n:"福岡・博多",when:["2026-11-30","2026-12-06","2026-12-07","2026-12-08"],hotel:"hakata",items:[
+  ["police","博多警察署","092-412-0110","福岡市博多区博多駅前2-8-24","博多警察署","博多站前，24 小時"],
+  ["kid","福岡市急患診療センター","092-847-1099","福岡市早良区百道浜1丁目","福岡市立急患診療センター","小兒科夜間：平日 19:30–翌 6:30、週六 17:00–翌 7:30、週日 9:00–翌 7:30"],
+  ["hosp","済生会福岡総合病院","092-771-8151","福岡市中央区天神1-3-46","済生会福岡総合病院","天神的大醫院，有急診科，去之前先打電話"],
+  ["kid","福岡市立こども病院","092-682-7000","福岡市東区香椎照葉5-1-1","福岡市立こども病院","兒童專科醫院，原則預約制，先打電話問"],
+  ["info","福岡県救急医療情報センター","092-471-0099","","", "24 小時，幫你找現在能看診的醫院"]]},
+ {k:"kum",n:"熊本",when:["2026-12-01","2026-12-02","2026-12-03"],hotel:"kuma",items:[
+  ["police","熊本中央警察署","096-323-0110","熊本市中央区草葉町5-13","熊本中央警察署","24 小時"],
+  ["kid","熊本地域医療センター","096-363-3311","熊本市中央区本荘5-16-10","熊本地域医療センター","休日夜間急患：內科、外科、小兒科"],
+  ["hosp","熊本赤十字病院","096-384-2111","熊本市東区長嶺南2-1-1","熊本赤十字病院","休日夜間急患：小兒科、內科、外科、骨科"]]},
+ {k:"bep",n:"別府・由布院",when:["2026-12-03","2026-12-04","2026-12-05"],hotel:"beppu",items:[
+  ["police","別府警察署","0977-21-2131","別府市田の湯町13-13","別府警察署","24 小時"],
+  ["hosp","別府医療センター","0977-67-1111","別府市大字内竈1473","別府医療センター","救急指定醫院，有小兒科，去之前先打電話"],
+  ["hosp","新別府病院","0977-22-0391","別府市鶴見3898","新別府病院","救急指定醫院，去之前先打電話"]]},
+ {k:"kit",n:"北九州・小倉・門司",when:["2026-12-05","2026-12-06"],hotel:"kokura",items:[
+  ["police","小倉北警察署","093-583-0110","北九州市小倉北区大門1-6-19","小倉北警察署","24 小時"],
+  ["police","門司警察署","093-321-0110","北九州市門司区西海岸2-3-13","門司警察署","門司港附近"],
+  ["kid","北九州市立夜間・休日急患センター","093-522-9999","北九州市小倉北区馬借1-7-1","北九州市立夜間・休日急患センター","小兒科：平日、週六 19:30–23:30（23:00 前掛號），週日 9:00–23:30"],
+  ["hosp","北九州総合病院","093-921-0560","北九州市小倉南区湯川新町","北九州総合病院","有小兒急救"]]}];
+const SOS_ADVICE=[
+ ["福岡縣","#8000 小兒・092-731-4119","平日 19:00–翌 7:00、週六 12:00 起、週日全天","#7119 大人・092-471-0099","24 小時"],
+ ["熊本縣","#8000 小兒・096-364-9999","平日 19:00–翌 8:00、週六 15:00 起、週日全天","#7119 大人・03-6456-3290","24 小時"],
+ ["大分縣","#8000 小兒・097-503-8822","平日、週六 19:00–翌 8:00，週日 8:00 起全天","#7119 大人・097-532-7119","同左"]];
+const PHRASES=[["救急車をお願いします。","請派救護車。"],["赤ちゃんが熱を出しています。","寶寶發燒了。"],["子どもがけがをしました。","小孩受傷了。"],["交通事故です。","發生車禍了。"],["日本語が話せません。中国語か英語を話せる人はいますか？","我不會說日文，有會說中文或英文的人嗎？"],["パスポートをなくしました。","護照不見了。"],["近くの病院に行きたいです。","我想去附近的醫院。"]];
+const telHref=n=>"tel:"+(/^00/.test(n)?n.replace(/-/g,""):/^0/.test(n)?"+81"+n.replace(/^0/,"").replace(/-/g,""):n.replace(/-/g,""));
+const callBtn=(n,label)=>`<a class="btn p call" href="${telHref(n)}">${ic("phone")}${label||"撥打"}</a>`;
+function sosArea(){const t=tokyoNow().date;return SOS_AREAS.filter(a=>a.when.includes(t)).map(a=>a.k)}
+const sosSec=(t,hint,body,cls,badge)=>`<details class="card sosc sd${cls||""}"><summary><span class="sh"><b>${t}</b>${badge||""}<span class="sub">${hint}</span></span><span class="chev" aria-hidden="true"></span></summary><div class="sbody">${body}</div></details>`;
+V.sos=function(){const now=sosArea();const areas=[...SOS_AREAS].sort((a,b)=>(now.includes(b.k)?1:0)-(now.includes(a.k)?1:0));
+ const KI={police:["警察局","m-sub"],hosp:["醫院","m-plane"],kid:["夜間急診・小兒","m-bus"],info:["找醫院","m-walk"]};
+ return`<header class="top sostop"><h1>緊急求助</h1></header>
+ <div class="sosbig"><div class="sosb pol"><div class="st1"><b>110</b><span>警察<small>車禍・遺失</small></span></div><a class="btn call big1" href="tel:110">${ic("phone")}撥打 110</a></div><div class="sosb amb"><div class="st1"><b>119</b><span>救護車<small>急病・火災</small></span></div><a class="btn call big1" href="tel:119">${ic("phone")}撥打 119</a></div></div>
+ ${sosSec("打 110／119 時這樣說","常用日文句子，念出來或給對方看",`<span class="sub">先說「救急です」（急救）或「火事です」（火災），再說地址。</span><ul class="phr">${PHRASES.map(p=>`<li><b lang="ja">${p[0]}</b><span>${p[1]}</span></li>`).join("")}</ul>`)}
+ ${sosSec("台灣人在日本求助","駐福岡分處、外交部急難救助、中文熱線",`
+  <div class="sr"><div><b>駐福岡分處・緊急聯絡</b><span class="sub">管轄九州全區與山口縣；車禍、受傷、被捕、護照遺失等重大急難</span></div>${callBtn("090-1922-9740")}</div>
+  <div class="sr"><div><b>駐福岡分處・辦公室</b><span class="sub">上班時間撥打</span></div>${callBtn("092-734-2810")}</div>
+  <div class="sr"><div><b>外交部急難救助・全球免付費</b><span class="sub">日本門號撥打：0033 或 001 開頭；台灣門號漫遊撥打：用下面的「付費專線」</span></div>${callBtn("0033-010-800-0885-0885","免付費")}</div>
+  <div class="sr"><div><b>外交部急難救助・付費專線</b><span class="sub">台灣手機漫遊也能打，24 小時</span></div><a class="btn p call" href="tel:+886800085095">${ic("phone")}撥打</a></div>
+  <div class="sr"><div><b>Japan Visitor Hotline</b><span class="sub">日本觀光局 24 小時旅客熱線，可以說中文</span></div>${callBtn("050-3816-2787")}</div>`)}
+ ${sosSec("不知道要不要叫救護車？","打電話問護理師（#7119 大人、#8000 小孩）",`<span class="sub">打電話問護理師，會幫你判斷要不要去醫院。<b>#7119、#8000</b> 只能用日本門號撥；台灣門號漫遊請按下面的號碼。</span>
+  ${SOS_ADVICE.map(a=>`<div class="adv"><b>${a[0]}</b><div class="sr"><div><span>${a[1].split("・")[0]}</span><span class="sub">${a[2]}</span></div>${callBtn(a[1].split("・")[1])}</div><div class="sr"><div><span>${a[3].split("・")[0]}</span><span class="sub">${a[4]}</span></div>${callBtn(a[3].split("・")[1])}</div></div>`).join("")}`)}
+ ${areas.map(a=>{const H=HOTELS[a.hotel];return sosSec(a.n,a.items.map(x=>({police:"警察局",hosp:"醫院",kid:"夜間急診",info:"找醫院"})[x[0]]).filter((v,i,A)=>A.indexOf(v)===i).join("・"),`
+  ${a.items.map(([k,n,tel,addr,q,note])=>`<div class="sr"><div><span class="mode ${KI[k][1]}">${KI[k][0]}</span><b lang="ja">${n}</b><span class="sub">${esc(note)}</span></div><div class="acts2">${callBtn(tel)}${q?`<a class="btn mapb" href="${mapUrl(q)}" target="_blank" rel="noopener">${ic("pin")}地圖</a>`:""}</div></div>`).join("")}
+  ${H?`<div class="lodge2">住宿地址（給救護車、計程車看）：<b lang="ja">${esc(H.n)}・${esc(H.q.replace(H.n,"").trim())}</b></div>`:""}`,now.includes(a.k)?" here":"",now.includes(a.k)?'<span class="pill o">今天在這附近</span>':"")}).join("")}
+ ${sosSec("開車發生事故","報警、救護車、租車公司、道路救援",`<span class="sub">先把車停到安全的地方、開警示燈，確認大家都沒事。</span>
+  <div class="sr"><div><b>1．報警 110</b><span class="sub">日本規定車禍一定要報警，保險和租車公司才能理賠</span></div><a class="btn p call" href="tel:110">${ic("phone")}撥打</a></div>
+  <div class="sr"><div><b>2．有人受傷 119</b><span class="sub">叫救護車</span></div><a class="btn p call" href="tel:119">${ic("phone")}撥打</a></div>
+  <div class="sr"><div><b>3．聯絡租車公司</b><span class="sub">電話在租車合約上</span></div></div>
+  <div class="sr"><div><b>道路救援 JAF</b><span class="sub">爆胎、沒電、拋錨</span></div>${callBtn("0570-00-8139")}</div>`)}`};
+
+/* ---------- 路由與事件 ---------- */
+const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["info","資訊","info"],["sos","緊急","sos"]];
+const app=document.getElementById("app");
+function route(){let r=(location.hash||"#today").slice(1);if(!V[r])r="today";
+  app.innerHTML=V[r]();
+  document.getElementById("tabs").innerHTML=TABS.map(t=>`<a href="#${t[0]}" ${t[0]===r?'aria-current="page"':""}>${ic(t[2],1.8)}${t[1]}</a>`).join("");
+  if(bounceNext){bounceNext=false;app.querySelectorAll(".dayview,.days~.card").forEach(el=>{el.classList.remove("bounce");void el.offsetWidth;el.classList.add("bounce")})}
+  app.querySelectorAll('.days [aria-pressed="true"],[data-farea][aria-pressed="true"]').forEach(c=>{const box=c.parentElement;box.scrollLeft=c.offsetLeft-box.clientWidth/2+c.clientWidth/2});
+  const vh=app.querySelector(".dveh");if(vh)requestAnimationFrame(()=>requestAnimationFrame(()=>{vh.style.left=vh.dataset.to+"%";dayPrev=dayIdx}));
+  initTL();gpScan();}
+function rerender(keepScroll){const y=scrollY;route();if(keepScroll)scrollTo(0,y)}
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname)){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+gpStart();
+window.addEventListener("hashchange",()=>{route();scrollTo(0,0)});
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>el.hidden=true,1600)}
+
+
+const DAY_SIGHTS={"2026-11-30":["s-hakata"],"2026-12-01":["s-dazaifu","s-kumamoto"],"2026-12-02":["s-kumamoto"],"2026-12-03":["s-aso","s-takachiho","s-kuju"],"2026-12-04":["s-yufuin","s-beppu","s-usa"],"2026-12-05":["s-beppu","s-kokura","s-usa"],"2026-12-06":["s-mojiko","s-kokura"],"2026-12-07":["s-hakata","s-extra"],"2026-12-08":["s-hakata"]};
+/* ---------- 航班、預訂、天氣 ---------- */
+const FLIGHTS={"2026-11-30":{label:"去程",dep:"03:00",dc:"TPE",dn:"桃園",da:"桃園國際機場 第一航廈 T1",arr:"06:15",ac:"KKJ",an:"北九州",aa:"北九州機場",dur:"2h15m",info:["星悅航空 7G 800","每人托運 30kg","所有時間為當地時間"]},
+ "2026-12-08":{label:"回程",dep:"16:10",dc:"FUK",dn:"福岡",da:"福岡機場 國際線航廈",arr:"17:55",ac:"TPE",an:"桃園",aa:"桃園國際機場 第一航廈 T1",dur:"2h45m",info:["亞洲航空 AK 1511","手提 7kg・托運共 115kg","寶寶無行李額度"]}};
+const BOOK={"2026-11-30":[["done","機票","去程 7G 800"],["done","住宿","&HOTEL HAKATA"]],
+ "2026-12-01":[["done","租車","八人車・訂金已付"],["todo","尾款","¥57,600 取車時付","b2"],["done","住宿","fav KUMAMOTO 2 晚"]],
+ "2026-12-02":[["done","住宿","fav KUMAMOTO"]],
+ "2026-12-03":[["done","住宿","beppu Ohana 2 晚"],["todo","通知","民宿晚到 21:00","b3"]],
+ "2026-12-04":[["done","住宿","beppu Ohana"],["todo","訂位","由布まぶし 心","b4"]],
+ "2026-12-05":[["done","住宿","Rakuten STAY 小倉"]],
+ "2026-12-06":[["done","住宿","&HOTEL HAKATA 3 晚"],["todo","還車","時間地點確認","b5"]],
+ "2026-12-07":[["done","住宿","&HOTEL HAKATA"],["todo","門票","麵包超人博物館","b1"]],
+ "2026-12-08":[["done","機票","回程 AK 1511"]]};
+let bookDone=new Set(LS.get("bookDone",[]));
+/* 氣象廳 1991–2020 年 12 月平年值（weather.time-j.net 整理） */
+const CL={fukuoka:["福岡市",12.6,5.8,67.5,"福岡市 天気"],kumamoto:["熊本市",12.9,3.4,61.2,"熊本市 天気"],aso:["阿蘇",9.5,-1.4,86.9,"阿蘇市 天気"],takachiho:["高千穗",11.5,0.3,57.9,"高千穂町 天気"],oita:["別府・大分",13.0,4.6,47.1,"別府市 天気"],yufuin:["由布院",9.7,-0.8,55.4,"由布市 湯布院 天気"],yahata:["北九州",12.2,4.7,75.9,"北九州市 天気"]};
+const DAY_CL={"2026-11-30":["fukuoka"],"2026-12-01":["fukuoka","kumamoto"],"2026-12-02":["kumamoto"],"2026-12-03":["aso","takachiho","oita"],"2026-12-04":["yufuin","oita"],"2026-12-05":["oita","yahata"],"2026-12-06":["yahata","fukuoka"],"2026-12-07":["fukuoka"],"2026-12-08":["fukuoka"]};
+function bookHTML(day){const b=BOOK[day.d]||[];if(!b.length)return"";
+  return`<div class="books">${b.map(([st,k,t,id])=>{const ok=st==="done"||(id&&bookDone.has(id));
+    return id?`<button type="button" class="bk ${ok?"ok":"todo"}" data-book="${id}" aria-pressed="${ok}">${ok?"✓ 已完成":"待處理"}<span>${esc(k)}｜${esc(t)}</span></button>`:`<span class="bk ok">✓ 已預訂<span>${esc(k)}｜${esc(t)}</span></span>`}).join("")}</div>`}
+function lodgeHTML(day){const H=day.hotel&&HOTELS[day.hotel];if(!H)return day.d==="2026-12-08"?`<div class="lodge">住宿：<b>溫暖的家</b></div>`:"";
+  return`<div class="lodge">住宿：<b>${esc(H.n)}</b>・${esc(H.addr)}</div>`}
+/* ---------- 即時天氣預報（Open-Meteo，免帳號；在 Claude 裡打不開時改顯示歷年平均） ---------- */
+const CL_GEO={fukuoka:[33.59,130.40],kumamoto:[32.80,130.71],aso:[32.95,131.07],takachiho:[32.71,131.31],oita:[33.28,131.49],yufuin:[33.26,131.36],yahata:[33.88,130.88]};
+let WXF=null,WXT=0;
+try{const c=JSON.parse(localStorage.getItem("ky9-wx")||"null");if(c&&Date.now()-c.t<3*3600e3){WXF=c.d;WXT=c.t}}catch(e){}
+async function loadForecast(){if(WXF&&Date.now()-WXT<3*3600e3)return;
+  const ks=Object.keys(CL_GEO);const url="https://api.open-meteo.com/v1/forecast?latitude="+ks.map(k=>CL_GEO[k][0]).join(",")+"&longitude="+ks.map(k=>CL_GEO[k][1]).join(",")+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16";
+  try{const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),8000);const r=await fetch(url,{signal:ctl.signal});clearTimeout(tm);if(!r.ok)return;let j=await r.json();if(!Array.isArray(j))j=[j];
+    const d={};ks.forEach((k,i)=>{const D=j[i]&&j[i].daily;if(!D)return;d[k]={};D.time.forEach((t,n)=>{d[k][t]={hi:D.temperature_2m_max[n],lo:D.temperature_2m_min[n],pp:D.precipitation_probability_max[n],code:D.weather_code[n]}})});
+    WXF=d;WXT=Date.now();try{localStorage.setItem("ky9-wx",JSON.stringify({t:WXT,d}))}catch(e){}
+    const r0=(location.hash||"#today").slice(1);const ae=document.activeElement;if((r0==="today"||r0==="plan")&&!(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))rerender(true)}catch(e){}}
+const WMO=c=>c===0?["晴","sun"]:c<=2?["晴時多雲","psun"]:c===3?["陰","cloud"]:c<=48?["起霧","fog"]:c<=57?["毛毛雨","rain"]:c<=67?["雨","rain"]:c<=77?["雪","snow"]:c<=82?["陣雨","rain"]:c<=86?["陣雪","snow"]:["雷雨","storm"];
+function wxIcon(k){const S=`stroke="${PAL.k}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"`;
+  const sun=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${PAL.ya}" ${S}/>`,cl=(x,y)=>`<path d="M${x} ${y+12}q-8 0-8-7t8-7q2-7 10-7t10 7q7 0 7 7t-7 7z" fill="${PAL.w}" ${S}/>`;
+  const body={sun:sun(20,20,9),psun:sun(15,14,7)+cl(14,16),cloud:cl(10,12),fog:cl(10,8)+`<path d="M8 32h24M12 37h18" ${S}/>`,rain:cl(10,8)+`<path d="M14 31l-2 5M21 31l-2 5M28 31l-2 5" stroke="${PAL.mi}" stroke-width="3" stroke-linecap="round"/>`,snow:cl(10,8)+`<g fill="${PAL.mi}" ${S}><circle cx="14" cy="34" r="2.5"/><circle cx="22" cy="36" r="2.5"/><circle cx="30" cy="34" r="2.5"/></g>`,storm:cl(10,8)+`<path d="M22 28l-5 7h5l-3 6" fill="none" stroke="${PAL.co}" stroke-width="3" stroke-linejoin="round"/>`}[k];
+  return`<svg class="wxic" viewBox="0 0 40 40" aria-hidden="true">${body}</svg>`}
+function clAdvice(lo){return lo<=0?"清晨會到零度以下，路面可能結冰；羽絨外套、手套、毛帽必帶，寶寶要包好":lo<=4?"早晚很冷，白天十度出頭；發熱衣＋羽絨外套，洋蔥式穿法":"白天十幾度，早晚涼；發熱衣＋外套就夠"}
+function weatherHTML(day){const ks=DAY_CL[day.d]||[];if(!ks.length)return"";
+  const fx=ks.map(k=>WXF&&WXF[k]&&WXF[k][day.d]).filter(Boolean),live=fx.length===ks.length;
+  const lo=live?Math.min(...fx.map(f=>f.lo)):Math.min(...ks.map(k=>CL[k][2]));
+  const extra=live?[fx.some(f=>(f.code>=71&&f.code<=77)||f.code===85||f.code===86)?"可能下雪，山路要準備雪鏈":"",Math.max(...fx.map(f=>f.pp||0))>=50?"降雨機率高，記得帶傘、推車雨罩":""].filter(Boolean):[];
+  const upd=WXT?new Date(WXT+9*3600e3).toISOString().slice(11,16):"";
+  return`<div class="card wx"><div class="wxh"><span class="label">${live?"天氣預報":"12 月平均天氣"}・${md(day.d)}（${day.w}）</span></div>
+   <div class="wxs">${ks.map((k,i)=>{const c=CL[k];if(live){const f=fx[i],w=WMO(f.code);return`<div class="wxi"><span class="wxp">${c[0]}</span><div class="wxrow">${wxIcon(w[1])}<span class="wxt"><b>${Math.round(f.hi)}°</b> / ${Math.round(f.lo)}°</span></div><span class="sub">${w[0]}・降雨機率 ${f.pp==null?"—":f.pp+"%"}</span></div>`}
+     return`<div class="wxi"><span class="wxp">${c[0]}</span><span class="wxt"><b>${c[1].toFixed(0)}°</b> / ${c[2].toFixed(0)}°</span><span class="sub">月雨量 ${c[3].toFixed(0)} mm</span></div>`}).join("")}</div>
+   <p class="wxa">${clAdvice(lo)}${extra.length?"。"+extra.join("；"):""}</p>
+   <div class="row">${ks.map(k=>`<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(CL[k][4])}" target="_blank" rel="noopener">${ic("sun")}${CL[k][0]}詳細預報</a>`).join("")}</div>
+   <span class="src">${live?`預報來源 Open-Meteo（日本時間 ${upd} 更新），出發前每次打開都會更新`:`最高／最低氣溫為氣象廳 1991–2020 年 12 月平年值。出發前約 16 天內，這裡會自動換成當天當地的預報`}</span></div>`}
+function flightHTML(day){const F=FLIGHTS[day.d];if(!F)return"";
+  return`<div class="card fl"><span class="label">${F.label}・${md(day.d)}（${day.w}）</span>
+   <div class="flr"><div><b class="flt">${F.dep}</b><span class="flc">${F.dc} ${F.dn}</span><span class="sub">${F.da}</span></div>
+    <div class="flm">${ic("plane")}<span class="sub">${F.dur}</span></div>
+    <div style="text-align:right"><b class="flt">${F.arr}</b><span class="flc">${F.ac} ${F.an}</span><span class="sub">${F.aa}</span></div></div>
+   <div class="fli">${F.info.map(x=>`<span>${esc(x)}</span>`).join("")}</div></div>`}
+
+app.addEventListener("input",e=>{const ni=e.target.closest("[data-inote]");if(ni){GS();const v=ni.value.trim();if(v)itemNotes[ni.dataset.inote]=v;else delete itemNotes[ni.dataset.inote];LS.set("itemNotes",itemNotes);return}});
+app.addEventListener("submit",e=>{const f=e.target.closest("form[data-form]");if(!f)return;e.preventDefault();
+  const v=Object.fromEntries(new FormData(f));const kind=f.dataset.form;
+  if(kind==="food"){const kd=f.dataset.kind||"food";const p={id:uid(),u:1,kind:kd,name:v.name.trim(),jp:(v.jp||"").trim()||v.name.trim(),cat:v.cat,area:"自己加的",area0:v.area0,p:(v.p||"").trim()||"—",kid:!!v.kid,t:(v.t||"").trim(),src:"",stay:+v.stay||60};
+    myFood.push(p);LS.set("myFood",myFood);applyFood();if(kd==="spot"){spotArea=v.area0;LS.set("sarea",spotArea)}else{foodArea=v.area0;LS.set("area",foodArea)}foodFilter="all";foodQuery="";rerender(true);toast("已加入「"+p.name+"」")}
+  else if(kind==="grename"){GS();const key=f.dataset.key,sec=f.dataset.isec,nm=v.name.trim();const cg=myGroups.find(x=>x.id===key);if(cg)cg.name=nm;else groupNames[sec+"|"+key]=nm;LS.set("myGroups",myGroups);LS.set("groupNames",groupNames);rerender(true);toast("已改名")}
+  else if(kind==="gadd"){GS();myGroups.push({id:uid(),sec:f.dataset.isec,name:v.name.trim()});LS.set("myGroups",myGroups);rerender(true);toast("已新增分類「"+v.name.trim()+"」")}
+  else if(kind==="item"){myItems.push({id:uid(),sec:f.dataset.isec,g:f.dataset.g,t:v.t.trim(),n:""});LS.set("myItems",myItems);applyItems();rerender(true);
+    const inp=app.querySelector(`form[data-g="${CSS.escape(f.dataset.g)}"] input`);if(inp)inp.focus();toast("已加入清單")}
+});
+app.addEventListener("click",e=>{
+  const fm=e.target.closest("[data-fmap]");if(fm){fmOpen=fmOpen===fm.dataset.fmap?null:fm.dataset.fmap;fmMode="place";rerender(true);return}
+  const fmm=e.target.closest("[data-fmm]");if(fmm){if(fmm.dataset.fmm==="place"){fmMode="place";rerender(true);return}
+    if(myPos){fmMode="route";rerender(true);return}
+    if(!navigator.geolocation){toast("這支手機沒辦法定位");return}
+    toast("正在找你的位置…");navigator.geolocation.getCurrentPosition(ps=>{myPos=[ps.coords.latitude.toFixed(5),ps.coords.longitude.toFixed(5)];fmMode="route";rerender(true)},()=>toast("沒有拿到位置，請允許定位，或按「開始導航」"),{enableHighAccuracy:false,timeout:10000,maximumAge:300000});return}
+  const le=e.target.closest("[data-ledit]");if(le){listEdit=!listEdit;rerender(true);return}
+  const rs=e.target.closest("[data-restore]");if(rs){isHidden("");const sk=rs.dataset.restore;ITEMS.filter(i=>i.sec===sk).forEach(i=>hiddenItems.delete(i.id));[...hiddenItems].filter(x=>x.startsWith("g:"+sk+"|")).forEach(x=>hiddenItems.delete(x));LS.set("hiddenItems",[...hiddenItems]);rerender(true);toast("已復原");return}
+  const dl=e.target.closest("[data-delstop],[data-delfood],[data-delitem],[data-hideitem],[data-hidegroup],[data-delgroup]");
+  if(dl){if(!dl.classList.contains("sure")){dl.classList.add("sure");dl.textContent="再按一次確定刪除";setTimeout(()=>{if(dl.isConnected){dl.classList.remove("sure");dl.textContent=dl.dataset.txt||"刪除"}},3000);return}
+    if(dl.dataset.delstop){for(const k in myStops)myStops[k]=myStops[k].filter(s=>s.id!==dl.dataset.delstop);LS.set("myStops",myStops);applyStops()}
+    else if(dl.dataset.delfood){myFood=myFood.filter(p=>p.id!==dl.dataset.delfood);favs.delete(dl.dataset.delfood);LS.set("myFood",myFood);LS.set("favs",[...favs]);applyFood()}
+    else if(dl.dataset.hidegroup){isHidden("");hiddenItems.add("g:"+listSec+"|"+dl.dataset.hidegroup);LS.set("hiddenItems",[...hiddenItems])}
+    else if(dl.dataset.delgroup){GS();const id=dl.dataset.delgroup;myGroups=myGroups.filter(x=>x.id!==id);myItems=myItems.filter(c=>c.g!==id);LS.set("myGroups",myGroups);LS.set("myItems",myItems);applyItems()}
+    else if(dl.dataset.hideitem){isHidden("");hiddenItems.add(dl.dataset.hideitem);checks.delete(dl.dataset.hideitem);LS.set("hiddenItems",[...hiddenItems]);LS.set("checks2",[...checks])}
+    else{myItems=myItems.filter(c=>c.id!==dl.dataset.delitem);checks.delete(dl.dataset.delitem);LS.set("myItems",myItems);LS.set("checks2",[...checks]);applyItems()}
+    rerender(true);toast("已刪除");return}
+  const b=e.target.closest("[data-day],[data-farea],[data-ff],[data-fav],[data-copy],[data-area],[data-sec],[data-exk],[data-book]");if(!b)return;
+  if(b.dataset.exk){exKind=b.dataset.exk;LS.set("exKind",exKind);foodFilter="all";foodQuery="";rerender(true);return}
+  if(b.dataset.book){const id=b.dataset.book;bookDone.has(id)?bookDone.delete(id):bookDone.add(id);LS.set("bookDone",[...bookDone]);rerender(true);return}
+  if(b.dataset.sec){listSec=b.dataset.sec;LS.set("sec",listSec);rerender(true);return}
+  if(b.dataset.day!=null){dayPrev=dayIdx==null?0:dayIdx;dayIdx=+b.dataset.day;bounceNext=true;rerender(true)}
+  else if(b.dataset.farea){if(exKind==="spot"){spotArea=b.dataset.farea;LS.set("sarea",spotArea)}else{foodArea=b.dataset.farea;LS.set("area",foodArea)}foodFilter="all";foodQuery="";rerender(true)}
+  else if(b.dataset.ff){foodFilter=b.dataset.ff;rerender(true)}
+  else if(b.dataset.fav){const id=b.dataset.fav;favs.has(id)?favs.delete(id):favs.add(id);LS.set("favs",[...favs]);rerender(true)}
+  else if(b.dataset.area){const k=b.dataset.area;if(k.startsWith("s-")){exKind="spot";spotArea=k;LS.set("sarea",k)}else{exKind="food";foodArea=k;LS.set("area",k)}LS.set("exKind",exKind);foodFilter="all";foodQuery=""}
+  else if(b.dataset.copy){const t=b.dataset.copy;
+    const ok=()=>toast("已複製 "+t);
+    try{navigator.clipboard.writeText(t).then(ok,()=>sel(b))}catch(err){sel(b)}}
+});
+function sel(b){const s=b.previousElementSibling;if(s){const r=document.createRange();r.selectNodeContents(s);const x=getSelection();x.removeAllRanges();x.addRange(r);toast("號碼已選取，長按複製")}}
+app.addEventListener("change",e=>{const c=e.target.closest("[data-ck]");if(!c)return;
+  c.checked?checks.add(c.dataset.ck):checks.delete(c.dataset.ck);LS.set("checks2",[...checks]);
+  const it=secItems(listSec),d=doneIn(it);
+  document.getElementById("ckcount").textContent=d+" / "+it.length;document.getElementById("ckbar").style.width=d/it.length*100+"%";
+  const sc=app.querySelector(`[data-cnt="${listSec}"]`);if(sc)sc.textContent=d+" / "+it.length});
+app.addEventListener("input",e=>{if(e.target.id==="fq"){foodQuery=e.target.value;document.getElementById("flist").innerHTML=foodList();
+    app.querySelectorAll('[data-farea]').forEach(x=>x.setAttribute("aria-pressed",!foodQuery&&x.dataset.farea===XS().area));
+    const cg=app.querySelector('[aria-label="分類"]');if(cg)cg.hidden=!!foodQuery;return}const t=e.target.closest("[data-note]");if(!t)return;notes[t.dataset.note]=t.value;LS.set("notes",notes)});
+route();
+loadForecast();
+setInterval(()=>{const r=(location.hash||"#today").slice(1);if(r==="today"&&!app.contains(document.activeElement))rerender(true)},60000);
+</script>
+
+</body></html>
