@@ -810,6 +810,12 @@ header.top h1,.sostop h1,.hero2 h1{font-size:28px!important;line-height:1.15!imp
 .art.big .fly.veh>*{animation:none}
 @keyframes vcross{from{transform:translateX(calc((-110px - var(--x)) / var(--s)))}to{transform:translateX(calc((400px - var(--x)) / var(--s)))}}
 @keyframes vbump{from{transform:translateY(0)}to{transform:translateY(-1.5px)}}
+
+/* D1：飛機降落，接著新幹線出發 */
+.art .landp{animation:landp 12s ease-in-out infinite}
+.art .trainp{animation:trainp 12s linear infinite}
+@keyframes landp{0%{transform:translate(-80px,-30px) rotate(10deg);opacity:1}30%{transform:translate(50px,97px) rotate(0)}33%{transform:translate(64px,100px) rotate(-2deg)}36%{transform:translate(80px,99px) rotate(0)}44%{transform:translate(150px,99px);opacity:1}48%{transform:translate(170px,99px);opacity:0}100%{transform:translate(170px,99px);opacity:0}}
+@keyframes trainp{0%,46%{transform:translateX(-200px)}100%{transform:translateX(480px)}}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -1635,12 +1641,14 @@ const A_={
  waves:(x,y)=>G(x,y,`<path d="M0 0q5-5 10 0t10 0" fill="none" ${SK}/>`,"bob"),
  field:(y,c=PAL.wa)=>`<path d="M-4 ${y}q90-8 184 0t184 0V154H-4Z" fill="${c}" ${SK}/>`,
  rail:(y)=>`<path d="M-4 ${y}H364" ${SK}/><path d="M-4 ${y+8}H364" ${SK}/>`+Array.from({length:19},(_,i)=>`<path d="M${i*20} ${y}v8" ${SK} opacity=".5"/>`).join(""),
- shinkansen:(x,y,s=1)=>VH(x,y,`<path d="M0 0h96q20 0 34 18H0z" fill="${PAL.w}" ${SK}/><path d="M0 12h124" stroke="${PAL.mi}" stroke-width="5"/><path d="M0 12h124" ${SK} opacity="0"/>`+[10,30,50,70].map(a=>`<rect x="${a}" y="3" width="12" height="6" rx="2" fill="${PAL.mi}" ${SK}/>`).join("")+`<path d="M98 3q10 0 16 7h-16z" fill="${PAL.k}"/><circle cx="20" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="50" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="90" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="114" cy="20" r="3.5" fill="${PAL.k}"/>`,"bob",s,8),
+ shinB:()=>`<path d="M0 0h96q20 0 34 18H0z" fill="${PAL.w}" ${SK}/><path d="M0 12h124" stroke="${PAL.mi}" stroke-width="5"/><path d="M0 12h124" ${SK} opacity="0"/>`+[10,30,50,70].map(a=>`<rect x="${a}" y="3" width="12" height="6" rx="2" fill="${PAL.mi}" ${SK}/>`).join("")+`<path d="M98 3q10 0 16 7h-16z" fill="${PAL.k}"/><circle cx="20" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="50" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="90" cy="20" r="3.5" fill="${PAL.k}"/><circle cx="114" cy="20" r="3.5" fill="${PAL.k}"/>`,
+ shinkansen:(x,y,s=1)=>VH(x,y,A_.shinB(),"bob",s,8),
  road:(y)=>`<path d="M-4 ${y}H364V${y+14}H-4Z" fill="#E8DFD0" ${SK}/><path d="M6 ${y+7}H364" stroke="${PAL.w}" stroke-width="3" stroke-dasharray="12 10"/>`,
  canal:(y)=>`<path d="M-4 ${y}H364V154H-4Z" fill="${PAL.mi}" ${SK}/><path d="M20 ${y+10}h14M120 ${y+14}h18M250 ${y+9}h14" ${SK} opacity=".45"/>`,
  lake:(x,y,rx,ry)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${PAL.mi}" ${SK}/><path d="M${x-rx/2} ${y}h16M${x+rx/5} ${y+4}h12" ${SK} opacity=".45"/>`,
  hill:(d,c=PAL.wa)=>`<path d="${d}" fill="${c}" ${SK}/>`,
- plane:(x,y,s=1,flip=false)=>VH(x,y,`<g transform="${flip?"scale(-1 1) translate(-70 0)":""}"><path d="M4 6l-8-12h9l9 11z" fill="${PAL.co}" ${SK}/><path d="M0 12q0-9 11-9h42q11 0 15 9q-4 9-15 9h-42q-11 0-11-9z" fill="${PAL.w}" ${SK}/><path d="M26 13l-9 17h11l15-17z" fill="${PAL.co}" ${SK}/><g fill="${PAL.k}"><circle cx="38" cy="10" r="2"/><circle cx="46" cy="10" r="2"/><circle cx="54" cy="10" r="2"/></g></g>`,"fly",s,13),
+ planeB:(flip=false)=>`<g transform="${flip?"scale(-1 1) translate(-70 0)":""}"><path d="M4 6l-8-12h9l9 11z" fill="${PAL.co}" ${SK}/><path d="M0 12q0-9 11-9h42q11 0 15 9q-4 9-15 9h-42q-11 0-11-9z" fill="${PAL.w}" ${SK}/><path d="M26 13l-9 17h11l15-17z" fill="${PAL.co}" ${SK}/><g fill="${PAL.k}"><circle cx="38" cy="10" r="2"/><circle cx="46" cy="10" r="2"/><circle cx="54" cy="10" r="2"/></g></g>`,
+ plane:(x,y,s=1,flip=false)=>VH(x,y,A_.planeB(flip),"fly",s,13),
  car:(x,y,s=1)=>VH(x,y,`<path d="M0 18v-8q0-4 4-5l8-1 6-8h20l8 8 6 1q4 1 4 5v8z" fill="${PAL.ya}" ${SK}/><path d="M20 -2h15l5 6h-24z" fill="${PAL.mi}" ${SK}/><circle cx="13" cy="19" r="5" fill="${PAL.k}"/><circle cx="43" cy="19" r="5" fill="${PAL.k}"/>`,"bob",s,10),
  steam:(x,y,d="")=>G(x,y,`<path d="M0 0q-7-7 0-14t0-14" fill="none" ${SK}/>`,"steam "+d),
  tree:(x,y,c=PAL.wa,s=1)=>G(x,y,`<path d="M0 0v-16" ${SK}/><circle cy="-26" r="13" fill="${c}" ${SK}/>`,"sway",s),
@@ -1667,7 +1675,7 @@ const A_={
 };
 const SCENES={
  kyushu:()=>A_.sun(318,30)+A_.cloud(190,8,.9)+A_.cloud(250,52,.6,"d1")+A_.plane(112,26,.75)+A_.volcano(8,58)+A_.hill("M200 124q40-40 90-30t80 10V150H200Z")+A_.castle(176,74,.66)+A_.tub(306,110)+A_.field(126)+A_.road(132)+A_.car(116,124,.75),
- hakata:()=>A_.sun(36,30,13)+A_.cloud(250,14,.8)+A_.plane(150,14,.9)+A_.buildings(170,120)+A_.tree(60,118,PAL.wa)+A_.tree(90,118,PAL.ya,.8)+A_.field(120,"#E8DFD0")+A_.rail(136)+A_.shinkansen(150,116,.85),
+ hakata:()=>A_.sun(36,30,13)+A_.cloud(250,14,.8)+A_.buildings(170,120)+A_.tree(60,118,PAL.wa)+A_.tree(90,118,PAL.ya,.8)+A_.field(120,"#E8DFD0")+A_.rail(136)+`<g transform="scale(.95)"><g class="landp">${A_.planeB()}</g></g><g transform="translate(0 116) scale(.85)"><g class="trainp">${A_.shinB()}</g></g>`,
  dazaifu:()=>A_.cloud(250,10,.8)+A_.torii(26,52,.9)+A_.plum(120,100)+A_.hill("M150 104q60-34 120-14t100 4V150H150Z")+A_.field(108)+A_.canal(130)+A_.boat(196,124,.8),
  kumamoto:()=>A_.sun(310,30,13)+A_.cloud(30,18,.8)+A_.castle(120,58,1)+A_.tree(60,128,PAL.ya)+A_.tree(290,128,PAL.ya,.9)+A_.hill("M-4 128q90-14 184 0t184 0V150H-4Z"),
  aso:()=>A_.cloud(240,8,.7)+A_.volcano(10,56,.95)+A_.hill("M-4 126q80-30 170-10t200 0V150H-4Z")+A_.cow(130,100,.8)+A_.gorge(250,70)+A_.boat(270,124,.5,false),
