@@ -665,6 +665,13 @@ svg.fldoodle{width:60px;height:30px;margin-left:auto}
 .hpill{font-size:11.5px;font-weight:700;background:var(--waka);border-radius:999px;padding:1px 8px;margin-left:2px}
 .apill{font-size:12px;font-weight:700;background:var(--tc);border:2px solid var(--sumi);border-radius:999px;padding:0 8px}
 .sd summary .tti{width:32px;height:32px}
+.tti{background:color-mix(in srgb,var(--tc) 45%,#FFFCF6)}
+.tti svg.pic{width:22px;height:22px}
+svg.pic{display:block}
+.cemo{display:inline-block;vertical-align:-4px;margin-right:4px}.cemo svg.pic{width:18px;height:18px}
+button .cemo{vertical-align:-4px}
+.apill{display:inline-flex;align-items:center;gap:3px}.apill svg.pic{width:15px;height:15px}
+.cusi .cico svg.pic{width:24px;height:24px;margin:0 auto}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -1455,7 +1462,7 @@ function foodCard(p,showArea){const A=showArea?allAreas().find(a=>a.spots.includ
   return`<div class="card fd"><div class="hd"><div style="min-width:0"><div class="nm">${esc(p.name)}${p.u?'<span class="mine">自己加的</span>':""}</div>${p.jp!==p.name?`<div class="jp">${esc(p.jp)}</div>`:""}</div>
     <div class="hdr"><span class="hrs" data-gh="${p.id}">${G?gpHrs(G):""}</span><button class="heart" data-fav="${p.id}" aria-pressed="${favs.has(p.id)}" aria-label="收藏 ${esc(p.name)}">${favs.has(p.id)?"♥":"♡"}</button></div></div>
     <div class="gph" data-gp="${p.id}" data-q="${esc(p.jp)}" ${G&&G.u?"":"hidden"}>${G&&G.u?gpImg(G,p):""}</div>
-    <div class="row" style="gap:6px"><span class="sub"><span class="cemo">${CEMO[p.cat]||"📍"}</span>${C[0]}・${A?esc(A.name)+"・":""}${esc(p.area)}・${esc(p.p)}${isS&&p.stay?`・建議停留 ${p.stay} 分`:""}</span>${p.kid?'<span class="tag">親子OK</span>':""}</div>
+    <div class="row" style="gap:6px"><span class="sub"><span class="cemo">${pic(CEMO[p.cat]||"pin")}</span>${C[0]}・${A?esc(A.name)+"・":""}${esc(p.area)}・${esc(p.p)}${isS&&p.stay?`・建議停留 ${p.stay} 分`:""}</span>${p.kid?'<span class="tag">親子OK</span>':""}</div>
     ${p.t?`<p>${esc(p.t)}</p>`:""}${p.src?`<div class="src">推薦來源：${esc(p.src)}</div>`:""}<div class="acts"><a class="btn ph gpoff" href="${isS?spotPhotoUrl(p.jp):photoUrl(p.jp)}" target="_blank" rel="noopener">${ic("photo")}看照片</a>
     ${isS?`<a class="btn ph" href="${infoUrl(p.jp)}" target="_blank" rel="noopener">${ic("menu")}門票・介紹</a>`:`<a class="btn ph" data-gm="${p.id}" href="${G&&G.m||mapUrl(p.jp)}" target="_blank" rel="noopener">${ic("menu")}菜單</a>`}
     <button type="button" class="btn p" data-fmap="${p.id}" aria-expanded="${fmOpen===p.id}">${ic("nav")}${fmOpen===p.id?"收起地圖":"導航"}</button>
@@ -1612,7 +1619,7 @@ food(){
   <div class="search"><label for="fq" class="vh">搜尋${X.noun}</label>${ic("search")}<input id="fq" type="search" placeholder="${isS?"搜尋全部地區：神社、親子、夜景……":"搜尋全部地區：拉麵、鰻魚、布丁……"}" value="${esc(foodQuery)}" autocomplete="off"></div>
   <div class="chips" role="group" aria-label="地區">${X.areas.map(a=>`<button data-farea="${a.k}" class="${a.off?"off":""}" aria-pressed="${a.k===A.k&&!foodQuery}">${esc(a.name)}<small>${a.days}${favCount(a)?" ・♥"+favCount(a):""}</small></button>`).join("")}</div>
   <div class="chips" role="group" aria-label="分類" ${foodQuery?"hidden":""}><button data-ff="all" aria-pressed="${foodFilter==="all"}">全部 ${A.spots.length}</button><button data-ff="fav" aria-pressed="${foodFilter==="fav"}">♥ ${isS?"想去":"想吃"}</button><button data-ff="kid" aria-pressed="${foodFilter==="kid"}">親子OK</button>
-   ${cats.map(c=>`<button data-ff="${c}" aria-pressed="${foodFilter===c}"><span class="cemo">${CEMO[c]||"📍"}</span>${X.cats[c][0]}</button>`).join("")}</div>
+   ${cats.map(c=>`<button data-ff="${c}" aria-pressed="${foodFilter===c}"><span class="cemo">${pic(CEMO[c]||"pin")}</span>${X.cats[c][0]}</button>`).join("")}</div>
   ${A.note&&!foodQuery?`<div class="offnote">${A.off?"<b>行程外</b>":""}${esc(A.note)}</div>`:""}
   <details class="add card"><summary>${ic("star")}新增${X.noun}</summary>
    <form data-form="food" data-kind="${exKind}" class="fm">
@@ -1639,7 +1646,7 @@ list(){
    <button type="button" class="btn ${E?"p":""}" data-ledit aria-pressed="${E}">${E?"完成":"編輯"}</button></div></header>
   <div class="seg" role="group" aria-label="清單分類">${SECS.map(s=>{const it=secItems(s.k);return`<button data-sec="${s.k}" aria-pressed="${s.k===S.k}"><b>${s.name}</b><small data-cnt="${s.k}">${doneIn(it)} / ${it.length}</small></button>`}).join("")}</div>
   ${E?`<div class="offnote"><b>編輯中</b>可以改分類名稱、幫每個項目寫備註、刪除分類或項目、新增項目和分類。改好按右上角「完成」。</div>`:""}
-  <div class="card" style="display:flex;flex-direction:column;gap:8px"><div class="row" style="justify-content:space-between"><h3 class="ch">${tt(SECEMO[S.k]||"📋","var(--yama)")}${S.name}進度</h3><span class="sub" id="ckcount">${doneIn(secItems(S.k))} / ${secItems(S.k).length}</span></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:8px"><div class="row" style="justify-content:space-between"><h3 class="ch">${tt(SECEMO[S.k]||"clip","var(--yama)")}${S.name}進度</h3><span class="sub" id="ckcount">${doneIn(secItems(S.k))} / ${secItems(S.k).length}</span></div>
    <div class="prog"><i id="ckbar" style="width:${secItems(S.k).length?doneIn(secItems(S.k))/secItems(S.k).length*100:0}%"></i></div><span class="sub">${esc(S.intro)}</span></div>
   ${groups.map((g,gx)=>`<div class="card${E?" editing":""}" style="display:flex;flex-direction:column;gap:4px">
     ${E?`<div class="gh"><form data-form="grename" data-isec="${S.k}" data-key="${esc(g.key)}" class="addi" style="margin:0;flex:1"><label class="vh" for="gn-${gi}">分類名稱</label><input id="gn-${gi}" name="name" value="${esc(g.name)}" required><button class="btn" type="submit">改名</button></form>${delBtn(g.custom?"data-delgroup":"data-hidegroup",esc(g.key),g.name,"刪除整組")}</div>`:`<h3 class="ch">${tt(gEmo(g.name),TCOL[gx%4])}${esc(g.name)}</h3>`}
@@ -1652,20 +1659,20 @@ info(){
   return`<header class="top tophd"><div><h1>旅行資訊</h1><div class="sub">5 大人＋1 寶寶・金額皆為日圓</div></div>${mascot("info")}</header>
   <div class="flpair">${flightHTML(DAYS[0])}${flightHTML(DAYS[DAYS.length-1])}</div>
   ${customsHTML()}
-  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("🏨","var(--mizu)")}住宿<span class="hpill">全部已確認</span></h3>
-   ${Object.entries(HOTELS).map(([hk,h])=>`<div style="display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px dashed var(--line)"><div class="row" style="gap:6px"><span class="apill" style="--tc:${(HAREA[hk]||["",'var(--sunk)'])[1]}">🏠 ${(HAREA[hk]||[""])[0]}</span><b>${esc(h.n)}</b></div><span class="sub">${h.nights}・${h.rooms}・15:00 入住・${h.out}</span><span class="sub">${h.bk}</span>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("hotel","var(--mizu)")}住宿<span class="hpill">全部已確認</span></h3>
+   ${Object.entries(HOTELS).map(([hk,h])=>`<div style="display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px dashed var(--line)"><div class="row" style="gap:6px"><span class="apill" style="--tc:${(HAREA[hk]||["",'var(--sunk)'])[1]}">${pic("house")}${(HAREA[hk]||[""])[0]}</span><b>${esc(h.n)}</b></div><span class="sub">${h.nights}・${h.rooms}・15:00 入住・${h.out}</span><span class="sub">${h.bk}</span>
     <div class="row">${h.tel?telBtn(h.tel):""}<a class="btn" href="${mapUrl(h.q)}" target="_blank" rel="noopener">${ic("pin")}地圖</a></div></div>`).join("")}
    <a class="btn" href="https://www.agoda.com/zh-tw/trips/shared/0754cb37-56e9-41e4-81c5-4089399a838f" target="_blank" rel="noopener">${ic("bed")}Agoda 訂房行程</a></div>
-  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("🚗","var(--waka)")}租車</h3>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("car","var(--waka)")}租車</h3>
    <dl class="kv"><dt>車型</dt><dd>八人車一台（Delica D:5 或同級）</dd><dt>取車</dt><dd>12/1 福岡，自行取車</dd><dt>還車</dt><dd>12/6 福岡</dd><dt>總計</dt><dd>¥72,000（含全保、ETC 卡、10% 稅）</dd><dt>訂金</dt><dd>¥14,400 已匯款</dd><dt>尾款</dt><dd><b style="color:var(--brick)">¥57,600 取車當日付清</b></dd></dl>
    <ul class="tips"><li>帶台灣駕照正本＋日文譯本、護照</li><li>確認兒童安全座椅、ETC 卡已插好</li><li>還車前加滿油，留好收據</li></ul></div>
-  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("🚄","var(--yama)")}D1 機場 → 博多時刻表</h3>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("train","var(--yama)")}D1 機場 → 博多時刻表</h3>
    <div class="tbl"><table><thead><tr><th></th><th>巴士</th><th>到小倉</th><th>新幹線</th><th>到博多</th></tr></thead><tbody>
    <tr class="me"><td>本次</td><td>07:00</td><td>07:33</td><td>07:41 さくら401</td><td>07:56</td></tr>
    <tr><td>備案1</td><td>07:20</td><td>07:53</td><td>08:13 みずほ601</td><td>08:28</td></tr>
    <tr><td>備案2</td><td>07:25</td><td>07:58</td><td>08:26 こだま931</td><td>08:42</td></tr></tbody></table></div>
    <span class="sub">機場巴士每人 ¥710，新幹線自由席每人 ¥2,160，寶寶免費。巴士、地鐵可刷 Suica。</span></div>
-  <a class="card" href="#sos" style="background:var(--coral);color:var(--ink);text-decoration:none;display:flex;flex-direction:column;gap:4px"><h3 class="ch">${tt("🆘","var(--washi)")}緊急求助</h3><span>110 警察・119 救護車・駐福岡分處・各地醫院和警察局</span><span class="sub" style="color:var(--ink)">點這裡打開，沒網路也能看</span></a>`}
+  <a class="card" href="#sos" style="background:var(--coral);color:var(--ink);text-decoration:none;display:flex;flex-direction:column;gap:4px"><h3 class="ch">${tt("lifebuoy","var(--washi)")}緊急求助</h3><span>110 警察・119 救護車・駐福岡分處・各地醫院和警察局</span><span class="sub" style="color:var(--ink)">點這裡打開，沒網路也能看</span></a>`}
 };
 
 /* ---------- SOS 緊急求助 ---------- */
@@ -1697,8 +1704,8 @@ const PHRASES=[["救急車をお願いします。","請派救護車。"],["赤�
 const telHref=n=>"tel:"+(/^00/.test(n)?n.replace(/-/g,""):/^0/.test(n)?"+81"+n.replace(/^0/,"").replace(/-/g,""):n.replace(/-/g,""));
 const callBtn=(n,label)=>`<a class="btn p call" href="${telHref(n)}">${ic("phone")}${label||"撥打"}</a>`;
 function sosArea(){const t=tokyoNow().date;return SOS_AREAS.filter(a=>a.when.includes(t)).map(a=>a.k)}
-const SOSEMO=[[/110|119/,"🗣️","var(--yama)"],[/台灣/,"🇹🇼","var(--mizu)"],[/救護車？/,"🩺","var(--waka)"],[/事故/,"🚗","var(--coral)"],[/福岡/,"📍","var(--coral)"],[/熊本/,"📍","var(--waka)"],[/別府/,"📍","var(--mizu)"],[/北九州/,"📍","var(--yama)"]];
-const sosSec=(t,hint,body,cls,badge)=>{const m=SOSEMO.find(([r])=>r.test(t))||[0,"📌","var(--sunk)"];return`<details class="card sosc sd${cls||""}"><summary>${tt(m[1],m[2])}<span class="sh"><b>${t}</b>${badge||""}<span class="sub">${hint}</span></span><span class="chev" aria-hidden="true"></span></summary><div class="sbody">${body}</div></details>`};
+const SOSEMO=[[/110|119/,"bubble","var(--yama)"],[/台灣/,"island","var(--mizu)"],[/救護車？/,"heartplus","var(--waka)"],[/事故/,"car","var(--coral)"],[/福岡/,"ramen","var(--coral)"],[/熊本/,"bear","var(--waka)"],[/別府/,"onsen","var(--mizu)"],[/北九州/,"ship","var(--yama)"]];
+const sosSec=(t,hint,body,cls,badge)=>{const m=SOSEMO.find(([r])=>r.test(t))||[0,"pin","var(--sunk)"];return`<details class="card sosc sd${cls||""}"><summary>${tt(m[1],m[2])}<span class="sh"><b>${t}</b>${badge||""}<span class="sub">${hint}</span></span><span class="chev" aria-hidden="true"></span></summary><div class="sbody">${body}</div></details>`};
 V.sos=function(){const now=sosArea();const areas=[...SOS_AREAS].sort((a,b)=>(now.includes(b.k)?1:0)-(now.includes(a.k)?1:0));
  const KI={police:["警察局","m-sub"],hosp:["醫院","m-plane"],kid:["夜間急診・小兒","m-bus"],info:["找醫院","m-walk"]};
  return`<header class="top sostop tophd"><div><h1>緊急求助</h1><div class="sub">別慌，一步一步來</div></div>${mascot("sos")}</header>
@@ -1757,7 +1764,7 @@ V.tools=function(){const t=tokyoNow().date,dayOpts=DAYS.map((d,i)=>[d.d,`D${i+1}
  const seg=`<div class="tseg" role="tablist">${[["fx","匯率","yen"],["exp","記帳","wallet"],["tr","翻譯","camera"]].map(([k,n,i])=>`<button role="tab" data-tool="${k}" aria-selected="${toolTab===k}">${ic(i)}${n}</button>`).join("")}</div>`;
  let body="";
  if(toolTab==="fx"){fxLoad(false);const r=fxRate();
-  body=`<div class="card tcard"><h3 class="ch">${tt("💴","var(--yama)")}日圓換算</h3><div class="fxr"><span>1 日圓 ≈ <b>${r.toFixed(4)}</b> 台幣</span><span class="sub">${fx?`${new Date(fx.t).toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})} 更新`:"預設值・連上網路會自動更新"}</span><button class="btn" data-fxr>${ic("refresh")}更新</button></div>
+  body=`<div class="card tcard"><h3 class="ch">${tt("coin","var(--yama)")}日圓換算</h3><div class="fxr"><span>1 日圓 ≈ <b>${r.toFixed(4)}</b> 台幣</span><span class="sub">${fx?`${new Date(fx.t).toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})} 更新`:"預設值・連上網路會自動更新"}</span><button class="btn" data-fxr>${ic("refresh")}更新</button></div>
    <label class="fxin"><span>${fxDir==="j2t"?"日圓 ¥":"台幣 NT$"}</span><input id="fxv" type="number" inputmode="decimal" placeholder="輸入金額" autocomplete="off"></label>
    <button class="btn fxsw" data-fxsw>${ic("swap")}${fxDir==="j2t"?"日圓 → 台幣":"台幣 → 日圓"}</button>
    <div class="fxo"><span>${fxDir==="j2t"?"約 NT$":"約 ¥"}</span><b id="fxo">0</b></div>
@@ -1765,22 +1772,22 @@ V.tools=function(){const t=tokyoNow().date,dayOpts=DAYS.map((d,i)=>[d.d,`D${i+1}
    <p class="sub">刷卡還要加上銀行的海外手續費（通常約 1.5%）。</p></div>`}
  if(toolTab==="exp"){const r=fxRate(),tot=exps.reduce((a,e)=>a+e.a,0),byC={};exps.forEach(e=>byC[e.c]=(byC[e.c]||0)+e.a);
   const days=[...new Set(exps.map(e=>e.d))].sort();
-  body=`<div class="card tcard"><h3 class="ch">${tt("✏️","var(--coral)")}記一筆</h3><label class="fxin"><span>日圓 ¥</span><input id="exa" type="number" inputmode="numeric" placeholder="花了多少" autocomplete="off"></label>
+  body=`<div class="card tcard"><h3 class="ch">${tt("pencil","var(--coral)")}記一筆</h3><label class="fxin"><span>日圓 ¥</span><input id="exa" type="number" inputmode="numeric" placeholder="花了多少" autocomplete="off"></label>
    <div class="chips">${ECATS.map(([c,col])=>`<button class="chip" data-ecat="${c}" aria-pressed="${expCat===c}" style="--cc:${col}">${c}</button>`).join("")}</div>
    <div class="chips">${EPAYS.map(p=>`<button class="chip" data-epay="${p}" aria-pressed="${expPay===p}">${p}</button>`).join("")}</div>
    <div class="exrow"><select id="exd" aria-label="日期">${dayOpts.map(([v,n])=>`<option value="${v}"${v===expDay?" selected":""}>${n}</option>`).join("")}</select><input id="exn" type="text" placeholder="備註（例如：一蘭拉麵）" autocomplete="off"></div>
    <button class="btn p big" data-eadd>${ic("plus")}記一筆</button></div>
-  <div class="card tcard"><h3 class="ch">${tt("📊","var(--mizu)")}花費統計</h3><div class="extot"><span>總共</span><b>¥${fmtN(tot)}</b><span class="sub">約 NT$${fmtN(tot*r)}</span></div>
+  <div class="card tcard"><h3 class="ch">${tt("chart","var(--mizu)")}花費統計</h3><div class="extot"><span>總共</span><b>¥${fmtN(tot)}</b><span class="sub">約 NT$${fmtN(tot*r)}</span></div>
    ${tot?`<div class="exbar">${ECATS.filter(([c])=>byC[c]).map(([c,col])=>`<i style="flex:${byC[c]};background:${col}" title="${c}"></i>`).join("")}</div>
    <div class="excats">${ECATS.filter(([c])=>byC[c]).map(([c,col])=>`<span><i style="background:${col}"></i>${c} ¥${fmtN(byC[c])}</span>`).join("")}</div>`:'<p class="sub">還沒有記帳。上面輸入金額，選類別後按「記一筆」。</p>'}</div>
   ${days.slice().reverse().map(d=>{const L=exps.filter(e=>e.d===d),s=L.reduce((a,e)=>a+e.a,0),i=DAYS.findIndex(x=>x.d===d);
-   return`<div class="card tcard exday"><div class="exdh"><b class="ch">${tt("📅",TCOL[(i<0?0:i)%4])}${i>=0?`D${i+1} `:""}${md(d)}</b><span>¥${fmtN(s)}・約 NT$${fmtN(s*r)}</span></div>
+   return`<div class="card tcard exday"><div class="exdh"><b class="ch">${tt("cal",TCOL[(i<0?0:i)%4])}${i>=0?`D${i+1} `:""}${md(d)}</b><span>¥${fmtN(s)}・約 NT$${fmtN(s*r)}</span></div>
     ${L.slice().reverse().map(e=>`<div class="exi"><span class="exc" style="background:${(ECATS.find(x=>x[0]===e.c)||ECATS[5])[1]}">${e.c}</span><span class="exn">${esc(e.n||"")}<small>${e.p}</small></span><b>¥${fmtN(e.a)}</b><button class="xdel" data-edel="${e.id}" aria-label="刪除這筆">${expDel===e.id?"確定刪除？":"×"}</button></div>`).join("")}</div>`}).join("")}
   ${exps.length?`<div class="row" style="justify-content:center;gap:8px"><button class="btn" data-ecopy>${ic("copy")}複製全部明細</button></div>`:""}
   <p class="sub" style="text-align:center">記帳只存在這支手機，換手機或清除瀏覽資料會不見，回國前可以先「複製全部明細」存起來。</p>`}
- if(toolTab==="tr"){body=`<div class="card tcard"><h3 class="ch">${tt("📷","var(--coral)")}掃描翻譯</h3><button class="btn p big trscan" data-gtr>${ic("camera")}掃描翻譯</button>
+ if(toolTab==="tr"){body=`<div class="card tcard"><h3 class="ch">${tt("camera","var(--coral)")}掃描翻譯</h3><button class="btn p big trscan" data-gtr>${ic("camera")}掃描翻譯</button>
    <p class="sub">會打開 Google 翻譯 App（日文翻中文），再點 App 裡的「相機」對準菜單或告示，就能看到即時翻譯。沒有安裝 App 的話，會打開 Google 翻譯網頁版，可以拍照或選照片翻譯。</p></div>
-  <div class="card tcard"><h3 class="ch">${tt("⌨️","var(--waka)")}打字翻譯</h3><div class="chips"><button class="chip" data-trdir="ja|zh-TW" aria-pressed="${trDir==="ja|zh-TW"}">日文 → 中文</button><button class="chip" data-trdir="zh-TW|ja" aria-pressed="${trDir==="zh-TW|ja"}">中文 → 日文</button></div>
+  <div class="card tcard"><h3 class="ch">${tt("keys","var(--waka)")}打字翻譯</h3><div class="chips"><button class="chip" data-trdir="ja|zh-TW" aria-pressed="${trDir==="ja|zh-TW"}">日文 → 中文</button><button class="chip" data-trdir="zh-TW|ja" aria-pressed="${trDir==="zh-TW|ja"}">中文 → 日文</button></div>
    <textarea id="trt" rows="3" placeholder="${trDir==="ja|zh-TW"?"貼上或輸入日文":"輸入想說的中文，翻成日文給店員看"}">${esc(trText)}</textarea>
    <button class="btn p" data-trgo>${ic("globe")}翻譯</button>${trOut?`<div class="trout" lang="${trDir==="ja|zh-TW"?"zh-Hant":"ja"}">${esc(trOut)}</div>`:""}</div>`}
  return`<header class="top tophd"><div><h1>旅行工具</h1><div class="sub">匯率、記帳、翻譯</div></div>${mascot("tools")}</header>${seg}${body}`};
@@ -1892,19 +1899,89 @@ const CUSTOMS=[
   ["batt","電器・電池","跟去程一樣",["行動電源只能隨身帶，每人最多 2 個","不能放頭頂置物櫃，機上不能用"]],
   ["alc","菸酒","免稅額",["酒 1.5 公升（18 歲以上，不限瓶數）","菸 200 支或雪茄 25 支（20 歲以上）","免稅店買的也要算進去"]],
   ["cash","購物・現金","超過要申報",["每人行李物品完稅價格 3.5 萬元內免稅，超過要走紅線申報","新台幣超過 10 萬、外幣等值 1 萬美元以上、人民幣超過 2 萬要申報"]]]]];
-const CICON={meat:"🍖",egg:"🥚",fruit:"🍎",med:"💊",batt:"🔋",cash:"💴",form:"📱",food:"🍪",alc:"🍶"};
-function customsHTML(){return`<div class="card cus"><h3 class="ch">${tt("🛂","var(--coral)")}出入海關注意事項</h3><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
+const CICON={meat:"meat",egg:"egg",fruit:"apple",med:"pill",batt:"battery",cash:"coin",form:"phone",food:"cookie",alc:"sake"};
+function customsHTML(){return`<div class="card cus"><h3 class="ch">${tt("passport","var(--coral)")}出入海關注意事項</h3><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
   ${CUSTOMS.map(([t,cls,items])=>`<div class="cusg"><span class="fltag ${cls==="flgo"?"cgo":"cback"}">${ic("plane")}${t}</span>
-   ${items.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${CICON[k]||"•"}</span><b>${n}</b><span class="ctag ${/禁止|別帶/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>`).join("")}
+   ${items.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${pic(CICON[k]||"pin")}</span><b>${n}</b><span class="ctag ${/禁止|別帶/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>`).join("")}
   <div class="src">資料來源：日本農林水產省動物檢疫所、日本海關、財政部關務署、農業部防檢署；規定可能更新，出發前再確認。</div></div>`}
 
+/* ---------- 手繪小圖（取代 emoji） ---------- */
+const PICS=(()=>{const K="#3E3A39",W="#FFFCF6",C="#F2A497",Y="#F6D27A",M="#A8D3E6",G="#B9DAA5",
+ s=`stroke="${K}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"`,f=c=>`fill="${c}" ${s}`,n=`fill="none" ${s}`;
+ return{
+ ramen:`<path d="M14 2.5l-3 7M18 3l-4 6.5" ${n}/><path d="M6 9.5q1.5-2 3 0t3 0t3 0t3 0" ${n} stroke="${Y}"/><path d="M3 11h18q-1 7.5-9 8.5q-8-1-9-8.5z" ${f(C)}/><path d="M8 21h8" ${n}/>`,
+ udon:`<path d="M15 2.5l-2 7.5M19 3l-3 7" ${n}/><path d="M3 11h18q-1 7.5-9 8.5q-8-1-9-8.5z" ${f(M)}/><path d="M7 11q1-3 2 0M11 11q1-3 2 0M15 11q1-3 2 0" ${n}/><path d="M8 21h8" ${n}/>`,
+ nabe:`<path d="M5 11q7-7 14 0z" ${f(Y)}/><circle cx="12" cy="6.5" r="1.3" ${f(Y)}/><path d="M4 11h16v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z" ${f(C)}/><path d="M2 13h2M20 13h2" ${n}/>`,
+ bento:`<rect x="3" y="6" width="18" height="13" rx="3" ${f(Y)}/><path d="M12 6v13M12 12.5h9" ${n}/><circle cx="7.5" cy="12.5" r="2.6" ${f(W)}/><circle cx="16.5" cy="9.3" r="1.6" ${f(C)}/><path d="M14.5 16h4" ${n} stroke="${K}"/>`,
+ beef:`<path d="M5 8q4-5 11-3t5 8q-2 6-9 6t-8-5q-1-3 1-6z" ${f(C)}/><circle cx="15" cy="10.5" r="2.2" ${f(W)}/><path d="M7 13q2 1 4 0" ${n}/>`,
+ fish:`<path d="M3 12q7-7 14 0q-7 7-14 0z" ${f(M)}/><path d="M17 12l4-4v8z" ${f(M)}/><circle cx="7.5" cy="11" r="1" fill="${K}"/><path d="M11 9.5q1.5 2.5 0 5" ${n}/>`,
+ lantern:`<path d="M9 3h6M9 21h6M12 1.5V3" ${n}/><ellipse cx="12" cy="12" rx="7" ry="8.5" ${f(C)}/><path d="M5.5 9h13M5.5 15h13" ${n}/><path d="M9 3.6h6v1.2H9zM9 19.2h6v1.2H9z" ${f(K)}/>`,
+ gyoza:`<path d="M3 15q0-8 9-8t9 8z" ${f(Y)}/><path d="M7 9.5l1 2M10 8l.6 2.2M14 8l-.6 2.2M17 9.5l-1 2" ${n}/><path d="M3 15h18" ${n}/>`,
+ skewer:`<path d="M4 20L20 4" ${n}/><circle cx="8.5" cy="15.5" r="2.8" ${f(C)}/><circle cx="12.5" cy="11.5" r="2.8" ${f(G)}/><circle cx="16.5" cy="7.5" r="2.8" ${f(C)}/>`,
+ drum:`<path d="M13 11q-6-6-1-9t8 3q3 5-2 8z" ${f(Y)}/><path d="M13 11l-5 5" ${n}/><circle cx="6.5" cy="17.5" r="1.8" ${f(W)}/><circle cx="8.5" cy="19.5" r="1.8" ${f(W)}/>`,
+ crab:`<ellipse cx="12" cy="14" rx="7" ry="4.5" ${f(C)}/><circle cx="4.5" cy="7" r="2.3" ${f(C)}/><circle cx="19.5" cy="7" r="2.3" ${f(C)}/><path d="M6 10l-1-1M18 10l1-1M5.5 17l-2 2M18.5 17l2 2M8 18.5l-1 2.5M16 18.5l1 2.5" ${n}/><circle cx="10" cy="12.5" r=".9" fill="${K}"/><circle cx="14" cy="12.5" r=".9" fill="${K}"/>`,
+ cup:`<path d="M5 9h12v6a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z" ${f(M)}/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" ${n}/><path d="M9 3q-1 1.5 0 3M13 3q-1 1.5 0 3" ${n}/>`,
+ cake:`<path d="M3 19h18v-6L3 9z" ${f(Y)}/><path d="M3 9l18 4" ${n}/><path d="M3 9q9-3 18 4" ${f(W)}/><circle cx="15" cy="8" r="2" ${f(C)}/>`,
+ torii:`<rect x="6" y="7" width="2.6" height="14" rx=".8" ${f(C)}/><rect x="15.4" y="7" width="2.6" height="14" rx=".8" ${f(C)}/><path d="M2.5 4.5q9.5 2 19 0l-.8 2.8q-8.7 1.4-17.4 0z" ${f(C)}/><rect x="4.5" y="9.5" width="15" height="2" rx=".6" ${f(C)}/>`,
+ leaf:`<path d="M5 19q-2-11 14-14q1 14-14 14z" ${f(G)}/><path d="M5 19L15 9" ${n}/>`,
+ balloon:`<ellipse cx="9" cy="8.5" rx="5" ry="6" ${f(C)}/><ellipse cx="16.5" cy="10" rx="4" ry="5" ${f(M)}/><path d="M9 14.5q1 3-1 7M16.5 15q-1 3 1 6.5" ${n}/>`,
+ frame:`<rect x="3" y="4" width="18" height="16" rx="2" ${f(Y)}/><rect x="6" y="7" width="12" height="10" ${f(M)}/><path d="M6 17l4-5 3 3 2-2 3 4" ${f(G)}/>`,
+ onsen:`<path d="M3 18q9 5 18 0q-3-3-9-3t-9 3z" ${f(M)}/><path d="M8 13q-2-2 0-4t0-4M12 13q-2-2 0-4t0-4M16 13q-2-2 0-4t0-4" ${n} stroke="${C}" stroke-width="2"/>`,
+ castle:`<path d="M12 2.5l5 4H7z" ${f(G)}/><path d="M8.5 6.5h7v3h-7z" ${f(W)}/><path d="M12 9.5l7 4.5H5z" ${f(G)}/><path d="M6.5 14h11v4h-11z" ${f(W)}/><path d="M4 18h16l1 3H3z" ${f(Y)}/><path d="M11 16h2" ${n}/>`,
+ view:`<circle cx="17" cy="7" r="3" ${f(Y)}/><path d="M2 20l7-10 4 5 3-3 6 8z" ${f(G)}/>`,
+ bag:`<path d="M4 8h16l-1.5 13h-13z" ${f(C)}/><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10" ${n}/>`,
+ idcard:`<rect x="2.5" y="5" width="19" height="14" rx="3" ${f(M)}/><circle cx="8" cy="11" r="2.4" ${f(W)}/><path d="M5 16q3-3 6 0M14 10h5M14 13.5h4" ${n}/>`,
+ phone:`<rect x="6.5" y="2.5" width="11" height="19" rx="2.5" ${f(M)}/><rect x="8.5" y="5" width="7" height="11" rx="1" ${f(W)}/><circle cx="12" cy="18.6" r=".9" fill="${K}"/>`,
+ coin:`<circle cx="12" cy="12" r="9" ${f(Y)}/><path d="M8.5 7l3.5 5 3.5-5M12 12v5M9 12.5h6M9 15h6" ${n}/>`,
+ call:`<path d="M6 3h3l1.5 4.5-2 1.5a10 10 0 0 0 6.5 6.5l1.5-2L21 15v3a2.5 2.5 0 0 1-2.5 2.5Q4 20 3.5 5.5A2.5 2.5 0 0 1 6 3z" ${f(G)}/>`,
+ shirt:`<path d="M8 3l-5 3 2 4 2-1v12h10V9l2 1 2-4-5-3q-1 2.5-4 2.5T8 3z" ${f(M)}/>`,
+ onesie:`<path d="M8 3h8l4 4-2.5 2.5L16 8v6l2 5h-4.5L12 16.5 10.5 19H6l2-5V8L6.5 9.5 4 7z" ${f(Y)}/><circle cx="12" cy="10" r="1" fill="${K}"/>`,
+ bottle:`<path d="M10 2.5h4l.5 3h-5z" ${f(C)}/><rect x="8.5" y="5.5" width="7" height="3" rx="1" ${f(Y)}/><rect x="7.5" y="8.5" width="9" height="13" rx="3" ${f(W)}/><path d="M10 12h2.5M10 15h2.5M10 18h2.5" ${n}/>`,
+ diaper:`<path d="M3 6h18l-2 7q-2 7-7 7t-7-7z" ${f(W)}/><path d="M3 6h4v4H3zM17 6h4v4h-4z" ${f(G)}/>`,
+ tote:`<path d="M5 9h14l-1 12H6z" ${f(M)}/><path d="M9 9q0-5 3-5t3 5" ${n}/><path d="M9 14h6" ${n}/>`,
+ pill:`<g transform="rotate(-40 12 12)"><path d="M12 7h4.5a5 5 0 0 1 0 10H12z" ${f(W)}/><path d="M12 7H7.5a5 5 0 0 0 0 10H12z" ${f(C)}/></g>`,
+ plane:`<path d="M2 13l3-1 4 1 4-8h2.5l-1.5 8 5-.5 2-3H22l-1 5-17 2z" ${f(W)}/><path d="M9 15l-2 5h2.5l4-5" ${f(M)}/>`,
+ lotion:`<path d="M10 2.5h5M12.5 2.5v3" ${n}/><rect x="10" y="5.5" width="5" height="3" ${f(C)}/><rect x="7" y="8.5" width="11" height="13" rx="3" ${f(G)}/><path d="M10 14h5" ${n}/>`,
+ basket:`<path d="M7 8q1-4 5-4t5 4" ${f(M)}/><path d="M3 9h18l-2 11H5z" ${f(Y)}/><path d="M8 12v5M12 12v5M16 12v5" ${n}/>`,
+ ban:`<circle cx="12" cy="12" r="8.5" ${f(W)} stroke="${C}" stroke-width="2.8"/><path d="M6 6l12 12" stroke="${C}" stroke-width="2.8" stroke-linecap="round"/>`,
+ key:`<circle cx="7.5" cy="12" r="4.5" ${f(Y)}/><circle cx="7.5" cy="12" r="1.5" ${f(W)}/><path d="M12 12h9M18 12v3M15.5 12v2.5" ${n}/>`,
+ snow:`<g ${n} stroke-width="2"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7"/><path d="M9.5 3.5L12 5.5l2.5-2M9.5 20.5L12 18.5l2.5 2"/></g><circle cx="12" cy="12" r="2.4" ${f(M)}/>`,
+ car:`<path d="M3 15v-3l2-5h11l3 5h2v3z" ${f(C)}/><path d="M7 8.5h3.5V12H5.8zM12 8.5h3.5L17.5 12H12z" ${f(M)}/><circle cx="7.5" cy="16" r="2.3" ${f(W)}/><circle cx="16.5" cy="16" r="2.3" ${f(W)}/>`,
+ clip:`<rect x="4.5" y="4" width="15" height="17.5" rx="2.5" ${f(Y)}/><rect x="7" y="7" width="10" height="12" rx="1" ${f(W)}/><rect x="9" y="2.5" width="6" height="3" rx="1" ${f(M)}/><path d="M9 13l2 2 4-4" ${n}/>`,
+ star:`<path d="M12 2.5l2.8 6 6.5.7-4.9 4.4 1.4 6.4L12 16.8 6.2 20l1.4-6.4L2.7 9.2l6.5-.7z" ${f(Y)}/>`,
+ pin:`<path d="M12 22s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z" ${f(C)}/><circle cx="12" cy="10" r="2.6" ${f(W)}/>`,
+ bear:`<circle cx="6" cy="6.5" r="2.8" ${f(Y)}/><circle cx="18" cy="6.5" r="2.8" ${f(Y)}/><circle cx="12" cy="13" r="8" ${f(Y)}/><ellipse cx="12" cy="15.5" rx="3.5" ry="2.6" ${f(W)}/><circle cx="9" cy="11.5" r="1" fill="${K}"/><circle cx="15" cy="11.5" r="1" fill="${K}"/><circle cx="12" cy="14.6" r=".9" fill="${K}"/><circle cx="7" cy="15" r="1.2" fill="${C}"/><circle cx="17" cy="15" r="1.2" fill="${C}"/>`,
+ ship:`<path d="M9 6h6v4H9z" ${f(W)}/><path d="M11 3h2v3h-2z" ${f(C)}/><path d="M5 10h14l-2 6H7z" ${f(C)}/><path d="M2 19q2.5-2 5 0t5 0t5 0t5 0" ${n} stroke="${K}"/>`,
+ check:`<circle cx="12" cy="12" r="9" ${f(G)}/><path d="M7.5 12.5l3 3 6-6.5" ${n} stroke-width="2.2"/>`,
+ suitcase:`<path d="M9 6V3.5h6V6" ${n}/><rect x="3.5" y="6" width="17" height="14" rx="3" ${f(Y)}/><path d="M8 6v14M16 6v14" ${n}/><circle cx="7" cy="21" r="1" fill="${K}"/><circle cx="17" cy="21" r="1" fill="${K}"/>`,
+ gift:`<rect x="3.5" y="9" width="17" height="12" rx="2" ${f(C)}/><rect x="2.5" y="6.5" width="19" height="4" rx="1.5" ${f(C)}/><path d="M12 6.5V21" ${n} stroke="${Y}" stroke-width="3"/><path d="M12 6.5q-4-5-6-2t6 2q4-5 6-2t-6 2" ${f(Y)}/>`,
+ passport:`<rect x="5" y="2.5" width="14" height="19" rx="2.5" ${f(G)}/><circle cx="12" cy="10.5" r="3.5" ${f(W)}/><path d="M8.5 16.5h7" ${n}/><circle cx="17.5" cy="18" r="3" ${f(C)}/>`,
+ hotel:`<rect x="4" y="5" width="16" height="16" rx="1.5" ${f(M)}/><path d="M2.5 5h19L19 2.5H5z" ${f(C)}/><path d="M7 8.5h2.5v2.5H7zM14.5 8.5H17v2.5h-2.5zM7 13.5h2.5V16H7zM14.5 13.5H17V16h-2.5z" ${f(W)}/><path d="M10.5 21v-4h3v4" ${f(Y)}/>`,
+ train:`<path d="M3 17V10a3 3 0 0 1 3-3h7q8 1 9 7.5V17z" ${f(W)}/><path d="M3 13.5h19" ${n} stroke="${M}" stroke-width="2.4"/><path d="M6 9.5h3v2.5H6zM11 9.5h3v2.5h-3z" ${f(M)}/><path d="M16 9.2q3 .8 4.3 2.8H16z" ${f(M)}/><circle cx="7" cy="18.5" r="1.5" ${f(K)}/><circle cx="17" cy="18.5" r="1.5" ${f(K)}/><path d="M1.5 21h21" ${n}/>`,
+ lifebuoy:`<circle cx="12" cy="12" r="9" ${f(W)}/><circle cx="12" cy="12" r="4" ${f("#FFFCF6")}/><path d="M5.6 5.6l3.6 3.6M18.4 5.6l-3.6 3.6M5.6 18.4l3.6-3.6M18.4 18.4l-3.6-3.6" stroke="${C}" stroke-width="3.4" stroke-linecap="round"/><circle cx="12" cy="12" r="9" fill="none" ${s}/><circle cx="12" cy="12" r="4" fill="none" ${s}/>`,
+ pencil:`<path d="M4 20l1.2-4.8L16 4.4l3.6 3.6L8.8 18.8z" ${f(Y)}/><path d="M14 6.4l3.6 3.6" ${n}/><path d="M4 20l1.2-4.8 3.6 3.6z" ${f(C)}/>`,
+ chart:`<path d="M3 21h18" ${n}/><rect x="5" y="11" width="3.6" height="10" rx="1" ${f(C)}/><rect x="10.2" y="6" width="3.6" height="15" rx="1" ${f(M)}/><rect x="15.4" y="14" width="3.6" height="7" rx="1" ${f(G)}/>`,
+ cal:`<rect x="3" y="4.5" width="18" height="16.5" rx="3" ${f(W)}/><path d="M3 9.5h18V7.5a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3z" ${f(C)}/><path d="M8 2.5v4M16 2.5v4" ${n}/><circle cx="8.5" cy="14" r="1.2" fill="${K}"/><circle cx="12" cy="14" r="1.2" fill="${K}"/><circle cx="15.5" cy="17" r="1.2" fill="${K}"/>`,
+ camera:`<path d="M3 8h4l2-3h6l2 3h4v12H3z" ${f(M)}/><circle cx="12" cy="13.5" r="4" ${f(W)}/><circle cx="12" cy="13.5" r="1.6" fill="${K}"/><circle cx="18" cy="10.5" r=".9" fill="${K}"/>`,
+ keys:`<rect x="2.5" y="6" width="19" height="12" rx="2.5" ${f(W)}/><path d="M6 10h.5M9 10h.5M12 10h.5M15 10h.5M18 10h.5M7.5 14h9" ${n} stroke-width="2"/>`,
+ bubble:`<path d="M4 5h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-9l-5 4v-4H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" ${f(Y)}/><circle cx="8" cy="11" r="1.2" fill="${K}"/><circle cx="12" cy="11" r="1.2" fill="${K}"/><circle cx="16" cy="11" r="1.2" fill="${K}"/>`,
+ island:`<path d="M14 2.5q4 2 3.5 7.5T12 21q-3.5-2-3.5-7T14 2.5z" ${f(G)}/><circle cx="18.5" cy="18" r="3" ${f(C)}/><path d="M17.3 18h2.4M18.5 16.8v2.4" ${n} stroke="${W}"/>`,
+ heartplus:`<path d="M12 20.5s-8.5-5-8.5-11A4.5 4.5 0 0 1 12 6.8a4.5 4.5 0 0 1 8.5 2.7c0 6-8.5 11-8.5 11z" ${f(C)}/><path d="M12 9.5v6M9 12.5h6" stroke="${W}" stroke-width="2.4" stroke-linecap="round"/>`,
+ meat:`<path d="M13 11q-6-6-1-9t8 3q3 5-2 8z" ${f(C)}/><path d="M13 11l-5 5" ${n}/><circle cx="6.5" cy="17.5" r="1.8" ${f(W)}/><circle cx="8.5" cy="19.5" r="1.8" ${f(W)}/>`,
+ egg:`<path d="M12 2.5q7 6 7 12a7 7 0 0 1-14 0q0-6 7-12z" ${f(W)}/><circle cx="12" cy="14.5" r="3.4" ${f(Y)}/>`,
+ apple:`<path d="M12 7q-4-3-7 0t0 10q2.5 4 7 3q4.5 1 7-3t0-10q-3-3-7 0z" ${f(C)}/><path d="M12 7q0-3 2-4.5" ${n}/><path d="M13 4.5q3-1 4 1q-3 1.5-4-1z" ${f(G)}/>`,
+ battery:`<rect x="3" y="7" width="16" height="10" rx="2.5" ${f(G)}/><path d="M19 10.5h2v3h-2z" ${f(K)}/><path d="M12 8.5L9 12.5h3L10 15.5" ${n} stroke="${K}" stroke-width="1.9"/>`,
+ cookie:`<circle cx="12" cy="12" r="9" ${f(Y)}/><circle cx="9" cy="9" r="1.3" fill="${K}"/><circle cx="15" cy="10" r="1.3" fill="${K}"/><circle cx="11" cy="15" r="1.3" fill="${K}"/><circle cx="16" cy="15.5" r="1" fill="${K}"/>`,
+ sake:`<path d="M10.5 2.5h3l-.3 3q5 3 5 9.5a5 5 0 0 1-5 5.5h-2.4a5 5 0 0 1-5-5.5q0-6.5 5-9.5z" ${f(W)}/><path d="M7.3 12.5h9.4l.5 3H6.8z" fill="${C}"/><path d="M10.5 2.5h3l-.3 3q5 3 5 9.5a5 5 0 0 1-5 5.5h-2.4a5 5 0 0 1-5-5.5q0-6.5 5-9.5z" ${n}/>`,
+ house:`<path d="M3 11l9-7.5 9 7.5" ${f(C)}/><path d="M5.5 10v10h13V10" ${f(W)}/><path d="M10 20v-5h4v5" ${f(Y)}/>`}})();
+const pic=n=>`<svg class="pic" viewBox="0 0 24 24" aria-hidden="true">${PICS[n]||PICS.pin}</svg>`;
 /* ---------- 標題小圖 ---------- */
-const tt=(e,c)=>`<span class="tti" style="--tc:${c}" aria-hidden="true">${e}</span>`;
+const tt=(e,c)=>`<span class="tti" style="--tc:${c}" aria-hidden="true">${pic(e)}</span>`;
 const TCOL=["var(--coral)","var(--yama)","var(--mizu)","var(--waka)"];
-const CEMO={ramen:"🍜",nabe:"🍲",local:"🍱",beef:"🥩",eel:"🐟",yatai:"🏮",gyoza:"🥟",tori:"🍢",fried:"🍗",udon:"🥢",sea:"🦀",cafe:"☕",sweet:"🍰",shrine:"⛩️",nature:"🌿",kids:"🎠",museum:"🖼️",onsen:"♨️",history:"🏯",view:"🌄",shop:"🛍️"};
-const GEMO=[[/證件|資料/,"🪪"],[/網路|手機|電子/,"📱"],[/錢|費用/,"💴"],[/預約|聯絡/,"📞"],[/大人衣/,"👕"],[/寶寶衣/,"👶"],[/寶寶吃/,"🍼"],[/尿布|清潔/,"🧷"],[/外出|睡覺/,"👜"],[/寶寶藥|藥品/,"💊"],[/飛機/,"✈️"],[/盥洗/,"🧴"],[/洗衣/,"🧺"],[/不能帶|回台灣/,"🚫"],[/取車|還車/,"🔑"],[/雪鏈|裝雪鏈/,"❄️"],[/車上/,"🚗"],[/出發前/,"📋"],[/福岡|博多/,"🍜"],[/太宰府/,"⛩️"],[/熊本/,"🐻"],[/別府|由布院|大分/,"♨️"],[/北九州|門司/,"🚢"],[/其他/,"✨"]];
-const gEmo=n=>(GEMO.find(([r])=>r.test(n))||[0,"📌"])[1];
-const SECEMO={todo:"✅",go:"🧳",car:"🚗",gift:"🎁"};
+const CEMO={ramen:"ramen",nabe:"nabe",local:"bento",beef:"beef",eel:"fish",yatai:"lantern",gyoza:"gyoza",tori:"skewer",fried:"drum",udon:"udon",sea:"crab",cafe:"cup",sweet:"cake",shrine:"torii",nature:"leaf",kids:"balloon",museum:"frame",onsen:"onsen",history:"castle",view:"view",shop:"bag"};
+const GEMO=[[/證件|資料/,"idcard"],[/網路|手機|電子/,"phone"],[/錢|費用/,"coin"],[/預約|聯絡/,"call"],[/大人衣/,"shirt"],[/寶寶衣/,"onesie"],[/寶寶吃/,"bottle"],[/尿布|清潔/,"diaper"],[/外出|睡覺/,"tote"],[/寶寶藥|藥品/,"pill"],[/飛機/,"plane"],[/盥洗/,"lotion"],[/洗衣/,"basket"],[/不能帶|回台灣/,"ban"],[/取車|還車/,"key"],[/雪鏈|裝雪鏈/,"snow"],[/車上/,"car"],[/出發前/,"clip"],[/福岡|博多/,"ramen"],[/太宰府/,"torii"],[/熊本/,"bear"],[/別府|由布院|大分/,"onsen"],[/北九州|門司/,"ship"],[/其他/,"star"]];
+const gEmo=n=>(GEMO.find(([r])=>r.test(n))||[0,"pin"])[1];
+const SECEMO={todo:"check",go:"suitcase",car:"car",gift:"gift"};
 const HAREA={hakata:["博多","var(--coral)"],kuma:["熊本","var(--waka)"],beppu:["別府","var(--mizu)"],kokura:["小倉","var(--yama)"]};
 /* ---------- 路由與事件 ---------- */
 const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["tools","工具","wallet"],["info","資訊","info"],["sos","緊急","sos"]];
