@@ -803,6 +803,13 @@ header.top h1,.sostop h1,.hero2 h1{font-size:28px!important;line-height:1.15!imp
 @keyframes rainf{from{transform:translateY(0)}to{transform:translateY(36px)}}
 @keyframes snowf{from{transform:translateY(0)}to{transform:translateY(40px)}}
 @keyframes bolt{0%,100%{opacity:0}40%{opacity:1}43%{opacity:0}46%{opacity:1}52%{opacity:0}}
+
+/* 交通工具往前開（首頁大插圖） */
+.art.big .veh{animation:vcross var(--d,12s) linear infinite}
+.art.big .veh>*{animation:vbump .5s ease-in-out infinite alternate}
+.art.big .fly.veh>*{animation:none}
+@keyframes vcross{from{transform:translateX(calc((-110px - var(--x)) / var(--s)))}to{transform:translateX(calc((400px - var(--x)) / var(--s)))}}
+@keyframes vbump{from{transform:translateY(0)}to{transform:translateY(-1.5px)}}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -1620,6 +1627,7 @@ function foodList(){
 const PAL={k:"#3E3A39",w:"#FFFCF6",co:"#F2A497",ya:"#F6D27A",mi:"#A8D3E6",wa:"#B9DAA5"};
 const SK=`stroke="${PAL.k}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
 const G=(x,y,inner,cls="",s=1)=>`<g transform="translate(${x} ${y})${s!==1?` scale(${s})`:""}"><g class="${cls}">${inner}</g></g>`;
+const VH=(x,y,inner,cls,s=1,d=12)=>`<g transform="translate(${x} ${y})${s!==1?` scale(${s})`:""}"><g class="${cls} veh" style="--x:${x}px;--s:${s};--d:${d}s;animation-delay:${(-(x+110)/510*d).toFixed(2)}s">${inner}</g></g>`;
 const A_={
  cloud:(x,y,s=1,d="")=>G(x,y,`<path d="M0 16q0-12 12-12q5-11 18-7q10-7 19 3q12 0 12 16z" fill="${PAL.w}" ${SK}/>`,"drift "+d,s),
  sun:(x,y,r=15)=>G(x,y,`<circle r="${r}" fill="${PAL.ya}" ${SK}/><g ${SK}><path d="M0 -${r+6}v-5M0 ${r+6}v5M-${r+6} 0h-5M${r+6} 0h5M-${r+3} -${r+3}l-4 -4M${r+3} ${r+3}l4 4M${r+3} -${r+3}l4 -4M-${r+3} ${r+3}l-4 4"/></g>`,"spin"),
@@ -1630,8 +1638,8 @@ const A_={
  canal:(y)=>`<path d="M-4 ${y}H364V154H-4Z" fill="${PAL.mi}" ${SK}/><path d="M20 ${y+10}h14M120 ${y+14}h18M250 ${y+9}h14" ${SK} opacity=".45"/>`,
  lake:(x,y,rx,ry)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${PAL.mi}" ${SK}/><path d="M${x-rx/2} ${y}h16M${x+rx/5} ${y+4}h12" ${SK} opacity=".45"/>`,
  hill:(d,c=PAL.wa)=>`<path d="${d}" fill="${c}" ${SK}/>`,
- plane:(x,y,s=1,flip=false)=>G(x,y,`<g transform="${flip?"scale(-1 1) translate(-70 0)":""}"><path d="M4 6l-8-12h9l9 11z" fill="${PAL.co}" ${SK}/><path d="M0 12q0-9 11-9h42q11 0 15 9q-4 9-15 9h-42q-11 0-11-9z" fill="${PAL.w}" ${SK}/><path d="M26 13l-9 17h11l15-17z" fill="${PAL.co}" ${SK}/><g fill="${PAL.k}"><circle cx="38" cy="10" r="2"/><circle cx="46" cy="10" r="2"/><circle cx="54" cy="10" r="2"/></g></g>`,"fly",s),
- car:(x,y,s=1)=>G(x,y,`<path d="M0 18v-8q0-4 4-5l8-1 6-8h20l8 8 6 1q4 1 4 5v8z" fill="${PAL.ya}" ${SK}/><path d="M20 -2h15l5 6h-24z" fill="${PAL.mi}" ${SK}/><circle cx="13" cy="19" r="5" fill="${PAL.k}"/><circle cx="43" cy="19" r="5" fill="${PAL.k}"/>`,"bob",s),
+ plane:(x,y,s=1,flip=false)=>VH(x,y,`<g transform="${flip?"scale(-1 1) translate(-70 0)":""}"><path d="M4 6l-8-12h9l9 11z" fill="${PAL.co}" ${SK}/><path d="M0 12q0-9 11-9h42q11 0 15 9q-4 9-15 9h-42q-11 0-11-9z" fill="${PAL.w}" ${SK}/><path d="M26 13l-9 17h11l15-17z" fill="${PAL.co}" ${SK}/><g fill="${PAL.k}"><circle cx="38" cy="10" r="2"/><circle cx="46" cy="10" r="2"/><circle cx="54" cy="10" r="2"/></g></g>`,"fly",s,13),
+ car:(x,y,s=1)=>VH(x,y,`<path d="M0 18v-8q0-4 4-5l8-1 6-8h20l8 8 6 1q4 1 4 5v8z" fill="${PAL.ya}" ${SK}/><path d="M20 -2h15l5 6h-24z" fill="${PAL.mi}" ${SK}/><circle cx="13" cy="19" r="5" fill="${PAL.k}"/><circle cx="43" cy="19" r="5" fill="${PAL.k}"/>`,"bob",s,10),
  steam:(x,y,d="")=>G(x,y,`<path d="M0 0q-7-7 0-14t0-14" fill="none" ${SK}/>`,"steam "+d),
  tree:(x,y,c=PAL.wa,s=1)=>G(x,y,`<path d="M0 0v-16" ${SK}/><circle cy="-26" r="13" fill="${c}" ${SK}/>`,"sway",s),
  castle:(x,y,s=1)=>G(x,y,`<path d="M-4 64L8 36H92L104 64Z" fill="${PAL.w}" ${SK}/><path d="M14 50h72M10 58h80" ${SK} opacity=".45"/><rect x="18" y="20" width="64" height="16" fill="${PAL.w}" ${SK}/><path d="M6 22L20 10H80L94 22Z" fill="${PAL.k}" ${SK}/><rect x="31" y="-2" width="38" height="12" fill="${PAL.w}" ${SK}/><path d="M22 0L34 -12H66L78 0Z" fill="${PAL.k}" ${SK}/><path d="M34 -12L50 -26L66 -12Z" fill="${PAL.k}" ${SK}/><circle cx="36" cy="-24" r="3" fill="${PAL.ya}" ${SK}/><circle cx="64" cy="-24" r="3" fill="${PAL.ya}" ${SK}/><g fill="${PAL.k}"><rect x="28" y="25" width="6" height="6"/><rect x="47" y="25" width="6" height="6"/><rect x="66" y="25" width="6" height="6"/></g>`,"",s),
@@ -1639,7 +1647,7 @@ const A_={
    +G(50,-6,`<circle r="9" fill="${PAL.w}" ${SK}/>`,"puff")+G(62,-18,`<circle r="11" fill="${PAL.w}" ${SK}/>`,"puff d1")+G(48,-32,`<circle r="8" fill="${PAL.w}" ${SK}/>`,"puff d2"),"",s),
  torii:(x,y,s=1)=>G(x,y,`<path d="M-6 0q30 -8 66 0l-3 7q-30 -5 -60 0z" fill="${PAL.co}" ${SK}/><rect x="4" y="14" width="46" height="6" fill="${PAL.co}" ${SK}/><rect x="9" y="7" width="7" height="55" fill="${PAL.co}" ${SK}/><rect x="38" y="7" width="7" height="55" fill="${PAL.co}" ${SK}/>`,"",s),
  plum:(x,y)=>G(x,y,`<path d="M0 0q4-20-6-34M-3-20q12-6 18-16M-5-30q-10-4-14-12" fill="none" ${SK}/>`+[[-6,-36],[14,-36],[-18,-42],[16,-20],[-12,-24],[4,-44]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="5" fill="${PAL.co}" ${SK}/>`).join(""),"sway"),
- boat:(x,y,s=1)=>G(x,y,`<path d="M0 0h70l-10 12h-50z" fill="${PAL.ya}" ${SK}/><path d="M48 0v-26" ${SK}/><circle cx="48" cy="-31" r="5" fill="${PAL.w}" ${SK}/><path d="M38 -36h20l-10 -8z" fill="${PAL.ya}" ${SK}/><path d="M48 -24l12 30" ${SK}/>`,"bob",s),
+ boat:(x,y,s=1,go=true)=>go?VH(x,y,`<path d="M0 0h70l-10 12h-50z" fill="${PAL.ya}" ${SK}/><path d="M48 0v-26" ${SK}/><circle cx="48" cy="-31" r="5" fill="${PAL.w}" ${SK}/><path d="M38 -36h20l-10 -8z" fill="${PAL.ya}" ${SK}/><path d="M48 -24l12 30" ${SK}/>`,"bob",s,20):G(x,y,`<path d="M0 0h70l-10 12h-50z" fill="${PAL.ya}" ${SK}/><path d="M48 0v-26" ${SK}/><circle cx="48" cy="-31" r="5" fill="${PAL.w}" ${SK}/><path d="M38 -36h20l-10 -8z" fill="${PAL.ya}" ${SK}/><path d="M48 -24l12 30" ${SK}/>`,"bob",s),
  giraffe:(x,y,s=1)=>G(x,y,`<ellipse cx="0" cy="0" rx="22" ry="12" fill="${PAL.ya}" ${SK}/><path d="M-14 10v20M-4 10v20M8 10v20M16 8v22" ${SK}/>`
    +G(14,-6,`<path d="M0 0l6-40" stroke="${PAL.k}" stroke-width="12" stroke-linecap="round"/><path d="M0 0l6-40" stroke="${PAL.ya}" stroke-width="6" stroke-linecap="round"/><ellipse cx="12" cy="-44" rx="11" ry="7" fill="${PAL.ya}" ${SK}/><path d="M4 -50l-2 -8M10 -51l0 -8" ${SK}/><circle cx="15" cy="-45" r="1.8" fill="${PAL.k}"/>`,"nod")
    +[[-10,-3],[3,2],[-2,-7]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="3" fill="${PAL.co}"/>`).join(""),"",s),
@@ -1648,7 +1656,7 @@ const A_={
  tub:(x,y,c=PAL.mi)=>G(x,y,`<ellipse cx="0" cy="0" rx="34" ry="10" fill="${c}" ${SK}/>`)+A_.steam(x-14,y-10,"")+A_.steam(x,y-12,"d1")+A_.steam(x+14,y-10,"d2"),
  gondola:(x1,y1,x2,y2)=>`<path d="M${x1} ${y1}L${x2} ${y2}" ${SK}/>`+G(x1+20,y1-((y1-y2)*20/(x2-x1)),`<path d="M0 0v8" ${SK}/><rect x="-11" y="8" width="22" height="16" rx="5" fill="${PAL.co}" ${SK}/><rect x="-6" y="12" width="12" height="6" fill="${PAL.w}" ${SK}/>`,"glide"),
  station:(x,y,s=1)=>G(x,y,`<rect x="0" y="20" width="120" height="44" fill="${PAL.ya}" ${SK}/><path d="M-6 22L10 6H110L126 22Z" fill="${PAL.wa}" ${SK}/><rect x="42" y="-6" width="36" height="26" fill="${PAL.ya}" ${SK}/><path d="M36 -4L60 -22L84 -4Z" fill="${PAL.wa}" ${SK}/><circle cx="60" cy="8" r="6" fill="${PAL.w}" ${SK}/><path d="M60 8v-4M60 8h3" ${SK}/>`+[12,30,82,100].map(a=>`<rect x="${a}" y="30" width="10" height="16" fill="${PAL.mi}" ${SK}/>`).join("")+`<rect x="50" y="38" width="20" height="26" fill="${PAL.w}" ${SK}/>`,"",s),
- ship:(x,y,s=1)=>G(x,y,`<path d="M0 0h80l-12 16h-58z" fill="${PAL.co}" ${SK}/><rect x="20" y="-16" width="34" height="16" fill="${PAL.w}" ${SK}/><rect x="30" y="-28" width="10" height="12" fill="${PAL.ya}" ${SK}/>`,"bob",s),
+ ship:(x,y,s=1)=>VH(x,y,`<path d="M0 0h80l-12 16h-58z" fill="${PAL.co}" ${SK}/><rect x="20" y="-16" width="34" height="16" fill="${PAL.w}" ${SK}/><rect x="30" y="-28" width="10" height="12" fill="${PAL.ya}" ${SK}/>`,"bob",s,22),
  bridge:(x,y)=>`<rect x="${x-6}" y="${y-4}" width="10" height="22" fill="${PAL.w}" ${SK}/><rect x="${x+96}" y="${y-4}" width="10" height="22" fill="${PAL.w}" ${SK}/><g class="lift"><rect x="${x}" y="${y-8}" width="50" height="8" rx="3" fill="${PAL.mi}" ${SK}/></g><g class="lift r"><rect x="${x+50}" y="${y-8}" width="50" height="8" rx="3" fill="${PAL.mi}" ${SK}/></g>`,
  tower:(x,y)=>`<path d="M${x} ${y}L${x+12} ${y-96}h8L${x+32} ${y}Z" fill="${PAL.mi}" ${SK}/><path d="M${x+6} ${y-40}h20M${x+9} ${y-64}h14" ${SK}/><rect x="${x+8}" y="${y-86}" width="16" height="10" fill="${PAL.w}" ${SK}/>`,
  yatai:(x,y)=>G(x,y,`<rect x="0" y="10" width="60" height="30" fill="${PAL.ya}" ${SK}/><path d="M-6 12L6 0H54L66 12Z" fill="${PAL.co}" ${SK}/><circle cx="12" cy="44" r="6" fill="${PAL.k}"/><circle cx="48" cy="44" r="6" fill="${PAL.k}"/><path d="M8 10v14h44v-14" fill="${PAL.w}" ${SK}/>`)+G(x+70,y+2,`<path d="M0 0v6" ${SK}/><ellipse cx="0" cy="16" rx="8" ry="10" fill="${PAL.co}" ${SK}/>`,"swing"),
@@ -1660,7 +1668,7 @@ const SCENES={
  hakata:()=>A_.sun(36,30,13)+A_.cloud(250,14,.8)+A_.plane(150,14,.9)+A_.buildings(170,120)+A_.tree(60,118,PAL.wa)+A_.tree(90,118,PAL.ya,.8)+A_.field(120,"#E8DFD0")+A_.road(130),
  dazaifu:()=>A_.cloud(250,10,.8)+A_.torii(26,52,.9)+A_.plum(120,100)+A_.hill("M150 104q60-34 120-14t100 4V150H150Z")+A_.field(108)+A_.canal(130)+A_.boat(196,124,.8),
  kumamoto:()=>A_.sun(310,30,13)+A_.cloud(30,18,.8)+A_.castle(120,58,1)+A_.tree(60,128,PAL.ya)+A_.tree(290,128,PAL.ya,.9)+A_.hill("M-4 128q90-14 184 0t184 0V150H-4Z"),
- aso:()=>A_.cloud(240,8,.7)+A_.volcano(10,56,.95)+A_.hill("M-4 126q80-30 170-10t200 0V150H-4Z")+A_.cow(130,100,.8)+A_.gorge(250,70)+A_.boat(270,124,.5),
+ aso:()=>A_.cloud(240,8,.7)+A_.volcano(10,56,.95)+A_.hill("M-4 126q80-30 170-10t200 0V150H-4Z")+A_.cow(130,100,.8)+A_.gorge(250,70)+A_.boat(270,124,.5,false),
  yufuin:()=>A_.hill("M140 120L210 40L235 62L260 34L340 120Z")+A_.cloud(20,10,.8)+A_.field(114)+A_.lake(250,134,70,11)+A_.cloud(200,96,.9,"d2")+A_.giraffe(56,92,.95)+A_.tree(120,118,PAL.wa,.7),
  beppu:()=>A_.cloud(26,10,.7)+A_.hill("M190 128L270 38L364 128Z")+A_.gondola(150,112,266,42)+A_.hill("M-4 122q100-10 200 2t170-2V150H-4Z")+A_.tub(56,118)+A_.tub(132,136)+A_.steam(96,104,"d2"),
  mojiko:()=>A_.cloud(270,8,.8)+A_.station(20,62,.95)+A_.sea(118)+A_.bridge(170,124)+A_.ship(270,112,.7)+A_.waves(150,142),
@@ -1692,16 +1700,16 @@ function wxFront(w){
 const tram=()=>`<rect x="0" y="0" width="64" height="24" rx="6" fill="${PAL.co}" ${SK}/><rect x="6" y="5" width="12" height="9" fill="${PAL.w}" ${SK}/><rect x="24" y="5" width="12" height="9" fill="${PAL.w}" ${SK}/><rect x="42" y="5" width="12" height="9" fill="${PAL.w}" ${SK}/><path d="M32 0l-6 -10h12" fill="none" ${SK}/><circle cx="14" cy="26" r="4" fill="${PAL.k}"/><circle cx="50" cy="26" r="4" fill="${PAL.k}"/>`;
 const petals=(c,n=7)=>Array.from({length:n},(_,i)=>`<g transform="translate(${30+i*46} ${-30+(i%3)*10})"><g class="petal" style="animation-delay:${-i*1.1}s"><path d="M0 0q5-6 10 0q-5 6-10 0z" fill="${c}" ${SK}/></g></g>`).join("");
 const SIGN={
- kyushu:()=>`<g class="cross slow">${A_.plane(0,-24,.6)}</g>`+bird(60,-14,.9,"")+bird(84,-6,.7,"d1"),
- hakata:()=>bird(40,-14,1,"")+bird(66,-4,.8,"d1")+bird(90,-18,.7,"d2")+`<g class="cross">${A_.plane(0,-26,.55)}</g>`,
+ kyushu:()=>bird(60,-14,.9,"")+bird(84,-6,.7,"d1"),
+ hakata:()=>bird(40,-14,1,"")+bird(66,-4,.8,"d1")+bird(90,-18,.7,"d2"),
  dazaifu:()=>petals(PAL.co,8),
- kumamoto:()=>petals(PAL.ya,7)+`<g transform="translate(0 112)"><g class="cross tramgo">${tram()}</g></g>`,
- aso:()=>`<g transform="translate(0 114)"><g class="cross carx">${A_.car(0,0,.7)}</g></g>`+bird(250,-12,.9,"")+bird(276,-4,.7,"d2"),
+ kumamoto:()=>petals(PAL.ya,7)+VH(120,112,tram(),"",1,12),
+ aso:()=>A_.car(60,114,.7)+bird(250,-12,.9,"")+bird(276,-4,.7,"d2"),
  yufuin:()=>`<g class="fogfx soft"><rect x="-40" y="104" width="220" height="12" rx="6" fill="${PAL.w}" opacity=".85"/><rect x="170" y="112" width="220" height="10" rx="5" fill="${PAL.w}" opacity=".75"/></g>`+bird(250,-10,.9,"d1"),
  beppu:()=>[[46,104],[70,100],[124,122],[142,118]].map(([x,y],i)=>`<g transform="translate(${x} ${y})"><circle class="rise" r="7" fill="${PAL.w}" ${SK} style="animation-delay:${-i*.9}s"/></g>`).join(""),
  mojiko:()=>bird(140,-14,.9,"")+bird(166,-6,.7,"d1"),
- fukuoka:()=>`<g class="cross">${A_.plane(0,-26,.6)}</g>`+bird(240,-10,.8,"d2"),
- home:()=>`<g class="cross">${A_.plane(0,-22,.8)}</g>`
+ fukuoka:()=>A_.plane(90,-26,.6)+bird(240,-10,.8,"d2"),
+ home:()=>""
 };
 function heroArt(k,w){w=SKY[w]?w:"sun";const f=SCENES[k]||SCENES.kyushu;
   return`<svg class="art big w-${w}" viewBox="6 -36 348 186" role="img" aria-label="${ART_LABEL[k]||""}・${WXN[w]}" preserveAspectRatio="xMidYMid slice"><rect x="-30" y="-80" width="420" height="260" fill="${SKY[w]}"/>${wxBack(w)}<g class="scene">${f()}</g>${(SIGN[k]||(()=>""))()}${wxFront(w)}</svg>`}
