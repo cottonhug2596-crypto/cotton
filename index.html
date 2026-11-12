@@ -658,6 +658,13 @@ svg.fldoodle{width:60px;height:30px;margin-left:auto}
 .cusi .chev{width:8px;height:8px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin:-4px 2px 0;transition:transform .2s}
 .cusi[open] .chev{transform:rotate(-135deg);margin-top:4px}
 .cusi ul{margin:0;padding:0 14px 12px 42px;display:flex;flex-direction:column;gap:5px;font-size:14px}
+/* ===== 標題小圖 ===== */
+.ch{display:flex;align-items:center;gap:8px}
+.tti{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:10px;background:var(--tc);border:2px solid var(--sumi);font-size:16px;line-height:1;flex:0 0 auto}
+.cemo{font-size:14px;margin-right:3px}
+.hpill{font-size:11.5px;font-weight:700;background:var(--waka);border-radius:999px;padding:1px 8px;margin-left:2px}
+.apill{font-size:12px;font-weight:700;background:var(--tc);border:2px solid var(--sumi);border-radius:999px;padding:0 8px}
+.sd summary .tti{width:32px;height:32px}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -1448,7 +1455,7 @@ function foodCard(p,showArea){const A=showArea?allAreas().find(a=>a.spots.includ
   return`<div class="card fd"><div class="hd"><div style="min-width:0"><div class="nm">${esc(p.name)}${p.u?'<span class="mine">自己加的</span>':""}</div>${p.jp!==p.name?`<div class="jp">${esc(p.jp)}</div>`:""}</div>
     <div class="hdr"><span class="hrs" data-gh="${p.id}">${G?gpHrs(G):""}</span><button class="heart" data-fav="${p.id}" aria-pressed="${favs.has(p.id)}" aria-label="收藏 ${esc(p.name)}">${favs.has(p.id)?"♥":"♡"}</button></div></div>
     <div class="gph" data-gp="${p.id}" data-q="${esc(p.jp)}" ${G&&G.u?"":"hidden"}>${G&&G.u?gpImg(G,p):""}</div>
-    <div class="row" style="gap:6px"><span class="sub"><span class="cat" style="background:${C[1]}"></span>${C[0]}・${A?esc(A.name)+"・":""}${esc(p.area)}・${esc(p.p)}${isS&&p.stay?`・建議停留 ${p.stay} 分`:""}</span>${p.kid?'<span class="tag">親子OK</span>':""}</div>
+    <div class="row" style="gap:6px"><span class="sub"><span class="cemo">${CEMO[p.cat]||"📍"}</span>${C[0]}・${A?esc(A.name)+"・":""}${esc(p.area)}・${esc(p.p)}${isS&&p.stay?`・建議停留 ${p.stay} 分`:""}</span>${p.kid?'<span class="tag">親子OK</span>':""}</div>
     ${p.t?`<p>${esc(p.t)}</p>`:""}${p.src?`<div class="src">推薦來源：${esc(p.src)}</div>`:""}<div class="acts"><a class="btn ph gpoff" href="${isS?spotPhotoUrl(p.jp):photoUrl(p.jp)}" target="_blank" rel="noopener">${ic("photo")}看照片</a>
     ${isS?`<a class="btn ph" href="${infoUrl(p.jp)}" target="_blank" rel="noopener">${ic("menu")}門票・介紹</a>`:`<a class="btn ph" data-gm="${p.id}" href="${G&&G.m||mapUrl(p.jp)}" target="_blank" rel="noopener">${ic("menu")}菜單</a>`}
     <button type="button" class="btn p" data-fmap="${p.id}" aria-expanded="${fmOpen===p.id}">${ic("nav")}${fmOpen===p.id?"收起地圖":"導航"}</button>
@@ -1605,7 +1612,7 @@ food(){
   <div class="search"><label for="fq" class="vh">搜尋${X.noun}</label>${ic("search")}<input id="fq" type="search" placeholder="${isS?"搜尋全部地區：神社、親子、夜景……":"搜尋全部地區：拉麵、鰻魚、布丁……"}" value="${esc(foodQuery)}" autocomplete="off"></div>
   <div class="chips" role="group" aria-label="地區">${X.areas.map(a=>`<button data-farea="${a.k}" class="${a.off?"off":""}" aria-pressed="${a.k===A.k&&!foodQuery}">${esc(a.name)}<small>${a.days}${favCount(a)?" ・♥"+favCount(a):""}</small></button>`).join("")}</div>
   <div class="chips" role="group" aria-label="分類" ${foodQuery?"hidden":""}><button data-ff="all" aria-pressed="${foodFilter==="all"}">全部 ${A.spots.length}</button><button data-ff="fav" aria-pressed="${foodFilter==="fav"}">♥ ${isS?"想去":"想吃"}</button><button data-ff="kid" aria-pressed="${foodFilter==="kid"}">親子OK</button>
-   ${cats.map(c=>`<button data-ff="${c}" aria-pressed="${foodFilter===c}"><span class="cat" style="background:${X.cats[c][1]}"></span>${X.cats[c][0]}</button>`).join("")}</div>
+   ${cats.map(c=>`<button data-ff="${c}" aria-pressed="${foodFilter===c}"><span class="cemo">${CEMO[c]||"📍"}</span>${X.cats[c][0]}</button>`).join("")}</div>
   ${A.note&&!foodQuery?`<div class="offnote">${A.off?"<b>行程外</b>":""}${esc(A.note)}</div>`:""}
   <details class="add card"><summary>${ic("star")}新增${X.noun}</summary>
    <form data-form="food" data-kind="${exKind}" class="fm">
@@ -1632,10 +1639,10 @@ list(){
    <button type="button" class="btn ${E?"p":""}" data-ledit aria-pressed="${E}">${E?"完成":"編輯"}</button></div></header>
   <div class="seg" role="group" aria-label="清單分類">${SECS.map(s=>{const it=secItems(s.k);return`<button data-sec="${s.k}" aria-pressed="${s.k===S.k}"><b>${s.name}</b><small data-cnt="${s.k}">${doneIn(it)} / ${it.length}</small></button>`}).join("")}</div>
   ${E?`<div class="offnote"><b>編輯中</b>可以改分類名稱、幫每個項目寫備註、刪除分類或項目、新增項目和分類。改好按右上角「完成」。</div>`:""}
-  <div class="card" style="display:flex;flex-direction:column;gap:8px"><div class="row" style="justify-content:space-between"><h3>${S.name}進度</h3><span class="sub" id="ckcount">${doneIn(secItems(S.k))} / ${secItems(S.k).length}</span></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:8px"><div class="row" style="justify-content:space-between"><h3 class="ch">${tt(SECEMO[S.k]||"📋","var(--yama)")}${S.name}進度</h3><span class="sub" id="ckcount">${doneIn(secItems(S.k))} / ${secItems(S.k).length}</span></div>
    <div class="prog"><i id="ckbar" style="width:${secItems(S.k).length?doneIn(secItems(S.k))/secItems(S.k).length*100:0}%"></i></div><span class="sub">${esc(S.intro)}</span></div>
-  ${groups.map(g=>`<div class="card${E?" editing":""}" style="display:flex;flex-direction:column;gap:4px">
-    ${E?`<div class="gh"><form data-form="grename" data-isec="${S.k}" data-key="${esc(g.key)}" class="addi" style="margin:0;flex:1"><label class="vh" for="gn-${gi}">分類名稱</label><input id="gn-${gi}" name="name" value="${esc(g.name)}" required><button class="btn" type="submit">改名</button></form>${delBtn(g.custom?"data-delgroup":"data-hidegroup",esc(g.key),g.name,"刪除整組")}</div>`:`<h3>${esc(g.name)}</h3>`}
+  ${groups.map((g,gx)=>`<div class="card${E?" editing":""}" style="display:flex;flex-direction:column;gap:4px">
+    ${E?`<div class="gh"><form data-form="grename" data-isec="${S.k}" data-key="${esc(g.key)}" class="addi" style="margin:0;flex:1"><label class="vh" for="gn-${gi}">分類名稱</label><input id="gn-${gi}" name="name" value="${esc(g.name)}" required><button class="btn" type="submit">改名</button></form>${delBtn(g.custom?"data-delgroup":"data-hidegroup",esc(g.key),g.name,"刪除整組")}</div>`:`<h3 class="ch">${tt(gEmo(g.name),TCOL[gx%4])}${esc(g.name)}</h3>`}
     <div class="ck">${g.base.map(t=>{const[x,n]=t.split("|");const it=ITEMS.find(i=>i.sec===S.k&&i.t===x);if(!it||isHidden(it.id))return"";return row(it,x,n,false)}).join("")}
     ${ITEMS.filter(it=>it.u&&it.sec===S.k&&it.g===g.key).map(it=>row(it,it.t,it.n,true)).join("")}</div>
     ${E?`<form data-form="item" data-isec="${S.k}" data-g="${esc(g.key)}" class="addi"><label class="vh" for="ai-${gi}">新增到${esc(g.name)}</label><input id="ai-${gi++}" name="t" placeholder="＋ 新增項目到「${esc(g.name)}」" required><button class="btn" type="submit">加入</button></form>`:(gi++,"")}</div>`).join("")}
@@ -1645,20 +1652,20 @@ info(){
   return`<header class="top tophd"><div><h1>旅行資訊</h1><div class="sub">5 大人＋1 寶寶・金額皆為日圓</div></div>${mascot("info")}</header>
   <div class="flpair">${flightHTML(DAYS[0])}${flightHTML(DAYS[DAYS.length-1])}</div>
   ${customsHTML()}
-  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>住宿（全部已確認・15:00 起入住）</h3>
-   ${Object.values(HOTELS).map(h=>`<div style="display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px dashed var(--line)"><b>${esc(h.n)}</b><span class="sub">${h.nights}・${h.rooms}・15:00 入住・${h.out}</span><span class="sub">${h.bk}</span>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("🏨","var(--mizu)")}住宿<span class="hpill">全部已確認</span></h3>
+   ${Object.entries(HOTELS).map(([hk,h])=>`<div style="display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px dashed var(--line)"><div class="row" style="gap:6px"><span class="apill" style="--tc:${(HAREA[hk]||["",'var(--sunk)'])[1]}">🏠 ${(HAREA[hk]||[""])[0]}</span><b>${esc(h.n)}</b></div><span class="sub">${h.nights}・${h.rooms}・15:00 入住・${h.out}</span><span class="sub">${h.bk}</span>
     <div class="row">${h.tel?telBtn(h.tel):""}<a class="btn" href="${mapUrl(h.q)}" target="_blank" rel="noopener">${ic("pin")}地圖</a></div></div>`).join("")}
    <a class="btn" href="https://www.agoda.com/zh-tw/trips/shared/0754cb37-56e9-41e4-81c5-4089399a838f" target="_blank" rel="noopener">${ic("bed")}Agoda 訂房行程</a></div>
-  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>租車</h3>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("🚗","var(--waka)")}租車</h3>
    <dl class="kv"><dt>車型</dt><dd>八人車一台（Delica D:5 或同級）</dd><dt>取車</dt><dd>12/1 福岡，自行取車</dd><dt>還車</dt><dd>12/6 福岡</dd><dt>總計</dt><dd>¥72,000（含全保、ETC 卡、10% 稅）</dd><dt>訂金</dt><dd>¥14,400 已匯款</dd><dt>尾款</dt><dd><b style="color:var(--brick)">¥57,600 取車當日付清</b></dd></dl>
    <ul class="tips"><li>帶台灣駕照正本＋日文譯本、護照</li><li>確認兒童安全座椅、ETC 卡已插好</li><li>還車前加滿油，留好收據</li></ul></div>
-  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>D1 機場 → 博多時刻表</h3>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("🚄","var(--yama)")}D1 機場 → 博多時刻表</h3>
    <div class="tbl"><table><thead><tr><th></th><th>巴士</th><th>到小倉</th><th>新幹線</th><th>到博多</th></tr></thead><tbody>
    <tr class="me"><td>本次</td><td>07:00</td><td>07:33</td><td>07:41 さくら401</td><td>07:56</td></tr>
    <tr><td>備案1</td><td>07:20</td><td>07:53</td><td>08:13 みずほ601</td><td>08:28</td></tr>
    <tr><td>備案2</td><td>07:25</td><td>07:58</td><td>08:26 こだま931</td><td>08:42</td></tr></tbody></table></div>
    <span class="sub">機場巴士每人 ¥710，新幹線自由席每人 ¥2,160，寶寶免費。巴士、地鐵可刷 Suica。</span></div>
-  <a class="card" href="#sos" style="background:var(--coral);color:var(--ink);text-decoration:none;display:flex;flex-direction:column;gap:4px"><h3>緊急求助</h3><span>110 警察・119 救護車・駐福岡分處・各地醫院和警察局</span><span class="sub" style="color:var(--ink)">點這裡打開，沒網路也能看</span></a>`}
+  <a class="card" href="#sos" style="background:var(--coral);color:var(--ink);text-decoration:none;display:flex;flex-direction:column;gap:4px"><h3 class="ch">${tt("🆘","var(--washi)")}緊急求助</h3><span>110 警察・119 救護車・駐福岡分處・各地醫院和警察局</span><span class="sub" style="color:var(--ink)">點這裡打開，沒網路也能看</span></a>`}
 };
 
 /* ---------- SOS 緊急求助 ---------- */
@@ -1690,7 +1697,8 @@ const PHRASES=[["救急車をお願いします。","請派救護車。"],["赤�
 const telHref=n=>"tel:"+(/^00/.test(n)?n.replace(/-/g,""):/^0/.test(n)?"+81"+n.replace(/^0/,"").replace(/-/g,""):n.replace(/-/g,""));
 const callBtn=(n,label)=>`<a class="btn p call" href="${telHref(n)}">${ic("phone")}${label||"撥打"}</a>`;
 function sosArea(){const t=tokyoNow().date;return SOS_AREAS.filter(a=>a.when.includes(t)).map(a=>a.k)}
-const sosSec=(t,hint,body,cls,badge)=>`<details class="card sosc sd${cls||""}"><summary><span class="sh"><b>${t}</b>${badge||""}<span class="sub">${hint}</span></span><span class="chev" aria-hidden="true"></span></summary><div class="sbody">${body}</div></details>`;
+const SOSEMO=[[/110|119/,"🗣️","var(--yama)"],[/台灣/,"🇹🇼","var(--mizu)"],[/救護車？/,"🩺","var(--waka)"],[/事故/,"🚗","var(--coral)"],[/福岡/,"📍","var(--coral)"],[/熊本/,"📍","var(--waka)"],[/別府/,"📍","var(--mizu)"],[/北九州/,"📍","var(--yama)"]];
+const sosSec=(t,hint,body,cls,badge)=>{const m=SOSEMO.find(([r])=>r.test(t))||[0,"📌","var(--sunk)"];return`<details class="card sosc sd${cls||""}"><summary>${tt(m[1],m[2])}<span class="sh"><b>${t}</b>${badge||""}<span class="sub">${hint}</span></span><span class="chev" aria-hidden="true"></span></summary><div class="sbody">${body}</div></details>`};
 V.sos=function(){const now=sosArea();const areas=[...SOS_AREAS].sort((a,b)=>(now.includes(b.k)?1:0)-(now.includes(a.k)?1:0));
  const KI={police:["警察局","m-sub"],hosp:["醫院","m-plane"],kid:["夜間急診・小兒","m-bus"],info:["找醫院","m-walk"]};
  return`<header class="top sostop tophd"><div><h1>緊急求助</h1><div class="sub">別慌，一步一步來</div></div>${mascot("sos")}</header>
@@ -1749,7 +1757,7 @@ V.tools=function(){const t=tokyoNow().date,dayOpts=DAYS.map((d,i)=>[d.d,`D${i+1}
  const seg=`<div class="tseg" role="tablist">${[["fx","匯率","yen"],["exp","記帳","wallet"],["tr","翻譯","camera"]].map(([k,n,i])=>`<button role="tab" data-tool="${k}" aria-selected="${toolTab===k}">${ic(i)}${n}</button>`).join("")}</div>`;
  let body="";
  if(toolTab==="fx"){fxLoad(false);const r=fxRate();
-  body=`<div class="card tcard"><div class="fxr"><span>1 日圓 ≈ <b>${r.toFixed(4)}</b> 台幣</span><span class="sub">${fx?`${new Date(fx.t).toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})} 更新`:"預設值・連上網路會自動更新"}</span><button class="btn" data-fxr>${ic("refresh")}更新</button></div>
+  body=`<div class="card tcard"><h3 class="ch">${tt("💴","var(--yama)")}日圓換算</h3><div class="fxr"><span>1 日圓 ≈ <b>${r.toFixed(4)}</b> 台幣</span><span class="sub">${fx?`${new Date(fx.t).toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})} 更新`:"預設值・連上網路會自動更新"}</span><button class="btn" data-fxr>${ic("refresh")}更新</button></div>
    <label class="fxin"><span>${fxDir==="j2t"?"日圓 ¥":"台幣 NT$"}</span><input id="fxv" type="number" inputmode="decimal" placeholder="輸入金額" autocomplete="off"></label>
    <button class="btn fxsw" data-fxsw>${ic("swap")}${fxDir==="j2t"?"日圓 → 台幣":"台幣 → 日圓"}</button>
    <div class="fxo"><span>${fxDir==="j2t"?"約 NT$":"約 ¥"}</span><b id="fxo">0</b></div>
@@ -1757,22 +1765,22 @@ V.tools=function(){const t=tokyoNow().date,dayOpts=DAYS.map((d,i)=>[d.d,`D${i+1}
    <p class="sub">刷卡還要加上銀行的海外手續費（通常約 1.5%）。</p></div>`}
  if(toolTab==="exp"){const r=fxRate(),tot=exps.reduce((a,e)=>a+e.a,0),byC={};exps.forEach(e=>byC[e.c]=(byC[e.c]||0)+e.a);
   const days=[...new Set(exps.map(e=>e.d))].sort();
-  body=`<div class="card tcard"><label class="fxin"><span>日圓 ¥</span><input id="exa" type="number" inputmode="numeric" placeholder="花了多少" autocomplete="off"></label>
+  body=`<div class="card tcard"><h3 class="ch">${tt("✏️","var(--coral)")}記一筆</h3><label class="fxin"><span>日圓 ¥</span><input id="exa" type="number" inputmode="numeric" placeholder="花了多少" autocomplete="off"></label>
    <div class="chips">${ECATS.map(([c,col])=>`<button class="chip" data-ecat="${c}" aria-pressed="${expCat===c}" style="--cc:${col}">${c}</button>`).join("")}</div>
    <div class="chips">${EPAYS.map(p=>`<button class="chip" data-epay="${p}" aria-pressed="${expPay===p}">${p}</button>`).join("")}</div>
    <div class="exrow"><select id="exd" aria-label="日期">${dayOpts.map(([v,n])=>`<option value="${v}"${v===expDay?" selected":""}>${n}</option>`).join("")}</select><input id="exn" type="text" placeholder="備註（例如：一蘭拉麵）" autocomplete="off"></div>
    <button class="btn p big" data-eadd>${ic("plus")}記一筆</button></div>
-  <div class="card tcard"><div class="extot"><span>總共</span><b>¥${fmtN(tot)}</b><span class="sub">約 NT$${fmtN(tot*r)}</span></div>
+  <div class="card tcard"><h3 class="ch">${tt("📊","var(--mizu)")}花費統計</h3><div class="extot"><span>總共</span><b>¥${fmtN(tot)}</b><span class="sub">約 NT$${fmtN(tot*r)}</span></div>
    ${tot?`<div class="exbar">${ECATS.filter(([c])=>byC[c]).map(([c,col])=>`<i style="flex:${byC[c]};background:${col}" title="${c}"></i>`).join("")}</div>
    <div class="excats">${ECATS.filter(([c])=>byC[c]).map(([c,col])=>`<span><i style="background:${col}"></i>${c} ¥${fmtN(byC[c])}</span>`).join("")}</div>`:'<p class="sub">還沒有記帳。上面輸入金額，選類別後按「記一筆」。</p>'}</div>
   ${days.slice().reverse().map(d=>{const L=exps.filter(e=>e.d===d),s=L.reduce((a,e)=>a+e.a,0),i=DAYS.findIndex(x=>x.d===d);
-   return`<div class="card tcard exday"><div class="exdh"><b>${i>=0?`D${i+1} `:""}${md(d)}</b><span>¥${fmtN(s)}・約 NT$${fmtN(s*r)}</span></div>
+   return`<div class="card tcard exday"><div class="exdh"><b class="ch">${tt("📅",TCOL[(i<0?0:i)%4])}${i>=0?`D${i+1} `:""}${md(d)}</b><span>¥${fmtN(s)}・約 NT$${fmtN(s*r)}</span></div>
     ${L.slice().reverse().map(e=>`<div class="exi"><span class="exc" style="background:${(ECATS.find(x=>x[0]===e.c)||ECATS[5])[1]}">${e.c}</span><span class="exn">${esc(e.n||"")}<small>${e.p}</small></span><b>¥${fmtN(e.a)}</b><button class="xdel" data-edel="${e.id}" aria-label="刪除這筆">${expDel===e.id?"確定刪除？":"×"}</button></div>`).join("")}</div>`}).join("")}
   ${exps.length?`<div class="row" style="justify-content:center;gap:8px"><button class="btn" data-ecopy>${ic("copy")}複製全部明細</button></div>`:""}
   <p class="sub" style="text-align:center">記帳只存在這支手機，換手機或清除瀏覽資料會不見，回國前可以先「複製全部明細」存起來。</p>`}
- if(toolTab==="tr"){body=`<div class="card tcard"><button class="btn p big trscan" data-gtr>${ic("camera")}掃描翻譯</button>
+ if(toolTab==="tr"){body=`<div class="card tcard"><h3 class="ch">${tt("📷","var(--coral)")}掃描翻譯</h3><button class="btn p big trscan" data-gtr>${ic("camera")}掃描翻譯</button>
    <p class="sub">會打開 Google 翻譯 App（日文翻中文），再點 App 裡的「相機」對準菜單或告示，就能看到即時翻譯。沒有安裝 App 的話，會打開 Google 翻譯網頁版，可以拍照或選照片翻譯。</p></div>
-  <div class="card tcard"><h3>打字翻譯</h3><div class="chips"><button class="chip" data-trdir="ja|zh-TW" aria-pressed="${trDir==="ja|zh-TW"}">日文 → 中文</button><button class="chip" data-trdir="zh-TW|ja" aria-pressed="${trDir==="zh-TW|ja"}">中文 → 日文</button></div>
+  <div class="card tcard"><h3 class="ch">${tt("⌨️","var(--waka)")}打字翻譯</h3><div class="chips"><button class="chip" data-trdir="ja|zh-TW" aria-pressed="${trDir==="ja|zh-TW"}">日文 → 中文</button><button class="chip" data-trdir="zh-TW|ja" aria-pressed="${trDir==="zh-TW|ja"}">中文 → 日文</button></div>
    <textarea id="trt" rows="3" placeholder="${trDir==="ja|zh-TW"?"貼上或輸入日文":"輸入想說的中文，翻成日文給店員看"}">${esc(trText)}</textarea>
    <button class="btn p" data-trgo>${ic("globe")}翻譯</button>${trOut?`<div class="trout" lang="${trDir==="ja|zh-TW"?"zh-Hant":"ja"}">${esc(trOut)}</div>`:""}</div>`}
  return`<header class="top tophd"><div><h1>旅行工具</h1><div class="sub">匯率、記帳、翻譯</div></div>${mascot("tools")}</header>${seg}${body}`};
@@ -1885,11 +1893,19 @@ const CUSTOMS=[
   ["alc","菸酒","免稅額",["酒 1.5 公升（18 歲以上，不限瓶數）","菸 200 支或雪茄 25 支（20 歲以上）","免稅店買的也要算進去"]],
   ["cash","購物・現金","超過要申報",["每人行李物品完稅價格 3.5 萬元內免稅，超過要走紅線申報","新台幣超過 10 萬、外幣等值 1 萬美元以上、人民幣超過 2 萬要申報"]]]]];
 const CICON={meat:"🍖",egg:"🥚",fruit:"🍎",med:"💊",batt:"🔋",cash:"💴",form:"📱",food:"🍪",alc:"🍶"};
-function customsHTML(){return`<div class="card cus"><h3>出入海關注意事項</h3><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
+function customsHTML(){return`<div class="card cus"><h3 class="ch">${tt("🛂","var(--coral)")}出入海關注意事項</h3><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
   ${CUSTOMS.map(([t,cls,items])=>`<div class="cusg"><span class="fltag ${cls==="flgo"?"cgo":"cback"}">${ic("plane")}${t}</span>
    ${items.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${CICON[k]||"•"}</span><b>${n}</b><span class="ctag ${/禁止|別帶/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>`).join("")}
   <div class="src">資料來源：日本農林水產省動物檢疫所、日本海關、財政部關務署、農業部防檢署；規定可能更新，出發前再確認。</div></div>`}
 
+/* ---------- 標題小圖 ---------- */
+const tt=(e,c)=>`<span class="tti" style="--tc:${c}" aria-hidden="true">${e}</span>`;
+const TCOL=["var(--coral)","var(--yama)","var(--mizu)","var(--waka)"];
+const CEMO={ramen:"🍜",nabe:"🍲",local:"🍱",beef:"🥩",eel:"🐟",yatai:"🏮",gyoza:"🥟",tori:"🍢",fried:"🍗",udon:"🥢",sea:"🦀",cafe:"☕",sweet:"🍰",shrine:"⛩️",nature:"🌿",kids:"🎠",museum:"🖼️",onsen:"♨️",history:"🏯",view:"🌄",shop:"🛍️"};
+const GEMO=[[/證件|資料/,"🪪"],[/網路|手機|電子/,"📱"],[/錢|費用/,"💴"],[/預約|聯絡/,"📞"],[/大人衣/,"👕"],[/寶寶衣/,"👶"],[/寶寶吃/,"🍼"],[/尿布|清潔/,"🧷"],[/外出|睡覺/,"👜"],[/寶寶藥|藥品/,"💊"],[/飛機/,"✈️"],[/盥洗/,"🧴"],[/洗衣/,"🧺"],[/不能帶|回台灣/,"🚫"],[/取車|還車/,"🔑"],[/雪鏈|裝雪鏈/,"❄️"],[/車上/,"🚗"],[/出發前/,"📋"],[/福岡|博多/,"🍜"],[/太宰府/,"⛩️"],[/熊本/,"🐻"],[/別府|由布院|大分/,"♨️"],[/北九州|門司/,"🚢"],[/其他/,"✨"]];
+const gEmo=n=>(GEMO.find(([r])=>r.test(n))||[0,"📌"])[1];
+const SECEMO={todo:"✅",go:"🧳",car:"🚗",gift:"🎁"};
+const HAREA={hakata:["博多","var(--coral)"],kuma:["熊本","var(--waka)"],beppu:["別府","var(--mizu)"],kokura:["小倉","var(--yama)"]};
 /* ---------- 路由與事件 ---------- */
 const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["tools","工具","wallet"],["info","資訊","info"],["sos","緊急","sos"]];
 const app=document.getElementById("app");
