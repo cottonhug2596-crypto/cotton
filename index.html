@@ -672,6 +672,11 @@ svg.pic{display:block}
 button .cemo{vertical-align:-4px}
 .apill{display:inline-flex;align-items:center;gap:3px}.apill svg.pic{width:15px;height:15px}
 .cusi .cico svg.pic{width:24px;height:24px;margin:0 auto}
+.nearby2{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.nb{display:flex;flex-direction:column;align-items:center;gap:3px;border:2.5px solid var(--sumi);border-radius:16px;background:var(--washi);padding:7px 2px 6px;text-decoration:none;color:var(--ink);font-size:12px;font-weight:700;text-align:center;line-height:1.2}
+.nb svg.pic{width:26px;height:26px}
+.nb span{white-space:nowrap}
+.tophd .mas{margin-left:auto}
 /* ===== 日期列（點＋線） ===== */
 .dl{position:relative;display:grid!important;grid-template-columns:repeat(var(--n),1fr);gap:0!important;overflow:visible!important;padding:34px 0 2px!important;margin:0!important}
 .dl::before{content:"";position:absolute;left:calc(50%/var(--n));right:calc(50%/var(--n));top:42px;border-top:3px solid var(--sumi)}
@@ -921,7 +926,7 @@ function needHTML(day){const b=BOOK[day.d]||[],w=WARN[day.d]||[];if(!b.length&&!
   const todo=b.filter(([st,,,id])=>!(st==="done"||(id&&bookDone.has(id)))).length;
   const c=lv=>w.filter(x=>x[0]===lv).length;
   const chips=[todo?`<span class="wt w">${todo} 項待處理</span>`:"",c("err")?`<span class="wt e">${c("err")} 個時間衝突</span>`:"",c("warn")+c("route")?`<span class="wt c">${c("warn")+c("route")} 個要注意</span>`:"",c("chk")?`<span class="wt c">${c("chk")} 個出發前確認</span>`:""].join("");
-  return`<details class="card need" data-need="${day.d}"${needOpen.has(day.d)?" open":""}><summary><span class="nh"><b>需完成事項</b>${chips||'<span class="sub">都處理好了</span>'}</span><span class="chev" aria-hidden="true"></span></summary>
+  return`<details class="card need" data-need="${day.d}"${needOpen.has(day.d)?" open":""}><summary><span class="nh">${tt("clip","var(--yama)")}<b>需完成事項</b>${chips||'<span class="sub">都處理好了</span>'}</span><span class="chev" aria-hidden="true"></span></summary>
    <div class="nb">${b.length?`<div class="nsec"><span class="label">預訂</span>${bookHTML(day)}</div>`:""}
    ${w.length?`<div class="nsec"><span class="label">行程注意事項（也標在各站裡）</span><ul class="wl">${w.map(([lv,t,a])=>`<li class="${lv}"><span class="wt">${WLV[lv][0]}</span><span>${a?`<b>${esc(day.stops.find(x=>key(x).includes(a))?.n||a)}</b>：`:""}${esc(t)}</span></li>`).join("")}</ul></div>`:""}</div></details>`}
 document.addEventListener("toggle",e=>{const d=e.target.dataset&&e.target.dataset.need;if(d)e.target.open?needOpen.add(d):needOpen.delete(d)},true);
@@ -1414,7 +1419,7 @@ function tlHTML(day,res){const n={c:0};const LM=legMap(day);const nw=tokyoNow(),
     rows.push(`<div class="tr ${SCAT[c][1]}" data-j="${j}"><div class="rl" data-go="${j}"><span class="t1">${r?hhmm(r.s):esc(s.t)}</span>${r&&/–/.test(s.t)?`<span class="t2">${hhmm(r.e)}</span>`:""}<b class="bar"></b>${nowIn}</div><div class="rc">${stopHTML(s,j,n,res[j],day)}</div></div>`);
     if(r)prev=r});
   const leg=`<div class="tleg">${Object.values(SCAT).map(c=>`<span class="${c[1]}"><i></i>${c[0]}</span>`).join("")}<span class="c-move"><i class="dash"></i>路上</span></div>${LM.rest.length?`<div class="legs" style="margin-top:8px">${LM.rest.map(l=>`<span>${esc(l[0])}</span><span>${esc(l[1])}</span>`).join("")}</div>`:""}`;
-  return`<div class="card"><p class="tlhint">點行程，左邊圓點會跳到那一站；虛線是路上的交通時間。</p>
+  return`<div class="card"><h3 class="ch" style="margin-bottom:4px">${tt("clock","var(--mizu)")}行程時間軸</h3><p class="tlhint">點行程，左邊圓點會跳到那一站；虛線是路上的交通時間。</p>
    <div class="tlx2">${rows.join("")}<i class="rm" aria-hidden="true"></i></div>${leg}</div>`}
 function setOpen(c,o){c.classList.toggle("open",o);c.querySelector("[data-tog]").setAttribute("aria-expanded",o)}
 document.addEventListener("click",e=>{const h=e.target.closest("[data-tog]");if(!h||e.target.closest("a"))return;const c=h.parentElement;setOpen(c,!c.classList.contains("open"))});
@@ -1430,7 +1435,7 @@ function updTL(){}
 function initTL(){app.querySelectorAll(".tlx2").forEach(x=>{const row=x.querySelector(".tc.cur")?.closest(".tr")||x.querySelector(".tr[data-j]:not(.trv)");pinRow(row)})}
 function hotelHTML(k,title){const h=HOTELS[k];if(!h)return"";
   return`<div class="card hotel" style="display:flex;flex-direction:column;gap:6px">
-   <span class="label">${title}</span><h3 style="font-size:17px">${esc(h.n)}</h3>
+   <h3 class="ch">${tt("hotel","var(--mizu)")}${title}</h3><b style="font-size:17px">${esc(h.n)}</b>
    <div class="sub" style="color:var(--ink)">${h.rooms}・15:00 入住・${h.out}</div>
    <div class="row">${h.tel?telBtn(h.tel):""}
    <a class="btn p" href="${navUrl(h.q)}" target="_blank" rel="noopener">${ic("nav")}導航回飯店</a></div></div>`}
@@ -1438,24 +1443,24 @@ function routeHTML(day){const{res}=stopStates(day);
   const rest=day.stops.map((s,i)=>({...s,i})).filter(s=>s.q&&res[s.i]!=="done");if(!rest.length)return"";
   const chunks=[];for(let i=0;i<rest.length;i+=4)chunks.push(rest.slice(i,i+4));
   const mode=day.stops.some(s=>s.k==="car")?"driving":"transit";
-  return`<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>${todayIndex()===DAYS.indexOf(day)?"今天":"這天"}的整條路線</h3>
+  return`<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3 class="ch">${tt("route","var(--coral)")}${todayIndex()===DAYS.indexOf(day)?"今天":"這天"}的整條路線</h3>
    <span class="sub">從你現在的位置出發，依序走完${todayIndex()===DAYS.indexOf(day)?"今天還沒去的":"這天的"}地點${chunks.length>1?"；地點多，分成幾段比較不會漏站":""}。</span>
    ${chunks.map((c,ci)=>{const dest=c[c.length-1],wp=c.slice(0,-1),origin=ci===0?"":chunks[ci-1][chunks[ci-1].length-1].q;
      let u="https://www.google.com/maps/dir/?api=1&travelmode="+mode+"&destination="+encodeURIComponent(dest.q);if(origin)u+="&origin="+encodeURIComponent(origin);if(wp.length)u+="&waypoints="+wp.map(w=>encodeURIComponent(w.q)).join("%7C");
      return`<a class="btn ${ci===0?"p":""} big" href="${u}" target="_blank" rel="noopener">${ic("nav")}<span>${chunks.length>1?`第 ${ci+1} 段・`:""}${ci===0?"從我這裡出發":esc(chunks[ci-1][chunks[ci-1].length-1].n)+" 出發"}<small>${c.map(s=>esc(s.n)).join(" → ")}</small></span></a>`}).join("")}</div>`}
-const NEAR=[["ラーメン","拉麵"],["レストラン","餐廳"],["カフェ","咖啡廳"],["スイーツ","甜點"],["コンビニ","便利商店"],["ドラッグストア","藥妝店"],["授乳室","哺乳室"],["公衆トイレ","廁所"],["駐車場","停車場"],["ガソリンスタンド","加油站"]];
-function nearHTML(){return`<div class="card" style="display:flex;flex-direction:column;gap:10px"><h3>找我附近的</h3>
-   <div class="nearby">${NEAR.map(([q,n])=>`<a class="btn ph" href="${mapUrl(q)}" target="_blank" rel="noopener">${n}</a>`).join("")}</div>
+const NEAR=[["ラーメン","拉麵","ramen"],["レストラン","餐廳","fork"],["カフェ","咖啡廳","cup"],["スイーツ","甜點","cake"],["コンビニ","便利商店","store"],["ドラッグストア","藥妝店","pill"],["授乳室","哺乳室","bottle"],["公衆トイレ","廁所","wc"],["駐車場","停車場","car"],["ガソリンスタンド","加油站","fuel"]];
+function nearHTML(){return`<div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("pin","var(--waka)")}找我附近的</h3>
+   <div class="nearby2">${NEAR.map(([q,n,k])=>`<a class="nb" href="${mapUrl(q)}" target="_blank" rel="noopener">${pic(k)}<span>${n}</span></a>`).join("")}</div>
    <span class="sub">會用你現在的位置在 Google 地圖搜尋。</span></div>`}
 function dayBody(day,i){
   const {res}=stopStates(day);const n={c:0};
   const legs=day.legs.length?`<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>${day.stops.some(s=>s.k==="car")?"開車時間":"交通"}</h3><div class="legs">${day.legs.map(l=>`<span>${esc(l[0])}</span><span>${esc(l[1])}</span>`).join("")}</div></div>`:"";
   return`${needHTML(day)}${weatherHTML(day)}${flightHTML(day)}${routeHTML(day)}${tlHTML(day,res)}
-  ${day.plan?`<div class="card plan" style="display:flex;flex-direction:column;gap:8px"><h3>${esc(day.plan.title)}</h3><ul class="tips">${day.plan.items.map(t=>`<li>${esc(t)}</li>`).join("")}</ul><div class="row">${day.plan.links.map(l=>`<a class="btn" href="${l[1]}" target="_blank" rel="noopener">${ic("nav")}${esc(l[0])}</a>`).join("")}</div></div>`:""}
-  <div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>小提醒</h3><ul class="tips">${day.tips.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>
+  ${day.plan?`<div class="card plan" style="display:flex;flex-direction:column;gap:8px"><h3 class="ch">${tt("snow","var(--mizu)")}${esc(day.plan.title)}</h3><ul class="tips">${day.plan.items.map(t=>`<li>${esc(t)}</li>`).join("")}</ul><div class="row">${day.plan.links.map(l=>`<a class="btn" href="${l[1]}" target="_blank" rel="noopener">${ic("nav")}${esc(l[0])}</a>`).join("")}</div></div>`:""}
+  <div class="card" style="display:flex;flex-direction:column;gap:8px"><h3 class="ch">${tt("bulb","var(--yama)")}小提醒</h3><ul class="tips">${day.tips.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>
   ${nearHTML()}
   ${day.hotel?hotelHTML(day.hotel,"今晚住宿"):""}
-  <div class="card" style="display:flex;flex-direction:column;gap:8px"><label for="note-${i}"><h3>D${i+1} 筆記</h3></label>
+  <div class="card" style="display:flex;flex-direction:column;gap:8px"><label for="note-${i}"><h3 class="ch">${tt("pencil","var(--waka)")}D${i+1} 筆記</h3></label>
    <textarea id="note-${i}" data-note="${i}" placeholder="想去的店、花了多少、寶寶今天的小事……只存在這支手機">${esc(notes[i]||"")}</textarea></div>`}
 
 function foodCard(p,showArea){const A=showArea?allAreas().find(a=>a.spots.includes(p)):null;const C=catOf(p),isS=p.kind==="spot";const G=gpGet(p.id);
@@ -1587,7 +1592,7 @@ today(){
      <h2 class="sech">${ic("arrowc")}航班資訊</h2>
      ${flightHTML(DAYS[0])}
      <a class="card" href="#list" data-sec="todo" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px">
-      <div class="row" style="justify-content:space-between"><h3>出發前待辦</h3><span class="sub">已完成 ${done} / ${total}</span></div>
+      <div class="row" style="justify-content:space-between"><h3 class="ch">${tt("check","var(--waka)")}出發前待辦</h3><span class="sub">已完成 ${done} / ${total}</span></div>
       <div class="prog"><i style="width:${total?done/total*100:0}%"></i></div>
       ${undone.length?`<ul class="tips">${undone.map(i=>`<li><span>${esc(i.t)}${i.n?`<br><span class="sub">${esc(i.n)}</span>`:""}</span></li>`).join("")}</ul><span class="sub">還有 ${total-done} 項，點這裡打勾</span>`:'<span class="sub">全部完成了，出發吧！</span>'}</a>
      <h2 class="sech">${ic("arrowc")}第一天預覽</h2>`;
@@ -1602,7 +1607,7 @@ today(){
 plan(){
   if(dayIdx==null){const t=todayIndex();dayIdx=t>=0?t:0}
   const ti=todayIndex(),day=DAYS[dayIdx];
-  return`<header class="top"><div class="row" style="justify-content:space-between;align-items:flex-end"><div><h1>行程</h1><div class="sub">11/30 – 12/8・自駕 12/1 取車 → 12/6 還車</div></div><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a></div><div class="sub" style="margin-top:4px">行程同步自 Funliday（11/12 03:45 最後確認）</div></header>
+  return`<header class="top"><div class="row tophd" style="flex-wrap:nowrap"><div><h1>行程</h1><div class="sub">11/30 – 12/8・自駕 12/1 取車 → 12/6 還車</div></div>${mascot("plan")}</div><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener" style="align-self:flex-start;margin-top:6px">${ic("cal")}Funliday 原始行程</a><div class="sub" style="margin-top:4px">行程同步自 Funliday（11/12 03:45 最後確認）</div></header>
   <div class="days dl" role="group" aria-label="選擇日期" style="--n:${DAYS.length}"><span class="dveh" style="left:${(dayPrev+.5)/DAYS.length*100}%" data-to="${(dayIdx+.5)/DAYS.length*100}">${ic(dayVeh(dayIdx),1.6)}</span>${DAYS.map((d,i)=>`<button class="dp ${i===ti?"today":""}" data-day="${i}" aria-pressed="${i===dayIdx}" aria-label="D${i+1} ${md(d.d)}（${d.w}）">${(WARN[d.d]||[]).some(x=>x[0]==="err")?'<i class="wd" aria-label="有時間衝突"></i>':""}<span class="dd"></span><span class="dw">週${d.w}</span><span class="dn">${+d.d.slice(8)}</span></button>`).join("")}</div>
   <div class="dayview" style="display:flex;flex-direction:column;gap:14px">
   <div class="artcard">${art(DAY_ART[day.d])}</div>
@@ -1834,6 +1839,7 @@ function mascot(k){const K=PAL.k,S=`stroke="${K}" stroke-width="2.5" stroke-line
     <g class="puff d1"><rect x="64" y="38" width="28" height="22" rx="6" fill="${PAL.mi}" ${S}/><path d="M71 38l3-5h8l3 5" fill="${PAL.mi}" ${S}/><circle cx="78" cy="49" r="6" fill="${PAL.w}" ${S}/><circle cx="78" cy="49" r="2" fill="${K}"/></g>`,
   info:`<g class="drift"><path d="M8 66q0-8 8-8q2-8 10-8t10 8q7 0 7 8z" fill="${PAL.w}" ${S}/></g>
     <g class="fly"><path d="M14 34q0-8 12-8h40l14-12h8l-6 18q8 2 8 8t-10 6H26q-12 0-12-12z" fill="${PAL.w}" ${S}/><path d="M44 40l-8 14h10l12-14" fill="${PAL.mi}" ${S}/>${face(32,33,.8)}<circle cx="56" cy="31" r="3" fill="${PAL.mi}" ${S}/><circle cx="66" cy="31" r="3" fill="${PAL.mi}" ${S}/></g>`,
+  plan:`<path d="M4 70h92" ${S} stroke-dasharray="6 6"/><g class="bob"><path d="M20 56v-14l8-14h36l12 14h6q6 0 6 6v8z" fill="${PAL.co}" ${S}/><path d="M32 32h12v10H26zM50 32h11l8 10H50z" fill="${PAL.mi}" ${S}/>${face(56,50,.7)}<circle cx="34" cy="58" r="7" fill="${PAL.w}" ${S}/><circle cx="72" cy="58" r="7" fill="${PAL.w}" ${S}/></g><g class="drift"><path d="M76 14q0-6 6-6q2-5 7-5t7 5q4 0 4 6z" fill="${PAL.w}" ${S}/></g>`,
   sos:`<g class="bob"><path d="M42 18v-6h16v6" fill="none" ${S}/><rect x="20" y="18" width="60" height="46" rx="12" fill="${PAL.w}" ${S}/><path d="M46 26h8v8h8v8h-8v8h-8v-8h-8v-8h8z" fill="${PAL.co}" ${S}/>${face(50,56,.7)}</g>
     <g class="pulse"><path d="M84 22q-4-6-8-2t0 9l8 7 8-7q4-5 0-9t-8 2z" fill="${PAL.co}" ${S}/></g>`}[k];
   return body?`<svg class="art mas" viewBox="0 0 100 76" aria-hidden="true">${body}</svg>`:""}
@@ -1973,6 +1979,13 @@ const PICS=(()=>{const K="#3E3A39",W="#FFFCF6",C="#F2A497",Y="#F6D27A",M="#A8D3E
  battery:`<rect x="3" y="7" width="16" height="10" rx="2.5" ${f(G)}/><path d="M19 10.5h2v3h-2z" ${f(K)}/><path d="M12 8.5L9 12.5h3L10 15.5" ${n} stroke="${K}" stroke-width="1.9"/>`,
  cookie:`<circle cx="12" cy="12" r="9" ${f(Y)}/><circle cx="9" cy="9" r="1.3" fill="${K}"/><circle cx="15" cy="10" r="1.3" fill="${K}"/><circle cx="11" cy="15" r="1.3" fill="${K}"/><circle cx="16" cy="15.5" r="1" fill="${K}"/>`,
  sake:`<path d="M10.5 2.5h3l-.3 3q5 3 5 9.5a5 5 0 0 1-5 5.5h-2.4a5 5 0 0 1-5-5.5q0-6.5 5-9.5z" ${f(W)}/><path d="M7.3 12.5h9.4l.5 3H6.8z" fill="${C}"/><path d="M10.5 2.5h3l-.3 3q5 3 5 9.5a5 5 0 0 1-5 5.5h-2.4a5 5 0 0 1-5-5.5q0-6.5 5-9.5z" ${n}/>`,
+ route:`<path d="M7 18q0-5 5-6t5-6" ${n} stroke-dasharray="2 2.6"/><path d="M7 22s-4-3.6-4-6.6a4 4 0 0 1 8 0c0 3-4 6.6-4 6.6z" ${f(C)}/><circle cx="7" cy="15.4" r="1.4" ${f(W)}/><path d="M17 10s-4-3.6-4-6.6" ${n}/><circle cx="17" cy="5.5" r="3.3" ${f(Y)}/>`,
+ bulb:`<path d="M12 2.5a6.5 6.5 0 0 0-4 11.6V17h8v-2.9A6.5 6.5 0 0 0 12 2.5z" ${f(Y)}/><path d="M9 19.5h6M10 21.5h4" ${n}/><path d="M10.5 10.5l1.5 2 1.5-2" ${n}/>`,
+ wc:`<rect x="3" y="3" width="18" height="18" rx="4" ${f(M)}/><circle cx="8.5" cy="7.5" r="1.6" ${f(W)}/><circle cx="15.5" cy="7.5" r="1.6" ${f(W)}/><path d="M7 10.5h3v7H7zM13.5 10.5h4l1 5h-6z" ${f(W)}/>`,
+ fuel:`<rect x="4" y="4" width="10" height="17" rx="2" ${f(C)}/><rect x="6.5" y="6.5" width="5" height="4" rx="1" ${f(W)}/><path d="M14 9h2.5l2 2v7a1.5 1.5 0 0 0 3 0V9l-2.5-3" ${n}/>`,
+ clock:`<circle cx="12" cy="12" r="9" ${f(W)}/><path d="M12 7v5l3.5 2" ${n} stroke-width="2"/><circle cx="12" cy="12" r="1.2" fill="${C}"/>`,
+ store:`<path d="M3 9l2-5h14l2 5z" ${f(G)}/><path d="M4 9h16v12H4z" ${f(W)}/><path d="M9.5 21v-6h5v6" ${f(M)}/><path d="M3 9q1.5 2.5 3 0q1.5 2.5 3 0q1.5 2.5 3 0q1.5 2.5 3 0q1.5 2.5 3 0q1.5 2.5 3 0" ${f(G)}/>`,
+ fork:`<path d="M7 3v6a2 2 0 0 0 4 0V3M9 3v18" ${n}/><path d="M15 21V3q4 2 4 8h-4" ${f(Y)}/>`,
  house:`<path d="M3 11l9-7.5 9 7.5" ${f(C)}/><path d="M5.5 10v10h13V10" ${f(W)}/><path d="M10 20v-5h4v5" ${f(Y)}/>`}})();
 const pic=n=>`<svg class="pic" viewBox="0 0 24 24" aria-hidden="true">${PICS[n]||PICS.pin}</svg>`;
 /* ---------- 標題小圖 ---------- */
