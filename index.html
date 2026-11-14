@@ -855,6 +855,7 @@ header.top h1,.sostop h1,.hero2 h1{font-size:28px!important;line-height:1.15!imp
 
 @keyframes busscale{0%{transform:scale(.12)}100%{transform:scale(1.15)}}
 .art .busscale{transform-box:view-box!important;transform-origin:0 0!important}
+.artcard .art.big{display:block;width:100%;height:auto;aspect-ratio:348/186}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -1832,7 +1833,7 @@ today(){
       ${undone.length?`<ul class="tips">${undone.map(i=>`<li><span>${esc(i.t)}${i.n?`<br><span class="sub">${esc(i.n)}</span>`:""}</span></li>`).join("")}</ul><span class="sub">還有 ${total-done} 項，點這裡打勾</span>`:'<span class="sub">全部完成了，出發吧！</span>'}</a>
      <h2 class="sech">${ic("arrowc")}第一天預覽</h2>`;
     body=dayBody(DAYS[0],0).replace(flightHTML(DAYS[0]),"");}
-  else if(n.date>last){hero=`<div class="hero">${art("home")}<span class="label">旅行結束</span><div class="ttl" style="font-size:22px">歡迎回家！</div><div class="meta">行程、筆記都還留著，到「行程」頁慢慢回味。</div></div>`}
+  else if(n.date>last){hero=`<div class="hero">${heroArt("home",(heroWx(null)||{}).k)}<span class="label">旅行結束</span><div class="ttl" style="font-size:22px">歡迎回家！</div><div class="meta">行程、筆記都還留著，到「行程」頁慢慢回味。</div></div>`}
   else{const day=DAYS[ti];const {next}=stopStates(day);const ns=next>=0?day.stops[next]:null;
     const hw=heroWx(day);hero=`<div class="hero hero2"><div class="hart">${heroArt(DAY_ART[day.d],hw&&hw.k)}</div><div class="hbody"><span class="label">${md(day.d)}（${day.w}）・${esc(day.tag)}</span>
      <div class="big">D${ti+1}<small>／9</small></div><div class="ttl">${esc(day.title)}</div><div class="meta">${esc(day.route)}</div></div></div>
@@ -1845,7 +1846,7 @@ plan(){
   return`<header class="top"><div class="row tophd" style="flex-wrap:nowrap"><div><h1>行程</h1></div><div class="fsync"><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a><div class="sub">行程同步自 Funliday<br>11/12 21:15 最後確認</div></div>${mascot("plan")}</div></header>
   <div class="days dl" role="group" aria-label="選擇日期" style="--n:${DAYS.length}"><span class="dveh" style="left:${(dayPrev+.5)/DAYS.length*100}%" data-to="${(dayIdx+.5)/DAYS.length*100}">${ic(dayVeh(dayIdx),1.6)}</span>${DAYS.map((d,i)=>`<button class="dp ${i===ti?"today":""}" data-day="${i}" aria-pressed="${i===dayIdx}" aria-label="D${i+1} ${md(d.d)}（${d.w}）">${(WARN[d.d]||[]).some(x=>x[0]==="err")?'<i class="wd" aria-label="有時間衝突"></i>':""}<span class="dd"></span><span class="dw">週${d.w}</span><span class="dn">${+d.d.slice(8)}</span></button>`).join("")}</div>
   <div class="dayview" style="display:flex;flex-direction:column;gap:14px">
-  <div class="artcard">${art(DAY_ART[day.d])}</div>
+  <div class="artcard">${(()=>{const w=heroWx(day);return heroArt(DAY_ART[day.d],w&&w.k)})()}</div>
   <div class="dayhead"><h2 style="font-size:24px">${esc(day.title)}</h2></div>
   ${dayBody(day,dayIdx)}</div>`},
 food(){
