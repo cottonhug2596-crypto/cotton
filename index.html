@@ -481,7 +481,7 @@ nav.tabs a[aria-current="page"]{background:var(--yama);color:var(--ink);border-c
 .need .nh b{font-size:15px;margin-right:4px}
 .need .chev{width:9px;height:9px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
 .need[open] .chev{transform:rotate(-135deg);margin-top:4px}
-.need .nb{display:flex;flex-direction:column;gap:14px;padding:0 16px 16px}
+.need .nbody{display:flex;flex-direction:column;gap:14px;padding:0 16px 16px;min-width:0}
 .need .nsec{display:flex;flex-direction:column;gap:8px}
 /* ===== SOS ===== */
 nav.tabs a[href="#sos"]{color:var(--brick)}
@@ -1047,9 +1047,9 @@ const DAYS=[
 /* ---------- 注意事項：err 時間衝突、warn 要注意、chk 出發前確認 ---------- */
 const WARN={
 "2026-11-30":[
- ["warn","飯店 15:00 才能入住：08:40 先寄放行李，11:37 回來也還不能進房，可以先在大廳休息，或問問能不能提早入住","&HOTEL HAKATA"],
+ ["warn","飯店 15:00 才能入住。08:40 先寄放行李，11:37 回來也還不能進房，可以先在大廳休息，或問問能不能提早入住","&HOTEL HAKATA"],
  ["chk","機場巴士不能預約，出關後直接到巴士站搭往小倉的車，小倉站轉新幹線到博多","北九州機場"],
- ["chk","Yodobashi Camera 9:30 開門，09:53 到剛好","Yodobashi"]],
+ ["chk","9:30 開門，09:53 到剛好","Yodobashi"]],
 "2026-12-01":[
  ["err","柳川遊船一般要 60–70 分鐘，排 30 分（12:36–13:06）不夠；實際大約 13:40 才下船，後面若松屋、清水寺都會往後延","柳川遊船"],
  ["chk","若松屋週三和每月第 3 個週二公休，12/1 是第 1 個週二可以去；鰻魚名店中午常排隊，可先打電話問能否預約","若松屋"],
@@ -1103,7 +1103,7 @@ function needHTML(day){const b=BOOK[day.d]||[],w=WARN[day.d]||[];if(!b.length&&!
   const c=lv=>w.filter(x=>x[0]===lv).length;
   const chips=[todo?`<span class="wt w">${todo} 項待處理</span>`:"",c("err")?`<span class="wt e">${c("err")} 個時間衝突</span>`:"",c("warn")+c("route")?`<span class="wt c">${c("warn")+c("route")} 個要注意</span>`:"",c("chk")?`<span class="wt c">${c("chk")} 個出發前確認</span>`:""].join("");
   return`<details class="card need" data-need="${day.d}"${needOpen.has(day.d)?" open":""}><summary><span class="nh">${tt("clip","var(--yama)")}<b>需完成事項</b>${chips||'<span class="sub">都處理好了</span>'}</span><span class="chev" aria-hidden="true"></span></summary>
-   <div class="nb">${b.length?`<div class="nsec"><span class="label">預訂</span>${bookHTML(day)}</div>`:""}
+   <div class="nbody">${b.length?`<div class="nsec"><span class="label">預訂</span>${bookHTML(day)}</div>`:""}
    ${w.length?`<div class="nsec"><span class="label">行程注意事項（也標在各站裡）</span><ul class="wl">${w.map(([lv,t,a])=>`<li class="${lv}"><span class="wt">${WLV[lv][0]}</span><span>${a?`<b>${esc(day.stops.find(x=>key(x).includes(a))?.n||a)}</b>：`:""}${esc(t)}</span></li>`).join("")}</ul></div>`:""}</div></details>`}
 document.addEventListener("toggle",e=>{const d=e.target.dataset&&e.target.dataset.need;if(d)e.target.open?needOpen.add(d):needOpen.delete(d)},true);
 function stopWarn(day,s){const w=s.u?[]:(WARN[day.d]||[]).filter(x=>key(s).includes(x[2]));
