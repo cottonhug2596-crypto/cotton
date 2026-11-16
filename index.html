@@ -1945,6 +1945,7 @@ info(){
   return`<header class="top tophd"><div><h1>旅行資訊</h1></div>${mascot("info")}</header>
   <div class="flpair">${flightHTML(DAYS[0])}${flightHTML(DAYS[DAYS.length-1])}</div>
   ${customsHTML()}
+  ${taxHTML()}
   <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("hotel","var(--mizu)")}住宿<span class="hpill">全部已確認</span></h3>
    ${Object.entries(HOTELS).map(([hk,h])=>`<div style="display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px dashed var(--line)"><div class="row" style="gap:6px"><span class="apill" style="--tc:${(HAREA[hk]||["",'var(--sunk)'])[1]}">${pic("house")}${(HAREA[hk]||[""])[0]}</span><b>${esc(h.n)}</b></div><span class="sub">${h.nights}・${h.rooms}・15:00 入住・${h.out}</span><span class="sub">${h.bk}</span>
     <div class="row">${h.tel?telBtn(h.tel):""}<a class="btn" href="${mapUrl(h.q)}" target="_blank" rel="noopener">${ic("pin")}地圖</a></div></div>`).join("")}
@@ -2195,6 +2196,16 @@ const CUSTOMS=[
   ["alc","菸酒","免稅額",["酒 1.5 公升（18 歲以上，不限瓶數）","菸 200 支或雪茄 25 支（20 歲以上）","免稅店買的也要算進去"]],
   ["cash","購物・現金","超過要申報",["每人行李物品完稅價格 3.5 萬元內免稅，超過要走紅線申報","新台幣超過 10 萬、外幣等值 1 萬美元以上、人民幣超過 2 萬要申報"]]]]];
 const CICON={meat:"meat",egg:"egg",fruit:"apple",med:"pill",batt:"battery",cash:"coin",form:"phone",food:"cookie",alc:"sake"};
+const TAXFREE=[
+ ["coin","怎麼算、退多少","滿 ¥5,000",["同一天、同一家店，未稅合計滿 ¥5,000 就能退；一般商品和藥妝、零食可以合併算","實際退大約 9%（10% 稅率的東西是 10÷110）；食品飲料 8% 稅率，大約退 7.4%","手續費每家店自己定，百貨公司常扣約 1.5%；結帳前先問「最後實際退多少」","唐吉訶德 11/1 起宣布免手續費（之後條件可能調整）","金條、金幣和本來就不收消費稅的東西不能退"]],
+ ["bag","購物結帳時","帶護照",["結帳時出示護照，先付含稅價","當場登記免稅、選好退款方式（刷退信用卡、銀行轉帳、App 或機場領現金），隔天才補辦不受理","刷卡的人要跟護照同名，不要拿家人的卡幫忙結帳","收據留好並拍照，退款到帳前都不要丟","路上要吃、要用的東西，跟要退稅的分開結帳"]],
+ ["ban","會退不到的情況","別踩雷",["退稅買的藥妝、零食在日本拆開或用掉，就不能退；用掉了要主動跟海關說，不要直接刷機台","同一張收據少帶一件，整張收據都退不了","東西送人、留在日本，也都退不了","要在購買隔天起 90 天內出境（我們 12/8 回台，沒問題）","不能再自己寄回台灣辦退稅，需要寄送要先問店家"]],
+ ["plane","福岡機場怎麼辦","托運前",["12/8 到國際線出發大廳，先辦免稅確認，再去櫃檯托運","免稅機台刷護照：綠燈就完成；紅燈要把東西拿給海關看","福岡機場也能用 Visit Japan Web：連上機場免稅 Wi-Fi，打開 VJW 免稅頁面按 Confirm；每個人要用自己的帳號","托運之後就不能再辦，也不能為了退稅把行李拿回來；免稅品放隨身行李最保險","綠燈不是當場拿錢，海關只確認東西有帶出日本","東西多的話多留 30–60 分鐘；為了退稅錯過班機不會有補償"]],
+ ["clock","退款什麼時候拿到","1–4 週",["刷退信用卡約 1–2 週，銀行匯款約 2–4 週，App 看各家業者","福岡機場有現金退稅機（Cash JAPAN），在海關確認之後；手續費約 1.1%、¥100 以下零頭不退，要先確認店家用的退稅業者有支援","Yodobashi Camera（11/30 會去博多店）可以選在店裡先領現金，但要登記信用卡擔保，出境時一樣要海關確認","用 eSIM 可能收不到簡訊驗證碼，出發前先確認"]],
+ ["key","保護信用卡","防盜刷",["有些退稅平台要輸入信用卡安全碼，不放心可以改選機場領現金","用額度低的卡或虛擬卡，退款入帳後把平台上的卡片資料刪掉","開啟刷卡即時通知；簡訊驗證碼不要給任何人","不要用公共 Wi-Fi 輸入卡片資料，只從店家給的 QR Code 或官方網址進去"]]];
+function taxHTML(){return`<div class="card cus"><h3 class="ch">${tt("coin","var(--yama)")}日本退稅新制（2026/11/1 起）</h3><p class="sub">現在改成「先付稅、出境再退」：買東西時先付含稅價，離開日本時海關確認東西有帶出去，店家才把稅退給你。我們這趟全程都用新制。</p>
+  <div class="cusg">${TAXFREE.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${pic(k)}</span><b>${n}</b><span class="ctag ${/雷/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>
+  <p class="sub">整理自 2026 年 11 月的網路文章。手續費和退款方式每家店不同，以店家說明為準。</p></div>`}
 function customsHTML(){return`<div class="card cus"><h3 class="ch">${tt("passport","var(--coral)")}出入海關注意事項</h3><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
   ${CUSTOMS.map(([t,cls,items])=>`<div class="cusg"><span class="fltag ${cls==="flgo"?"cgo":"cback"}">${ic("plane")}${t}</span>
    ${items.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${pic(CICON[k]||"pin")}</span><b>${n}</b><span class="ctag ${/禁止|別帶/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>`).join("")}</div>`}
