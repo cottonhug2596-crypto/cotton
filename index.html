@@ -482,6 +482,7 @@ nav.tabs a[aria-current="page"]{background:var(--yama);color:var(--ink);border-c
 .need .chev{width:9px;height:9px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
 .need[open] .chev{transform:rotate(-135deg);margin-top:4px}
 .need .nbody{display:flex;flex-direction:column;gap:14px;padding:0 16px 16px;min-width:0}
+.bbw .ch{margin:0}.bbw .bbin{display:flex;flex-direction:column;gap:12px;padding:0 10px 12px}.bbw .bbin>.card{box-shadow:none}
 .need .nsec{display:flex;flex-direction:column;gap:8px}
 /* ===== SOS ===== */
 nav.tabs a[href="#sos"]{color:var(--brick)}
@@ -1000,15 +1001,15 @@ const DAYS=[
 {d:"2026-12-05",w:"六",title:"別府地獄巡禮＋小倉城＋皿倉山夜景",tag:"開車約 2.5 小時・晚上看夜景",route:"別府 → 小倉 → 皿倉山 → 小倉",hotel:"kokura",
  stops:[
   st("08:30","beppu Ohana","退房・收好行李上車","car","beppu Ohana 別府市小倉町27-17"),
-  st("08:36–08:56","岡本屋賣店","明礬溫泉旁的小店，招牌地獄蒸布丁","food","岡本屋売店 別府"),
-  st("09:01–10:01","海地獄","鈷藍色溫泉池，地獄巡禮的代表","spot","海地獄 別府"),
-  st("10:04–10:34","鬼山地獄","養了許多鱷魚，又叫鱷魚地獄","spot","鬼山地獄"),
-  st("10:38–11:38","龜正迴轉壽司","午餐・別府人氣迴轉壽司，用當地的新鮮魚","food","亀正くるくる寿司"),
-  st("11:54–12:54","別府空中纜車","搭纜車上鶴見岳，俯瞰別府和海灣","spot","別府ロープウェイ"),
-  st("14:26–16:26","小倉城庭園","小倉城旁的日式庭園，可以體驗抹茶","spot","小倉城庭園"),
-  st("16:45–17:45","皿倉山纜車 山麓站","搭纜車上山看夜景，日本新三大夜景","spot","皿倉山ケーブルカー 山麓駅"),
-  st("18:10–20:10","天穂 燒肉","晚餐・小倉魚町的燒肉店，離飯店走路幾分鐘","food","天穂 てんすい 小倉 魚町"),
-  st("20:14–21:14","Rakuten STAY 小倉站前","入住・休息，明天一早出發","hotel","Rakuten STAY 小倉駅前")],
+  st("08:36–09:21","岡本屋賣店","明礬溫泉旁的小店，招牌地獄蒸布丁","food","岡本屋売店 別府"),
+  st("09:26–10:26","海地獄","鈷藍色溫泉池，地獄巡禮的代表","spot","海地獄 別府"),
+  st("10:29–10:59","鬼山地獄","養了許多鱷魚，又叫鱷魚地獄","spot","鬼山地獄"),
+  st("11:03–12:03","龜正迴轉壽司","午餐・別府人氣迴轉壽司，用當地的新鮮魚","food","亀正くるくる寿司"),
+  st("12:19–13:19","別府空中纜車","搭纜車上鶴見岳，俯瞰別府和海灣","spot","別府ロープウェイ"),
+  st("14:51–16:51","小倉城庭園","小倉城旁的日式庭園，可以體驗抹茶","spot","小倉城庭園"),
+  st("17:10–18:10","皿倉山纜車 山麓站","搭纜車上山看夜景，日本新三大夜景","spot","皿倉山ケーブルカー 山麓駅"),
+  st("18:35–20:35","天穂 燒肉","晚餐・小倉魚町的燒肉店，離飯店走路幾分鐘","food","天穂 てんすい 小倉 魚町"),
+  st("20:39–21:39","Rakuten STAY 小倉站前","入住・休息，明天一早出發","hotel","Rakuten STAY 小倉駅前")],
  legs:[["beppu Ohana → 岡本屋","6 分"],["岡本屋 → 海地獄","5 分"],["海地獄 → 鬼山地獄","2 分"],["鬼山地獄 → 龜正","4 分"],["龜正 → 別府空中纜車","16 分"],["別府空中纜車 → 小倉城庭園","1 小時 31 分"],["小倉城庭園 → 皿倉山","19 分"],["皿倉山 → 天穂","24 分"],["天穂 → Rakuten STAY","3 分"]],
  tips:["海地獄、鬼山地獄可用地獄巡禮共通券","纜車山頂風大，多穿一件","皿倉山晚上山頂很冷，寶寶包暖一點"],
  foods:["地獄蒸布丁","別府迴轉壽司","小倉燒烏龍"],food:["beppu","nakatsu","kokura"]},
@@ -1087,12 +1088,12 @@ const WARN={
  ["chk","世界之塔 12–2 月開到 19:00，門票大人 ¥300、兒童 ¥200、學齡前免費","世界之塔"],
  ["warn","這天沒有排晚餐：世界之塔之後直接去 TRIAL，可以在 TRIAL 買熟食、便當回民宿吃","TRIAL"]],
 "2026-12-05":[
- ["err","龜正 11:00 才開門，10:38 到要等 22 分鐘；可以在鬼山地獄多待一下、或先去別府纜車再回來吃。週二、三公休（12/5 是週六可以去），魚賣完會提早收","龜正"],
+ ["chk","龜正 11:00–21:00，11:03 到剛開門；週二、三公休（12/5 是週六可以去），魚賣完會提早收","龜正"],
  ["chk","岡本屋賣店 8:30 開門，08:36 到剛好","岡本屋"],
  ["chk","小倉城庭園 11–3 月開到 19:00（活動期間可能調整），出發前到官網確認","小倉城"],
- ["chk","皿倉山纜車冬季 10:00–20:00，上山末班 19:20，週二公休（12/5 是週六可以搭）；16:45 到，上山剛好看夕陽變夜景","皿倉山"],
- ["chk","天穂 午餐 11:30–14:30、晚餐 17:30–22:00（週日只有晚餐），12/5 是週六，18:10 到 OK；每人約 ¥3,000–7,000，可以預約（tensui1129.com）","天穂"],
- ["chk","20:14 才到飯店入住，行李整天放車上，晚到入住沒問題","Rakuten"]],
+ ["chk","皿倉山纜車冬季 10:00–20:00，上山末班 19:20，週二公休（12/5 是週六可以搭）；17:10 到，上山剛好看夕陽變夜景","皿倉山"],
+ ["chk","天穂 午餐 11:30–14:30、晚餐 17:30–22:00（週日只有晚餐），12/5 是週六，18:35 到 OK；每人約 ¥3,000–7,000，可以預約（tensui1129.com）","天穂"],
+ ["chk","20:39 才到飯店入住，行李整天放車上，晚到入住沒問題","Rakuten"]],
 "2026-12-06":[
  ["chk","唐戶市場週日 8:00–15:00 有壽司攤（活きいき馬関街），08:31 到選擇最多","唐戶"],
  ["chk","藍翼橋每天 10:00、11:00、13:00、14:00、15:00、16:00 升起 20 分鐘；10:50 到剛好看 11:00 那次","藍翼橋"],
@@ -1447,12 +1448,12 @@ const SECS=[
 {k:"todo",name:"出發前待辦",intro:"要「做完」的事，做完就點一下打勾。要「帶」的東西在「出國必帶」。",groups:[
  ["證件與保險",["旅平險・不便險投保|出發前投保，保單截圖存手機","Visit Japan Web 入境申報|6 人都要，申報後的 QR Code 截圖存手機","線上簽證|台灣護照免簽 90 天，不用辦","確認帶護照|效期至少 6 個月，寶寶也要","駕照日文譯本|監理站或線上申請 NT$100，每位駕駛都要"]],
  ["網路與錢",["eSIM|出發前買好並下載設定","換日圓現金|牡蠣小屋、屋台、鄉下小店常只收現金","信用卡開通海外交易"]],
- ["預約與聯絡",["租車公司確認雪鏈、兒童座椅、ETC 卡","通知 beppu Ohana 12/3 晚上 21:00 左右才入住","由布まぶし 心 訂位|12/4 中午","買麵包超人博物館門票|12/7，Funliday 有即買即用票","九州自然動物公園排隊搶票|12/4 06:55 到園，9:00 開園","柳川遊船 マルエ観光 預約|12/1 12:36 周遊短程","焼肉いちはし 訂位|12/3 19:00","天穂 燒肉 訂位|12/5 18:10"]],
+ ["預約與聯絡",["租車公司確認雪鏈、兒童座椅、ETC 卡","通知 beppu Ohana 12/3 晚上 21:00 左右才入住","由布まぶし 心 訂位|12/4 中午","買麵包超人博物館門票|12/7，Funliday 有即買即用票","九州自然動物公園排隊搶票|12/4 06:55 到園，9:00 開園","柳川遊船 マルエ観光 預約|12/1 12:36 周遊短程","焼肉いちはし 訂位|12/3 19:00","天穂 燒肉 訂位|12/5 18:35"]],
  ["手機準備",["下載 Google 地圖離線地圖|阿蘇、高千穗山區訊號可能不穩","4 間住宿確認信截圖","把這個 App 加到手機主畫面"]]]},
 {k:"go",name:"行李清單",intro:"9 天 8 夜・5 大人＋1 寶寶。12 月九州市區白天約 12–13°C、早晚 3–6°C；阿蘇、由布院清晨會到 0°C 以下。衣服數量以「熊本連住 2 晚時洗一次衣服」計算，不洗就照括號多帶。",groups:[
  ["證件與錢",["護照 6 本（含寶寶）|效期 6 個月以上","護照影本＋大頭照 2 張|遺失補辦用，和正本分開放","機票電子票|訂位代號看航空公司確認信","4 間住宿訂房確認信","信用卡 2 張","日圓現金|牡蠣小屋、屋台、鄉下小店常只收現金","Suica 等 IC 卡|機場巴士、地鐵都能刷，車上不找大鈔","零錢包|日本硬幣很多，投幣置物櫃、自動販賣機常用","寶寶的出生證明或戶籍謄本影本|有些國家會查，帶著備用"]],
  ["大人衣物（每人）",["羽絨外套|每人 1 件，防風、可壓縮的最好；D4 阿蘇草千里、高千穗峽很冷","輕羽絨背心或刷毛外套|每人 1 件，車上、室內脫外套後穿","發熱衣・保暖褲|發熱衣每人 3 件、保暖褲 2 件（不洗就 5 件、3 件）","長袖上衣|每人 4 件（不洗就 7 件），選好穿脫的","毛衣或刷毛上衣|每人 2 件，中間層","上衣・褲子|長褲每人 2–3 條，至少 1 條刷毛或保暖褲","內衣褲・襪子|內衣褲每人 5 套（不洗就 9 套）；襪子 5 雙＋1 雙厚羊毛襪","睡衣|每人 1 套，飯店多半有睡衣，民宿不一定","毛帽・圍巾・手套|每人各 1，手套選可滑手機的；脖圍比圍巾好收","好走的鞋|每人 1 雙防水、止滑的，高千穗峽步道、上色見石階會濕滑","拖鞋|飯店、民宿室內穿","泳衣泳褲|飯店泳池或包租湯用；日本大眾溫泉不能穿泳衣","換洗衣物|多 1 套放隨身行李，萬一托運晚到"]],
- ["寶寶衣物",["保暖連身衣・包巾・帽子|連身羽絨或防風外套 2 件（一件備用）、包巾或小毯 1 條","換洗衣物多帶兩套|貼身衣褲每天 2 套 × 5 天＝10 套（D3 洗衣），不洗就 18 套","寶寶發熱衣・內搭|4–5 件，冬天搭在外層裡面","寶寶長褲・內搭褲|6 條，容易弄髒","寶寶襪子|8 雙＋2 雙厚襪；學步鞋 1 雙（會走路的話）","寶寶毛帽・手套|各 2 頂／雙，掉了有備用","寶寶睡衣・睡袋|2 套；民宿晚上比較冷，可帶防踢睡袋","口水巾・小方巾|6–8 條"]],
+ ["寶寶衣物",["保暖連身衣・包巾・帽子|連身羽絨或防風外套 2 件（一件備用）、包巾或小毯 1 條","換洗衣物多帶兩套|貼身衣褲每天 2 套 × 5 天＝10 套（熊本洗衣），不洗就 18 套","寶寶發熱衣・內搭|4–5 件，冬天搭在外層裡面","寶寶長褲・內搭褲|6 條，容易弄髒","寶寶襪子|8 雙＋2 雙厚襪；學步鞋 1 雙（會走路的話）","寶寶毛帽・手套|各 2 頂／雙，掉了有備用","寶寶睡衣・睡袋|2 套；民宿晚上比較冷，可帶防踢睡袋","口水巾・小方巾|6–8 條"]],
  ["寶寶吃喝",["奶粉・奶瓶・副食品|放隨身，過安檢主動說是寶寶用；奶粉帶全程份量＋2 天備用","奶瓶|3–4 支，外出包隨時放 1 支","奶瓶刷・奶瓶清潔劑・消毒用品|旅行用小瓶或消毒錠","保溫瓶|1 支裝熱水沖奶；飯店多半有熱水壺","分裝奶粉盒|3–4 格，外出帶當天份","副食品・寶寶零食|帶 2–3 天份，其他在日本藥妝店買（和光堂、Pigeon 很多選擇）","寶寶餐具・圍兜|湯匙叉子 1 組、吸盤碗 1 個、圍兜 3–5 條（拋棄式圍兜很方便）","寶寶水杯・吸管杯|1 個","起降時喝的奶或水|飛機起飛降落喝東西，耳朵比較不會痛"]],
  ["寶寶換尿布與清潔",["尿布・濕紙巾|每天 6–8 片 × 9 天約 60–70 片；建議只帶 3 天份約 25 片，其他在日本藥妝店、超市買，省托運重量","濕紙巾|帶 3–4 包，日本可補；手口用的另外 1 包","隔尿墊|拋棄式 10 片，換尿布時墊著","尿布垃圾袋|1 捲，日本垃圾要自己帶走的地方很多","尿布疹膏","寶寶沐浴乳・洗髮乳|旅行小瓶","寶寶乳液・護唇膏|九州冬天很乾","寶寶指甲剪・棉花棒"]],
  ["寶寶外出與睡覺",["推車或背巾|高千穗峽、神社石階用背巾比較方便；輕便推車市區好用，兩個都帶最安心","推車防風雨罩|冬天擋風很重要","安撫巾・奶嘴|奶嘴 2 個＋奶嘴鍊","車上玩具・繪本|每天開車 1.5–5 小時，安靜的玩具、貼紙書、平板下載好卡通","寶寶外出包|裝 1 天份尿布、奶、換洗 1 套","兒童安全座椅|跟租車公司租，取車時確認型號適合寶寶的年齡體重"]],
@@ -1879,7 +1880,7 @@ today(){
 plan(){
   if(dayIdx==null){const t=todayIndex();dayIdx=t>=0?t:0}
   const ti=todayIndex(),day=DAYS[dayIdx];
-  return`<header class="top"><div class="row tophd" style="flex-wrap:nowrap"><div><h1>行程</h1></div><div class="fsync"><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a><div class="sub">行程同步自 Funliday<br>11/16 22:05 最後確認</div></div>${mascot("plan")}</div></header>
+  return`<header class="top"><div class="row tophd" style="flex-wrap:nowrap"><div><h1>行程</h1></div><div class="fsync"><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a><div class="sub">行程同步自 Funliday<br>11/16 22:15 最後確認</div></div>${mascot("plan")}</div></header>
   <div class="days dl" role="group" aria-label="選擇日期" style="--n:${DAYS.length}"><span class="dveh" style="left:${(dayPrev+.5)/DAYS.length*100}%" data-to="${(dayIdx+.5)/DAYS.length*100}">${ic(dayVeh(dayIdx),1.6)}</span>${DAYS.map((d,i)=>`<button class="dp ${i===ti?"today":""}" data-day="${i}" aria-pressed="${i===dayIdx}" aria-label="D${i+1} ${md(d.d)}（${d.w}）">${(WARN[d.d]||[]).some(x=>x[0]==="err")?'<i class="wd" aria-label="有時間衝突"></i>':""}<span class="dd"></span><span class="dw">週${d.w}</span><span class="dn">${+d.d.slice(8)}</span></button>`).join("")}</div>
   <div class="dayview" style="display:flex;flex-direction:column;gap:14px">
   <div class="artcard">${(()=>{const w=heroWx(day);return heroArt(DAY_ART[day.d],w&&w.k)})()}</div>
@@ -1925,11 +1926,16 @@ list(){
   ${E?`<div class="offnote"><b>編輯中</b>可以改分類名稱、幫每個項目寫備註、刪除分類或項目、新增項目和分類。改好按右上角「完成」。</div>`:""}
   <div class="card" style="display:flex;flex-direction:column;gap:8px"><div class="row" style="justify-content:space-between"><h3 class="ch">${tt(SECEMO[S.k]||"clip","var(--yama)")}${S.name}進度</h3><span class="sub" id="ckcount">${doneIn(secItems(S.k))} / ${secItems(S.k).length}</span></div>
    <div class="prog"><i id="ckbar" style="width:${secItems(S.k).length?doneIn(secItems(S.k))/secItems(S.k).length*100:0}%"></i></div></div>
-  ${groups.map((g,gx)=>`<div class="card${E?" editing":""}" style="display:flex;flex-direction:column;gap:4px">
+  ${(()=>{const isB=g=>/^寶寶/.test(g.name)||/^寶寶/.test(g.key);const card=(g,gx)=>`<div class="card${E?" editing":""}" style="display:flex;flex-direction:column;gap:4px">
     ${E?`<div class="gh"><form data-form="grename" data-isec="${S.k}" data-key="${esc(g.key)}" class="addi" style="margin:0;flex:1"><label class="vh" for="gn-${gi}">分類名稱</label><input id="gn-${gi}" name="name" value="${esc(g.name)}" required><button class="btn" type="submit">改名</button></form>${delBtn(g.custom?"data-delgroup":"data-hidegroup",esc(g.key),g.name,"刪除整組")}</div>`:`<h3 class="ch">${tt(gEmo(g.name),TCOL[gx%4])}${esc(g.name)}</h3>`}
     <div class="ck">${g.base.map(t=>{const[x,n]=t.split("|");const it=ITEMS.find(i=>i.sec===S.k&&i.t===x);if(!it||isHidden(it.id))return"";return row(it,x,n,false)}).join("")}
     ${ITEMS.filter(it=>it.u&&it.sec===S.k&&it.g===g.key).map(it=>row(it,it.t,it.n,true)).join("")}</div>
-    ${E?`<form data-form="item" data-isec="${S.k}" data-g="${esc(g.key)}" class="addi"><label class="vh" for="ai-${gi}">新增到${esc(g.name)}</label><input id="ai-${gi++}" name="t" placeholder="＋ 新增項目到「${esc(g.name)}」" required><button class="btn" type="submit">加入</button></form>`:(gi++,"")}</div>`).join("")}
+    ${E?`<form data-form="item" data-isec="${S.k}" data-g="${esc(g.key)}" class="addi"><label class="vh" for="ai-${gi}">新增到${esc(g.name)}</label><input id="ai-${gi++}" name="t" placeholder="＋ 新增項目到「${esc(g.name)}」" required><button class="btn" type="submit">加入</button></form>`:(gi++,"")}</div>`;
+    const bb=groups.filter(isB);let out="",done=false;
+    groups.forEach((g,gx)=>{if(!isB(g)){out+=card(g,gx);return}if(done)return;done=true;
+      const its=ITEMS.filter(it=>it.sec===S.k&&!isHidden(it.id)&&bb.some(x=>x.key===it.g));const dn=its.filter(it=>checks.has(it.id)).length;
+      out+=`<details class="card need bbw" data-bbw="1" ${bbOpen||E?"open":""}><summary><span class="nh">${tt("onesie",TCOL[0])}<b>寶寶用品</b><span class="sub" id="bbcount">${dn} / ${its.length}</span></span><span class="chev" aria-hidden="true"></span></summary><div class="bbin">${bb.map(x=>card(x,groups.indexOf(x))).join("")}</div></details>`});
+    return out})()}
   ${E?`<form data-form="gadd" data-isec="${S.k}" class="card addi" style="margin:0"><label class="vh" for="gadd">新增分類</label><input id="gadd" name="name" placeholder="＋ 新增分類，例如：寶寶的副食品" required><button class="btn p" type="submit">新增分類</button></form>`:""}
   ${E&&hidN?`<button type="button" class="btn" data-restore="${S.k}" style="align-self:flex-start">復原這一頁刪掉的 ${hidN} 個項目或分類</button>`:""}`},
 info(){
@@ -2350,6 +2356,7 @@ function weatherHTML(day){const ks=DAY_CL[day.d]||[];if(!ks.length)return"";
    <p class="wxa">${clAdvice(lo)}${extra.length?"。"+extra.join("；"):""}</p>
    <div class="row">${ks.map(k=>`<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(CL[k][4])}" target="_blank" rel="noopener">${ic("sun")}${CL[k][0]}詳細預報</a>`).join("")}</div>
 </details>`}
+let bbOpen=false;document.addEventListener("toggle",e=>{if(e.target.dataset&&e.target.dataset.bbw)bbOpen=e.target.open},true);
 const wxOpen=new Set();document.addEventListener("toggle",e=>{const d=e.target.dataset&&e.target.dataset.wx;if(d)e.target.open?wxOpen.add(d):wxOpen.delete(d)},true);
 function flightHTML(day){const F=FLIGHTS[day.d];if(!F)return"";
   const go=F.label==="去程";
@@ -2403,7 +2410,7 @@ function sel(b){const s=b.previousElementSibling;if(s){const r=document.createRa
 app.addEventListener("change",e=>{const c=e.target.closest("[data-ck]");if(!c)return;
   c.checked?checks.add(c.dataset.ck):checks.delete(c.dataset.ck);LS.set("checks2",[...checks]);
   const it=secItems(listSec),d=doneIn(it);
-  document.getElementById("ckcount").textContent=d+" / "+it.length;document.getElementById("ckbar").style.width=d/it.length*100+"%";
+  document.getElementById("ckcount").textContent=d+" / "+it.length;{const bc=document.getElementById("bbcount");if(bc){const ids=[...document.querySelectorAll("details.bbw [data-ck]")];bc.textContent=ids.filter(x=>x.checked).length+" / "+ids.length}}document.getElementById("ckbar").style.width=d/it.length*100+"%";
   const sc=app.querySelector(`[data-cnt="${listSec}"]`);if(sc)sc.textContent=d+" / "+it.length});
 app.addEventListener("input",e=>{if(e.target.id==="fq"){foodQuery=e.target.value;document.getElementById("flist").innerHTML=foodList();
     app.querySelectorAll('[data-farea]').forEach(x=>x.setAttribute("aria-pressed",!foodQuery&&x.dataset.farea===XS().area));
