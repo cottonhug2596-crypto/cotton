@@ -1583,7 +1583,8 @@ function legMap(day){const out={},rest=[];let last=-1;
     const tx=s=>nrm(key(s)+s.n+(s.q||""));const ok=[s=>tx(s).includes(dest),s=>/飯店/.test(dest)&&s.k==="hotel",s=>tx(s).includes(dest.slice(0,2))];
     let j=-1;for(const f of ok){j=day.stops.findIndex((s,i)=>i>last&&i>0&&f(s));if(j>=0)break}
     if(j<0||out[j]){rest.push(l);return}out[j]=l;last=j});return{out,rest}}
-function legMode(day,j,txt,mins){let m=modeOf(day.stops[j],day)||modeOf(day.stops[j-1],day);
+const NOCAR=["2026-11-30","2026-12-02","2026-12-07"];
+function legMode(day,j,txt,mins){if(NOCAR.includes(day.d)){if(/步行/.test(txt))return"walk";return"foot"}let m=modeOf(day.stops[j],day)||modeOf(day.stops[j-1],day);
   if(/步行/.test(txt))return"walk";if(m==="walk"&&mins>10)m=null;
   if(!m&&day.stops.some(x=>x.k==="car")&&j>day.stops.findIndex(x=>x.k==="car"))m="car";return m}
 const minsOf=t=>{const h=t.match(/(\d+)\s*小時/),mm=t.match(/(\d+)\s*分/);return(h?+h[1]*60:0)+(mm?+mm[1]:0)};
@@ -1595,7 +1596,7 @@ function tlHTML(day,res){const n={c:0};const LM=legMap(day);const nw=tokyoNow(),
       if(l){txt=l[1];mins=minsOf(l[1])}
       if(txt){const m=legMode(day,j,txt,mins),lab=m&&MODE_TAG[m]&&m!=="walk"||/步行/.test(txt)?"":m&&MODE_TAG[m]?MODE_TAG[m][0]+" ":"";const lb=l[2]?l[2]+" ":m&&MODE_TAG[m]&&!/步行/.test(txt)?MODE_TAG[m][0]+" ":"";
         const nowIn=isToday&&r&&prev&&nw.min>=prev.e&&nw.min<r.s?`<em class="rn" style="top:${((nw.min-prev.e)/(r.s-prev.e)*100).toFixed(1)}%"><span>${hhmm(nw.min)}</span></em>`:"";
-        rows.push(`<div class="tr trv" data-j="t${j}"><div class="rl"><b class="bar"></b>${nowIn}</div><div class="tv"><span class="tvi">${ic(m==="walk"||/步行/.test(txt)?"nav":m==="train"||m==="transit"||m==="bus"?"train":"car")}</span><span class="tvt">${esc(lb)}${esc(txt)}</span><span class="tvr">${esc(l[0])}</span></div></div>`)}
+        rows.push(`<div class="tr trv" data-j="t${j}"><div class="rl"><b class="bar"></b>${nowIn}</div><div class="tv"><span class="tvi">${ic(m==="walk"||m==="foot"||/步行/.test(txt)?"nav":m==="train"||m==="transit"||m==="bus"?"train":"car")}</span><span class="tvt">${esc(lb)}${esc(txt)}</span><span class="tvr">${esc(l[0])}</span></div></div>`)}
       else rows.push(`<div class="tr gap"></div>`)}
     const c=catStop(s);const nowIn=isToday&&r&&nw.min>=r.s&&nw.min<r.e?`<em class="rn" style="top:${((nw.min-r.s)/(r.e-r.s)*100).toFixed(1)}%"><span>${hhmm(nw.min)}</span></em>`:"";
     rows.push(`<div class="tr ${SCAT[c][1]}" data-j="${j}"><div class="rl" data-go="${j}"><span class="t1">${r?hhmm(r.s):esc(s.t)}</span>${r&&/–/.test(s.t)?`<span class="t2">${hhmm(r.e)}</span>`:""}<b class="bar"></b>${nowIn}</div><div class="rc">${stopHTML(s,j,n,res[j],day)}</div></div>`);
@@ -1836,14 +1837,14 @@ function art(k){const f=SCENES[k]||SCENES.kyushu;return`<svg class="art" viewBox
 /* ---------- 交通小標籤、必去 ---------- */
 const MUST=["麵包超人","太宰府天滿宮","柳川遊船","熊本城稻荷","水前寺","草千里","高千穗峽","九州自然動物公園","金鱗湖","海地獄","門司港懷舊區","小倉城庭園"];
 const WALKS=["九州鐵道紀念館","Princess","門司港懷舊區","伽哩本舗","藍翼橋","金鱗湖","櫛田神社","博多運河城","一蘭"];
-const MODE_TAG={plane:["飛機","m-plane"],train:["電車","m-train"],bus:["巴士","m-bus"],car:["開車","m-car"],walk:["步行","m-walk"],transit:["大眾運輸","m-train"],drive:["開車","m-car"],sub:["地鐵","m-sub"]};
+const MODE_TAG={plane:["飛機","m-plane"],train:["電車","m-train"],bus:["巴士","m-bus"],car:["開車","m-car"],walk:["步行","m-walk"],transit:["大眾運輸","m-train"],foot:["步行／大眾運輸","m-walk"],drive:["開車","m-car"],sub:["地鐵","m-sub"]};
 function modeOf(s,day){if(s.u&&s.mode)return s.mode;if(["plane","train","bus","car"].includes(s.k))return s.k;if(s.k==="hotel")return null;
   if(/步行/.test(s.d||"")||WALKS.some(w=>key(s).includes(w)))return"walk";if(/地鐵/.test(s.d||""))return"sub";
   const i=day.stops.indexOf(s),ci=day.stops.findIndex(x=>x.k==="car");if(ci>=0&&i>ci)return"car";return null}
 function modeTag(s,day){const m=day&&modeOf(s,day);if(!m||!MODE_TAG[m])return"";const t=MODE_TAG[m];return`<span class="mode ${t[1]}">${t[0]}</span>`}
 const isMust=s=>s.k==="spot"&&MUST.some(m=>key(s).includes(m));
 let bounceNext=false,dayPrev=0;
-const dayVeh=i=>{const d=DAYS[i];if(d.stops.some(s=>s.k==="plane"))return"plane";if(d.stops.some(s=>s.k==="car")||(d.d>="2026-12-01"&&d.d<="2026-12-06"))return"car";return"train"};
+const dayVeh=i=>{const d=DAYS[i];if(d.stops.some(s=>s.k==="plane"))return"plane";if(NOCAR.includes(d.d))return"train";if(d.stops.some(s=>s.k==="car")||(d.d>="2026-12-01"&&d.d<="2026-12-06"))return"car";return"train"};
 /* ---------- 畫面 ---------- */
 const V={
 today(){
