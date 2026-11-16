@@ -480,7 +480,8 @@ nav.tabs a[aria-current="page"]{background:var(--yama);color:var(--ink);border-c
 .need .nh{flex:1;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .need .nh b{font-size:15px;margin-right:4px}
 .need .chev{width:9px;height:9px;border-right:2.5px solid var(--sumi);border-bottom:2.5px solid var(--sumi);transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
-.need[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.need[open]>summary .chev{transform:rotate(-135deg);margin-top:4px}
+.cusw .cusi summary{padding:9px 12px}
 .need .nbody{display:flex;flex-direction:column;gap:14px;padding:0 16px 16px;min-width:0}
 .bbw .ch{margin:0}.bbw .bbin{display:flex;flex-direction:column;gap:12px;padding:0 10px 12px}.bbw .bbin>.card{box-shadow:none}
 .need .nsec{display:flex;flex-direction:column;gap:8px}
@@ -646,6 +647,7 @@ svg.fldoodle{width:60px;height:30px;margin-left:auto}
 .sech svg{width:24px;height:24px;color:var(--brick);stroke-width:2.2}
 /* ===== 海關 ===== */
 .cus{display:flex;flex-direction:column;gap:10px}
+.cusw .cusin{padding:0 16px 16px}.cusw .nh b{font-size:17px}
 .cusg{display:flex;flex-direction:column;gap:6px}
 .cusg .fltag{align-self:flex-start;margin:4px 0 2px}
 .fltag.cgo{background:var(--coral)}.fltag.cback{background:var(--mizu)}.fltag.cback svg{transform:scaleX(-1)}
@@ -2206,9 +2208,9 @@ const TAXFREE=[
 function taxHTML(){return`<div class="card cus"><h3 class="ch">${tt("coin","var(--yama)")}日本退稅新制（2026/11/1 起）</h3><p class="sub">現在改成「先付稅、出境再退」：買東西時先付含稅價，離開日本時海關確認東西有帶出去，店家才把稅退給你。我們這趟全程都用新制。</p>
   <div class="cusg">${TAXFREE.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${pic(k)}</span><b>${n}</b><span class="ctag ${/雷/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>
   <p class="sub">整理自 2026 年 11 月的網路文章。手續費和退款方式每家店不同，以店家說明為準。</p></div>`}
-function customsHTML(){return`<div class="card cus"><h3 class="ch">${tt("passport","var(--coral)")}出入海關注意事項</h3><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
+function customsHTML(){return`<details class="card need cusw"><summary><span class="nh">${tt("passport","var(--coral)")}<b>出入海關注意事項</b></span><span class="chev" aria-hidden="true"></span></summary><div class="cus cusin"><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
   ${CUSTOMS.map(([t,cls,items])=>`<div class="cusg"><span class="fltag ${cls==="flgo"?"cgo":"cback"}">${ic("plane")}${t}</span>
-   ${items.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${pic(CICON[k]||"pin")}</span><b>${n}</b><span class="ctag ${/禁止|別帶/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>`).join("")}</div>`}
+   ${items.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${pic(CICON[k]||"pin")}</span><b>${n}</b><span class="ctag ${/禁止|別帶/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>`).join("")}</div></details>`}
 
 /* ---------- 手繪小圖（取代 emoji） ---------- */
 const PICS=(()=>{const K="#3E3A39",W="#FFFCF6",C="#F2A497",Y="#F6D27A",M="#A8D3E6",G="#B9DAA5",
