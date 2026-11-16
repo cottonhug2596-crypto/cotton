@@ -911,7 +911,7 @@ const photoUrl=q=>"https://www.google.com/search?tbm=isch&q="+encodeURIComponent
 const menuUrl=q=>"https://www.google.com/search?q="+encodeURIComponent(q+" メニュー 食べログ");
 const infoUrl=q=>"https://www.google.com/search?q="+encodeURIComponent(q+" 料金 営業時間");
 const spotPhotoUrl=q=>"https://www.google.com/search?tbm=isch&q="+encodeURIComponent(q);
-const navUrl=q=>"https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(q);
+const navUrl=(q,mode)=>"https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(q)+(mode?"&travelmode="+mode:"");
 
 /* ---------- 住宿 ---------- */
 const HOTELS={
@@ -1616,12 +1616,12 @@ document.addEventListener("click",e=>{
   const h=e.target.closest(".tlx2 [data-tog]")||e.target.closest(".tlx2 .mapb");if(h){const row=h.closest(".tr");requestAnimationFrame(()=>pinRow(row))}});
 function updTL(){}
 function initTL(){app.querySelectorAll(".tlx2").forEach(x=>{const row=x.querySelector(".tc.cur")?.closest(".tr")||x.querySelector(".tr[data-j]:not(.trv)");pinRow(row)})}
-function hotelHTML(k,title){const h=HOTELS[k];if(!h)return"";
+function hotelHTML(k,title,d){const h=HOTELS[k];const md=d&&typeof NOCAR!=="undefined"&&(NOCAR.includes(d)||d>"2026-12-05")?"transit":"driving";if(!h)return"";
   return`<div class="card hotel" style="display:flex;flex-direction:column;gap:6px">
    <h3 class="ch">${tt("hotel","var(--mizu)")}${title}</h3><b style="font-size:17px">${esc(h.n)}</b>
    <div class="sub" style="color:var(--ink)">${h.rooms}・15:00 入住・${h.out}</div>
    <div class="row">${h.tel?telBtn(h.tel):""}
-   <a class="btn p" href="${navUrl(h.q)}" target="_blank" rel="noopener">${ic("nav")}導航回飯店</a></div></div>`}
+   <a class="btn p" href="${navUrl(h.q,md)}" target="_blank" rel="noopener">${ic("nav")}導航回飯店</a></div></div>`}
 function routeHTML(day){const{res}=stopStates(day);
   const rest=day.stops.map((s,i)=>({...s,i})).filter(s=>s.q&&res[s.i]!=="done");if(!rest.length)return"";
   const chunks=[];for(let i=0;i<rest.length;i+=4)chunks.push(rest.slice(i,i+4));
@@ -1640,7 +1640,7 @@ function dayBody(day,i){
   ${day.plan?`<div class="card plan" style="display:flex;flex-direction:column;gap:8px"><h3 class="ch">${tt("snow","var(--mizu)")}${esc(day.plan.title)}</h3><ul class="tips">${day.plan.items.map(t=>`<li>${esc(t)}</li>`).join("")}</ul><div class="row">${day.plan.links.map(l=>`<a class="btn" href="${l[1]}" target="_blank" rel="noopener">${ic("nav")}${esc(l[0])}</a>`).join("")}</div></div>`:""}
   <div class="card" style="display:flex;flex-direction:column;gap:8px"><h3 class="ch">${tt("bulb","var(--yama)")}小提醒</h3><ul class="tips">${day.tips.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>
   ${nearHTML()}
-  ${day.hotel?hotelHTML(day.hotel,"今晚住宿"):""}
+  ${day.hotel?hotelHTML(day.hotel,"今晚住宿",day.d):""}
   <div class="card" style="display:flex;flex-direction:column;gap:8px"><label for="note-${i}"><h3 class="ch">${tt("pencil","var(--waka)")}D${i+1} 筆記</h3></label>
    <textarea id="note-${i}" data-note="${i}" placeholder="想去的店、花了多少、寶寶今天的小事……只存在這支手機">${esc(notes[i]||"")}</textarea></div>`}
 
