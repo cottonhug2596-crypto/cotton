@@ -647,7 +647,7 @@ svg.fldoodle{width:60px;height:30px;margin-left:auto}
 .sech svg{width:24px;height:24px;color:var(--brick);stroke-width:2.2}
 /* ===== 海關 ===== */
 .cus{display:flex;flex-direction:column;gap:10px}
-.cusw .cusin{padding:0 16px 16px}.cusw .nh b{font-size:17px}
+.cusw .cusin{padding:0 16px 16px}.cusw .infot{margin:0}.infow .infob{padding:0 16px 16px}.infow .infot{margin:0}.infow summary .nh{flex-wrap:nowrap}.cusw .nh b{font-size:17px}
 .cusg{display:flex;flex-direction:column;gap:6px}
 .cusg .fltag{align-self:flex-start;margin:4px 0 2px}
 .fltag.cgo{background:var(--coral)}.fltag.cback{background:var(--mizu)}.fltag.cback svg{transform:scaleX(-1)}
@@ -2208,7 +2208,7 @@ const TAXFREE=[
 function taxHTML(){return`<div class="card cus"><h3 class="ch">${tt("coin","var(--yama)")}日本退稅新制（2026/11/1 起）</h3><p class="sub">現在改成「先付稅、出境再退」：買東西時先付含稅價，離開日本時海關確認東西有帶出去，店家才把稅退給你。我們這趟全程都用新制。</p>
   <div class="cusg">${TAXFREE.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${pic(k)}</span><b>${n}</b><span class="ctag ${/雷/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>
   <p class="sub">整理自 2026 年 11 月的網路文章。手續費和退款方式每家店不同，以店家說明為準。</p></div>`}
-function customsHTML(){return`<details class="card need cusw"><summary><span class="nh">${tt("passport","var(--coral)")}<b>出入海關注意事項</b></span><span class="chev" aria-hidden="true"></span></summary><div class="cus cusin"><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
+function customsHTML(){return`<details class="card need cusw"><summary><span class="nh"><h3 class="ch infot">${tt("passport","var(--coral)")}出入海關注意事項</h3></span><span class="chev" aria-hidden="true"></span></summary><div class="cus cusin"><p class="sub">不確定能不能帶，就走紅線（應申報）主動問海關；主動申報的物品頂多被沒收，不會被罰。</p>
   ${CUSTOMS.map(([t,cls,items])=>`<div class="cusg"><span class="fltag ${cls==="flgo"?"cgo":"cback"}">${ic("plane")}${t}</span>
    ${items.map(([k,n,tag,L])=>`<details class="cusi"><summary><span class="cico" aria-hidden="true">${pic(CICON[k]||"pin")}</span><b>${n}</b><span class="ctag ${/禁止|別帶/.test(tag)?"no":""}">${tag}</span><span class="chev" aria-hidden="true"></span></summary><ul>${L.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`).join("")}</div>`).join("")}</div></details>`}
 
@@ -2300,8 +2300,17 @@ const HAREA={hakata:["博多","var(--coral)"],kuma:["熊本","var(--waka)"],bepp
 /* ---------- 路由與事件 ---------- */
 const TABS=[["today","首頁","sun"],["plan","行程","cal"],["food","景點美食","bowl"],["list","清單","check"],["tools","工具","wallet"],["info","資訊","info"],["sos","緊急","sos"]];
 const app=document.getElementById("app");
+const infoOpen=new Set();
+function foldInfo(){app.querySelectorAll(":scope > div.card").forEach(c=>{const h=c.querySelector(":scope > h3.ch, :scope > .row > h3.ch");if(!h)return;
+  const d=document.createElement("details");d.className="card need infow"+(c.classList.contains("cus")?"":"");const key=h.textContent.trim();d.dataset.info=key;if(infoOpen.has(key))d.open=true;
+  const sm=document.createElement("summary");const nh=document.createElement("span");nh.className="nh";const ttl=h.cloneNode(true);ttl.classList.add("infot");nh.appendChild(ttl);
+  const hr=h.parentElement!==c?h.parentElement:null;if(hr){[...hr.children].forEach(x=>{if(x!==h)nh.appendChild(x.cloneNode(true))})}
+  sm.appendChild(nh);const cv=document.createElement("span");cv.className="chev";cv.setAttribute("aria-hidden","true");sm.appendChild(cv);d.appendChild(sm);
+  const body=document.createElement("div");body.className="infob"+(c.classList.contains("cus")?" cus":"");body.setAttribute("style",c.getAttribute("style")||"");(hr||h).remove();while(c.firstChild)body.appendChild(c.firstChild);d.appendChild(body);c.replaceWith(d)})}
+document.addEventListener("toggle",e=>{const k=e.target.dataset&&e.target.dataset.info;if(k)e.target.open?infoOpen.add(k):infoOpen.delete(k)},true);
 function route(){let r=(location.hash||"#today").slice(1);if(!V[r])r="today";
   app.innerHTML=V[r]();
+  if(r==="info")foldInfo();
   document.getElementById("tabs").innerHTML=TABS.map(t=>`<a href="#${t[0]}" ${t[0]===r?'aria-current="page"':""}>${ic(t[2],1.8)}${t[1]}</a>`).join("");
   if(bounceNext){bounceNext=false;app.querySelectorAll(".dayview,.days~.card").forEach(el=>{el.classList.remove("bounce");void el.offsetWidth;el.classList.add("bounce")})}
   app.querySelectorAll('.days [aria-pressed="true"],[data-farea][aria-pressed="true"]').forEach(c=>{const box=c.parentElement;box.scrollLeft=c.offsetLeft-box.clientWidth/2+c.clientWidth/2});
