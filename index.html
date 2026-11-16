@@ -1022,15 +1022,15 @@ const DAYS=[
   st("12:53–13:13","門司港車站","大正時期落成的西式車站建築","spot","門司港駅"),
   st("13:14–14:14","九州鐵道紀念館","真的火車可以上去看，還有小朋友能開的迷你列車","spot","九州鉄道記念館"),
   st("14:16–15:16","Princess Phi Phi","午餐・門司港燒咖哩排隊名店","food","プリンセスピピ門司港"),
-  st("16:25–17:25","&HOTEL HAKATA","福岡還車後回飯店・連住 3 晚","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6")],
+  st("16:25–17:25","&HOTEL HAKATA","先回飯店放行李、家人休息・17:00 博多還車・連住 3 晚","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6")],
  legs:[["小倉 → 唐戶市場","約 32 分","開車（關門隧道）"],["唐戶市場 → 藍翼橋","約 19 分","開車（關門隧道）"],["藍翼橋 → 門司港懷舊區","步行 1 分"],["懷舊區 → 門司港車站","步行 1 分"],["門司港車站 → 九州鐵道紀念館","步行 1 分"],["鐵道紀念館 → Princess Phi Phi","步行 2 分"],["Princess Phi Phi → &HOTEL HAKATA","約 1 小時 9 分"]],
  tips:["唐戶市場的壽司攤賣完就收，早點去選擇比較多","藍翼橋 11:00 升起，10:51 到剛好看","還車前加滿油、留收據","門司港是香蕉叫賣的發源地，找找香蕉伴手禮"],
  foods:["唐戶市場壽司","門司港燒咖哩","門司港香蕉甜點"],food:["mojiko","kokura"]},
 {d:"2026-12-07",w:"一",title:"麵包超人博物館＋福岡自由行",tag:"不開車・睡飽再出門",route:"福岡市區",hotel:"hakata",
  stops:[
-  st("08:00–09:00","&HOTEL HAKATA","早餐・慢慢出門","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6"),
-  st("09:05–11:05","麵包超人兒童博物館","博多河岸商場 5–6F・需購票","spot","福岡アンパンマンこどもミュージアムinモール"),
-  st("11:09–12:09","&HOTEL HAKATA","回飯店休息，下午自由安排","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6")],
+  st("08:00–10:00","&HOTEL HAKATA","早餐・慢慢出門","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6"),
+  st("10:05–13:05","麵包超人兒童博物館","博多河岸商場 5–6F・需購票","spot","福岡アンパンマンこどもミュージアムinモール"),
+  st("13:09–14:09","&HOTEL HAKATA","回飯店休息，下午自由安排","hotel","&HOTEL HAKATA 福岡市博多区冷泉町9-6")],
  legs:[["飯店 → 麵包超人兒童博物館","5 分"],["博物館 → &HOTEL HAKATA","4 分"]],
  tips:["今天不開車，搭地鐵或計程車","下午想出門可以去海之中道海浜公園、糸島，或晚上逛中洲屋台","伴手禮可以先買一部分，明天輕鬆一點"],
  foods:["中洲屋台","博多水炊雞肉鍋","牛腸鍋"],food:["hakata","extra"]},
@@ -1099,9 +1099,9 @@ const WARN={
  ["chk","藍翼橋每天 10:00、11:00、13:00、14:00、15:00、16:00 升起 20 分鐘；10:51 到剛好看 11:00 那次","藍翼橋"],
  ["chk","九州鐵道紀念館 9:00–17:00（最後入館 16:30），13:14 到 OK","九州鐵道"],
  ["warn","Princess Phi Phi 11:00–20:30，不接受訂位；午餐排到 14:16，大家會比較餓，可以在唐戶市場多吃一點","Princess"],
- ["chk","還車時間和地點跟租車公司確認；16:25 到飯店，還車要排在這之前，記得加滿油","&HOTEL HAKATA"]],
+ ["chk","17:00 在博多還車：16:25 先到飯店卸行李和家人，駕駛再開去還車；還車前加滿油、留收據，ETC 費用還車時結算","&HOTEL HAKATA"]],
 "2026-12-07":[
- ["err","麵包超人博物館 10:00 才開館（最後入館 16:00），09:05 到要等快 1 小時。建議 09:50 再出門","麵包超人"]],
+ ["chk","麵包超人博物館 10:00–17:00（最後入館 16:00），10:05 到剛開門；門票要先在網路上買","麵包超人"]],
 "2026-12-08":[
  ["chk","飯店 11:00 退房，先寄放行李再出門，13:04 回來拿","&HOTEL HAKATA"],
  ["chk","亞洲航空報到櫃台通常起飛前 1 小時關閉，14:20 到機場時間足夠","福岡機場"]]
@@ -1465,7 +1465,7 @@ const SECS=[
  ["洗衣",["洗衣袋 2–3 個|熊本連住 2 晚時洗衣","洗衣球或洗衣粉小包|投幣洗衣店多半有賣","折疊衣架・曬衣夾|4–6 個","髒衣服收納袋|每人 1 個"]],
  ["其他",["行李秤|回程托運共 115kg，比去程少","折疊購物袋","夾鏈袋・垃圾袋","雨傘","水瓶或保溫瓶|白川水源可以裝水","筆|填表格用","環保餐具","行李箱鎖・行李吊牌","摺疊後背包|伴手禮多時多一個袋子","面紙・小包衛生紙"]],
  ["不能帶進日本",["肉製品不要帶|肉乾、香腸、肉鬆、含肉調理包都禁止","新鮮水果不要帶|芒果、柚子、香蕉等多半禁止"]]]},
-{k:"car",name:"自駕",intro:"八人車一台・12/1 福岡取車 → 12/6 福岡還車。",groups:[
+{k:"car",name:"自駕",intro:"八人車一台・12/1 福岡取車 → 12/6 17:00 博多還車。",groups:[
  ["證件資料（每位駕駛都要帶）",["台灣駕照正本|效期 6 個月以上","駕照日文譯本|監理站或線上申請，NT$100；不用國際駕照","護照","租車預約單・訂單號碼","租車公司電話|寫在 D2 筆記，出事時要打"]],
  ["費用",["尾款 ¥57,600|12/1 取車時付清，收據收好","ETC 卡已含在訂單|高速公路費用還車時另外結算","油錢・停車費預備現金"]],
  ["取車時確認",["兒童安全座椅|日本法規 6 歲以下必須坐，寶寶用嬰兒座椅，裝在後座兩側","ETC 卡已插好","車身刮痕先拍照錄影","確認油種|多半是レギュラー（一般汽油）","導航改成中文|輸入電話號碼或 MAPCODE 找目的地","還車地點、時間"]],
@@ -1880,7 +1880,7 @@ today(){
 plan(){
   if(dayIdx==null){const t=todayIndex();dayIdx=t>=0?t:0}
   const ti=todayIndex(),day=DAYS[dayIdx];
-  return`<header class="top"><div class="row tophd" style="flex-wrap:nowrap"><div><h1>行程</h1></div><div class="fsync"><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a><div class="sub">行程同步自 Funliday<br>11/16 20:25 最後確認</div></div>${mascot("plan")}</div></header>
+  return`<header class="top"><div class="row tophd" style="flex-wrap:nowrap"><div><h1>行程</h1></div><div class="fsync"><a class="btn" href="${FUNLIDAY_TRIP}" target="_blank" rel="noopener">${ic("cal")}Funliday 原始行程</a><div class="sub">行程同步自 Funliday<br>11/16 20:30 最後確認</div></div>${mascot("plan")}</div></header>
   <div class="days dl" role="group" aria-label="選擇日期" style="--n:${DAYS.length}"><span class="dveh" style="left:${(dayPrev+.5)/DAYS.length*100}%" data-to="${(dayIdx+.5)/DAYS.length*100}">${ic(dayVeh(dayIdx),1.6)}</span>${DAYS.map((d,i)=>`<button class="dp ${i===ti?"today":""}" data-day="${i}" aria-pressed="${i===dayIdx}" aria-label="D${i+1} ${md(d.d)}（${d.w}）">${(WARN[d.d]||[]).some(x=>x[0]==="err")?'<i class="wd" aria-label="有時間衝突"></i>':""}<span class="dd"></span><span class="dw">週${d.w}</span><span class="dn">${+d.d.slice(8)}</span></button>`).join("")}</div>
   <div class="dayview" style="display:flex;flex-direction:column;gap:14px">
   <div class="artcard">${(()=>{const w=heroWx(day);return heroArt(DAY_ART[day.d],w&&w.k)})()}</div>
@@ -1942,7 +1942,7 @@ info(){
     <div class="row">${h.tel?telBtn(h.tel):""}<a class="btn" href="${mapUrl(h.q)}" target="_blank" rel="noopener">${ic("pin")}地圖</a></div></div>`).join("")}
    <a class="btn" href="https://www.agoda.com/zh-tw/trips/shared/0754cb37-56e9-41e4-81c5-4089399a838f" target="_blank" rel="noopener">${ic("bed")}Agoda 訂房行程</a></div>
   <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("car","var(--waka)")}租車</h3>
-   <dl class="kv"><dt>車型</dt><dd>八人車一台（Delica D:5 或同級）</dd><dt>取車</dt><dd>12/1 福岡，自行取車</dd><dt>還車</dt><dd>12/6 福岡</dd><dt>總計</dt><dd>¥72,000（含全保、ETC 卡、10% 稅）</dd><dt>訂金</dt><dd>¥14,400 已匯款</dd><dt>尾款</dt><dd><b style="color:var(--brick)">¥57,600 取車當日付清</b></dd></dl>
+   <dl class="kv"><dt>車型</dt><dd>八人車一台（Delica D:5 或同級）</dd><dt>取車</dt><dd>12/1 福岡，自行取車</dd><dt>還車</dt><dd>12/6 17:00 博多</dd><dt>總計</dt><dd>¥72,000（含全保、ETC 卡、10% 稅）</dd><dt>訂金</dt><dd>¥14,400 已匯款</dd><dt>尾款</dt><dd><b style="color:var(--brick)">¥57,600 取車當日付清</b></dd></dl>
    <ul class="tips"><li>帶台灣駕照正本＋日文譯本、護照</li><li>確認兒童安全座椅、ETC 卡已插好</li><li>還車前加滿油，留好收據</li></ul></div>
   <div class="card" style="display:flex;flex-direction:column;gap:10px"><h3 class="ch">${tt("train","var(--yama)")}D1 機場 → 博多時刻表</h3>
    <div class="tbl"><table><thead><tr><th></th><th>巴士</th><th>到小倉</th><th>新幹線</th><th>到博多</th></tr></thead><tbody>
