@@ -1,6 +1,6 @@
 // 九州旅行 App 離線快取：打開過一次後，沒網路也能看
-const C="ky9-v1";
-self.addEventListener("install",e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(["./","./index.html"])).then(()=>self.skipWaiting()))});
+const C="ky9-v2";
+self.addEventListener("install",e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(["./","./index.html","./icon-180.png","./icon-192.png","./icon-512.png","./manifest.webmanifest"])).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;const u=new URL(r.url);
   if(r.mode==="navigate"||u.origin===location.origin){
